@@ -20,19 +20,20 @@ logging.basicConfig()
 godirect = GoDirect(use_ble=True,use_usb=True)
 print("GoDirect v"+str(godirect.get_version()))
 
-print("Searching...", flush=True, end ="")
+print("\nSearching...", flush=True, end ="")
 device = godirect.get_device(threshold=-100)
 if device != None and device.open() and device.start():
-        print("connecting.")
+        print("connecting.\n")
         sensors = device.get_enabled_sensors()
         print("Connected to "+device.name)
-        print("Reading 10 measurements")
+        print("Reading 10 measurements\n")
         for i in range(0,10):
                 if device.read():
                         for sensor in sensors:
                                 print(sensor.sensor_description+": "+str(sensor.value))
         device.stop()
         device.close()
+        print("\nDisconnected from "+device.name)
 else: 
         print("device not found.")
 godirect.quit()
