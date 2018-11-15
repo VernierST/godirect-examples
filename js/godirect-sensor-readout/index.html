@@ -19,11 +19,22 @@
       try {
         const gdxDevice = await godirect.selectDevice();
 
+        output.textContent += `\n Connected to `+gdxDevice.name;
+        output.textContent += `\n Reading 10 measurements \n`;
+
+        gdxDevice.on('device-closed', () => {
+          output.textContent += `\n\n Disconnected from `+gdxDevice.name+`\n`;
+        });
+
         gdxDevice.enableDefaultSensors();
         const enabledSensors = gdxDevice.sensors.filter(s => s.enabled);
 
         enabledSensors.forEach(sensor => {
           sensor.on('value-changed', (sensor) => {
+            // Only collect 10 samples and disconnect. 
+            if (sensor.values.length > 10){
+              gdxDevice.close();
+            }
             // log the sensor name, new value and units.
             console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
             // output the change to the pre tag
