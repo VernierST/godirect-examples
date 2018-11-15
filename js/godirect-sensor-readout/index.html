@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+  <title>Go Direct Sensor Readout</title>
+  <meta name="description" content="Simple expample of connecting to a Vernier Go Direct® Sensor with WebBluetooth and logging out the default sensor value">
+  <meta charset="utf-8">
+  <script type="module" src="https://unpkg.com/@vernier/godirect/dist/godirect.min.js"></script>
+</head>
+
+<body>
+  <button id="select_device">Select Go Direct Device</button>
+  <pre id="output"></pre>
+
+  <script>
+    const selectDeviceBtn = document.querySelector('#select_device');
+    const output = document.querySelector('#output');
+
+    const selectDevice = async () => {
+      try {
+        const gdxDevice = await godirect.selectDevice();
+
+        gdxDevice.enableDefaultSensors();
+        const enabledSensors = gdxDevice.sensors.filter(s => s.enabled);
+
+        enabledSensors.forEach(sensor => {
+          sensor.on('value-changed', (sensor) => {
+            // log the sensor name, new value and units.
+            console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
+            // output the change to the pre tag
+            output.textContent += `\n Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`;
+          });
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    selectDeviceBtn.addEventListener('click', selectDevice);
+  </script>
+</body>
+</html>
