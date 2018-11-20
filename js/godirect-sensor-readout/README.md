@@ -1,6 +1,6 @@
 # Go Direct Sensor Readout
 
-Simple expample of connecting to a Vernier Go Direct® Sensor with WebBluetooth and logging out the default sensor value.
+Simple example of connecting to a Vernier Go Direct® Sensor with WebBluetooth and logging out the default sensor value.
 
 ## License
 
