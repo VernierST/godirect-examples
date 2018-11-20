@@ -7,4 +7,4 @@
 - Bluegiga usb dongle for bluetooth communication (see BLE Connections below)
 
 ## Examples
-- Official examples that use godirect-py can be found in the Vernier [godirect-examples repository](https://stocktonkincade.github.io/sprocket_socks/).
+- Official examples that use godirect-py can be found in the Vernier [godirect-examples repository](https://github.com/VernierST/godirect-examples).

@@ -2,7 +2,7 @@
 
 Simple expample of using the [godirect-py module](https://pypi.org/project/godirect/) to connect to a Vernier Go Direct® Sensor and log some default sensor value.
 
-[go-direct-sensor-readout](https://github.com/stocktonkincade/sprocket_socks/blob/master/py/go-direct-sensor-readout/go-direct-sensor-readout.py)
+[go-direct-sensor-readout](./godirect-sensor-readout.py)
 
 ## License
 
