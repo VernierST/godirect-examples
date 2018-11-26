@@ -1,6 +1,6 @@
 # Getting Started with Python
 
-If you are new to Python, you may want to visit our [Go Direct FAQ page](./godirect-py-faqs.md) for some tips and troubleshooting ideas.
+If you are new to Python, you may want to visit our [Go Direct® FAQ page](./godirect-py-faqs.md) for some tips and troubleshooting ideas.
 
 ## Install Python 3
 

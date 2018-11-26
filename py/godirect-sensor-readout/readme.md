@@ -1,6 +1,6 @@
-# Go Direct Sensor Readout
+# Go Direct® Sensor Readout
 
-Simple expample of using the [godirect-py module](https://pypi.org/project/godirect/) to connect to a Vernier Go Direct® Sensor and log some default sensor value.
+Simple example of using the [godirect-py module](https://pypi.org/project/godirect/) to connect to a Vernier Go Direct Sensor and log some default sensor value.
 
 [go-direct-sensor-readout](./godirect-sensor-readout.py)
 
