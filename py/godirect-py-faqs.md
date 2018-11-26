@@ -14,7 +14,7 @@
 - [Python for Beginners](https://www.python.org/about/gettingstarted/)
 - [Official Python FAQs](https://docs.python.org/3/faq/)
 
-# How do I install godirect-py?
+## How do I install godirect-py?
 Once you have Python3 installed, you will be able to use `pip` (Python package manager) to install godirect-py and other Python modules that you may need. There is some documentation on the [godirect-py project page](https://pypi.org/project/godirect/).
 
 ## Where can I find examples of using the godirect-py library?
