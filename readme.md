@@ -14,7 +14,7 @@ There are a number of examples for both Python and JavaScript. Here are some of 
 
 | Name         | Description                                                      | Python | JavaScript |
 |--------------|------------------------------------------------------------------|--------|------------|
-| Go Direct Sensor Readout | Get default enabled sensor(s) and log value changes |   [Go Direct Sensor Readout](./py/go-direct-sensor-readout/)      | [Go Direct Sensor Readout](./js/go-direct-sensor-readout/) |
+| Go Direct Sensor Readout | Get default enabled sensor(s) and log value changes |   [Go Direct Sensor Readout](./py/godirect-sensor-readout/)      | [Go Direct Sensor Readout](./js/godirect-sensor-readout/) |
 
 ## License
 
