@@ -1,4 +1,4 @@
-# FAQs for godirect-py
+# FAQs for godirect-py (Work In Progress)
 
 ## What are the requirements for using godirect-py?
 - A [Vernier Go Direct Sensor](https://www.vernier.com/products/sensors/go-direct-sensors)
