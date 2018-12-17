@@ -8,5 +8,11 @@ Install the [godirect-js npm package](https://www.npmjs.com/package/@vernier/god
 
 ## Get godirect-examples
 
-Clone the entire [godirect-examples repository](https://github.com/VernierST/godirect-examples).
+- [Downloading the repository as a zip file](https://github.com/VernierST/godirect-examples/archive/master.zip)
+- [Using Git to clone the repository](https://github.com/VernierST/godirect-examples.git)
 
+## License
+
+All of the content in this repository is available under the terms of the [BSD 3-Clause License](./LICENSE).
+
+Vernier products are designed for educational use. Our products are not designed nor are they recommended for any industrial, medical, or commercial process such as life support, patient diagnosis, control of a manufacturing process, or industrial testing of any kind.
