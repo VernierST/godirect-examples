@@ -8,7 +8,7 @@ The godirect-examples and the godirect module are written for Python 3. Install 
 
 ## Install the godirect Module
 
-After Python 3 is installed, you will be able to `pip` to install the `godirect` module that will enable these example scripts to talk to Vernier Go Direct devices. 
+After Python 3 is installed, you will be able to use `pip` to install the `godirect` module that will enable these example scripts to talk to Vernier Go Direct devices. Open a command line terminal and run the following command:
 
 ```
 pip install godirect[usb,ble]
@@ -17,7 +17,9 @@ There are some helpful hints about installing the godirect module on the [Go Dir
 
 ## Get godirect-examples
 
-Clone the entire [godirect-examples repository](../godirect-examples) or download one or more of the [godirect Python example files](./).
+You will need to get a copy of the examples to your computer through one of these two methods.
+- [Downloading the repository as a zip file](https://github.com/VernierST/godirect-examples/archive/master.zip)
+- [Using Git to clone the repository](https://github.com/VernierST/godirect-examples.git)
 
 ## Run an example
 
