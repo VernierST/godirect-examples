@@ -4,7 +4,7 @@ Official examples for [Vernier Go Direct Sensors](https://www.vernier.com/produc
 
 ## Getting Started
 
-To get started talking to Vernier Go Direct Sensors, take a look at some of the examples provided in this repository. You will first need to get a copy of the examples to your computer by:
+To get started talking to Vernier Go Direct Sensors, take a look at some of the examples provided in this repository. You will first need to get a copy of the examples to your computer through one of these two methods.
 - [Downloading the repository as a zip file](https://github.com/VernierST/godirect-examples/archive/master.zip)
 - [Using Git to clone the repository](https://github.com/VernierST/godirect-examples.git)
 

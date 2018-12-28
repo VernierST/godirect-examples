@@ -17,7 +17,7 @@ There are some helpful hints about installing the godirect module on the [Go Dir
 
 ## Get godirect-examples
 
-Clone the entire [godirect-examples repository](https://github.com/VernierST/godirect-examples) or download one or more of the [godirect Python example files](https://github.com/VernierST/godirect-examples/tree/master/python).
+Clone the entire [godirect-examples repository](../godirect-examples) or download one or more of the [godirect Python example files](./).
 
 ## Run an example
 
