@@ -6,31 +6,41 @@ The examples in this folder will walk you through some of the basics of talking 
 
 ## gdx_getting_started_1.py
 
-The [gdx_getting_started_1.py](https://github.com/VernierST/godirect-examples/blob/master/python-examples/gdx_getting_started_1.py) example shows you how to:
+The [gdx_getting_started_1.py](https://github.com/VernierST/godirect-examples/blob/master/python-examples/gdx_getting_started_1.py) example shows you how to use the gdx functions to:
 - Connect to a Go Direct device through a USB cable
-- Allow the user to select some sensors on the device
+- Provide the user with a prompt to select the active sensors
+- Provide the user with a prompt to set the measurement period
 - Collect a few measurements from the enabled sensors
 
 ## gdx_getting_started_2.py
 
-The [gdx_getting_started_2.py](https://github.com/VernierST/godirect-examples/blob/master/python-examples/gdx_getting_started_2.py) example uses a Bluetooth Low Energy connection and demonstrates how you can:
-- Find and connect to a Go Direct device over Bluetooth Low Energy (BLE)
-- Obtain some device information, like battery level and RSSI (radio signal strength)
-- Select some sensors and set the collection rate
+The [gdx_getting_started_2.py](https://github.com/VernierST/godirect-examples/blob/master/python-examples/gdx_getting_started_2.py) example shows you how to avoid using prompts (and instead pass arguments) to select the active sensors and set the measurement period:
+- Connect to a Go Direct device through a USB cable
+- Set the active sensors in your program
+- Set the measurement period in your program
 - Collect a few measurements from the enabled sensors
 
 ## gdx_getting_started_3.py
 
-The [gdx_getting_started_3.py](https://github.com/VernierST/godirect-examples/blob/master/python-examples/gdx_getting_started_3.py) example highlights using the device information to get some details about the Go Direct device. Most Go Direct devices have multiple sensors on-board. This program provides information on all of the device's sensor channel numbers, the description of the sensors, and the units of measure for each sensor.
+The [gdx_getting_started_3.py](https://github.com/VernierST/godirect-examples/blob/master/python-examples/gdx_getting_started_3.py) example shows how you can use the gdx functions to list information on all of the sensor channels on a Go Direct device.This includes sensor channel number, sensor description, units, and "incompatible sensors". 
 - Connect to a Go Direct device through a USB cable
-- Obtain and show some device information
+- Obtain and show sensor information
 
 ## gdx_getting_started_4.py
 
-The [gdx_getting_started_4.py](https://github.com/VernierST/godirect-examples/blob/master/python-examples/gdx_getting_started_4.py) example provides some ideas about what you can do with sensor data by using the the built-in `csv` Python module. It shows you how to:
+The [gdx_getting_started_4.py](https://github.com/VernierST/godirect-examples/blob/master/python-examples/gdx_getting_started_4.py) example uses a Bluetooth Low Energy (BLE) connection and demonstrates how you can use the gdx functions to:
+- Find and connect to a Go Direct device over BLE
+- Obtain some device information, like battery level, charger state, and RSSI (radio signal strength)
+- Set the active sensors and collection rate
+- Collect a few measurements from the enabled sensors
+
+## gdx_getting_started_5.py
+
+The The [gdx_getting_started_5.py](https://github.com/VernierST/godirect-examples/blob/master/python-examples/gdx_getting_started_5.py) example provides some ideas about what you can do with sensor data by using the the built-in csv Python module. It shows you how to:
 - Connect to a Go Direct device through a USB cable
-- Allow the user to select some sensors on the device
-- Collect a few measurements from the enabled sensors and output the data as a comma-separated-value file
+- Set the active sensors and collection rate  
+- Collect a few measurements from the enabled sensors
+- Output the data as a comma-separated-value file
 
 ## License
 

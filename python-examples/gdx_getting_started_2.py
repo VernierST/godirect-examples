@@ -1,64 +1,29 @@
-'''
-Here are the gdx functions used in a typical program to collect data:
+''' 
+This examples is the same as gdx_getting_started_1.py, except we are now 
+passing arguments in the select_sensors() and start() functions to avoid the prompts.
 
-gdx.open_usb() or gdx.open_ble()
-gdx.select_sensors()
-gdx.start()
-gdx.read()
-gdx.stop()
-gdx.close()
+This example assumes the Go Direct sensor is connected via USB. Go to the
+gdx_getting_started_4.py example to see how to open a bluetooth connection.
 
-Here are other functions that might be useful for customizing a program:
+Note that the select_sensors argument is a list and the sensor numbers must be inside 
+list brackets, e.g. gdx.select_sensors([1,2,3]).
 
-gdx.device_info()
-gdx.enabled_sensor_info()
-gdx.sensor_info()
-gdx.discover_ble_devices()
-
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-This program passes arguments to the open(), select sensors(), and start() 
-functions to avoid the prompts. In addition, this example uses gdx.device_info() and 
-gdx.enabled_sensor_info() to get device and sensor information.
-
-This example assumes the Go Direct sensor is connected via bluetooth (ble).  When using 
-gdx.open_ble(), note that there are a few options:
-
-gdx.open_ble() - When there are no arguments, the function finds all available Go Direct 
-                ble devices, prints the list to the terminal, and prompts the user
-                to select the device to connect.
-
-gdx.open_ble("GDX-FOR 071000U9") - Use your device's name as the argument. The function will
-                search for a ble device with this name. If found it will connect it.
-
-gdx.open_ble("proximity_pairing") - Use "proximity_pairing" as the argument. The function will
-                find the ble device with the strongest rssi (signal strength) and connect that
-                device.
-
-**** go to the gdx.open_ble() function and delete "GDX-FOR 071000U9" and 
-replace it with your device's name (order code followed by a blank space followed by 
-the serial number) or "proximity_pairing", or leave it blank. 
+How do you know what the sensor numbers are on your Go Direct device? Go to 
+gdx_getting_started.3.py example to list all of the sensor channels.
 
 '''
 
-from gdx import gdx
+from gdx import gdx #the gdx function calls are from a gdx.py file inside the gdx folder.
 gdx = gdx.gdx()
 
-gdx.open_ble("GDX-FOR 071000U9") #replace "GDX-FOR 071000U9" with the name of your device (order code, space, serial number)
-device_info = gdx.device_info() # device_info list [0 = name, 1 = description, 2 = battery %, 3 = charger state, 4 = rssi]
-battery_level = device_info[2]
-charger_state = device_info[3]  
-print("battery level % = ", battery_level)
-print("charger state = ", charger_state)
+gdx.open_usb()
 gdx.select_sensors([1,2])
-gdx.start(period=500) 
-column_headers = gdx.enabled_sensor_info()
-print(column_headers)
+gdx.start(period=1000) 
 
 for i in range(0,5):
-    measurements = gdx.read() 
+    measurements = gdx.read() #returns a list of measurements from the sensors selected.
     if measurements == None: 
-        break
+        break 
     print(measurements)
 
 gdx.stop()

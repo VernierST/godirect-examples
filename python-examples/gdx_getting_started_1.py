@@ -15,6 +15,7 @@ gdx.device_info()
 gdx.enabled_sensor_info()
 gdx.sensor_info()
 gdx.discover_ble_devices()
+monitor_rssi()
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 

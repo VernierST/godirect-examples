@@ -1,33 +1,17 @@
 ''' 
-Here are the gdx functions used in a typical program to collect data:
+This example lists information about all of the sensor channels on a Go Direct device.
+This includes sensor channel number, sensor description, units and "incompatible sensors". 
 
-gdx.open_usb() or gdx.open_ble()
-gdx.select_sensors()
-gdx.start()
-gdx.read()
-gdx.stop()
-gdx.close()
-
-Here are other functions that might be useful for customizing a program:
-
-gdx.device_info()
-gdx.enabled_sensor_info()
-gdx.sensor_info()
-gdx.discover_ble_devices()
-
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-In this example we are highlighting the use of the gdx.sensor_info() function.
-Most Go Direct devices have multiple sensors on-board. This program provides information
-on the sensor channel number, the description of the sensor, the units and it also
-lists the "incompatible sensors". This refers to other sensor channel numbers 
-that cannot be used for data collection at the same time as this sensor. Most 
-devices allow all sensor channels to collect data at the same time. However, that is
-not always the case. Devices like Sound and EKG have some sensors that do not work
-together with the other sensors on-board the device.
+"Incompatible sensors" refers to sensor channels that cannot operate at the
+same time. Most devices allow all sensor channels to collect data at 
+the same time. However, devices like Sound and EKG have some sensors that do not work
+when the other on-board sensors are collecting data.
 
 Also note that not all devices have sensor numbers that start with 1, and not all
-numbers are used. For example, Light and Color sensor numbers are [1,2,5,6,7]
+numbers are used. For example, Light and Color sensor numbers are [1,2,5,6,7] and 
+Motion Detector is [5,6,7], with each channel being incompatible with the others.
+
+This example highlights the use of the gdx.sensor_info() function.
 
 '''
 
@@ -37,7 +21,7 @@ gdx = gdx.gdx()
 gdx.open_usb()
 sensor_info = gdx.sensor_info() # 0 = sensor number, 1 = description, 2 = units, 3 = incompatible sensors 
 print()
-1
+
 for info in sensor_info:
     sensor_number = info[0]
     sensor_description = info[1]  
