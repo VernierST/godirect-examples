@@ -23,10 +23,4 @@ You will need to get a copy of the examples to your computer through one of thes
 
 ## Run an example
 
-- If you are using USB, connect your Go Direct device to your computer with your USB cable
-- If you are using Bluetooth Low Energy, connect your BlueGiga BLE dongle to your computer and turn on your Go Direct device
-- Run the following command
-
-```
-python gdx_getting_started_1.py
-```
+Now that you have installed Python3, installed the godirect module, and downloaded the examples, it is time to run an example. Start with the gdx_getting_started examples as outlined [here](./).
