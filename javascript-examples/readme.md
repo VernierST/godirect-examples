@@ -11,6 +11,12 @@ Install the [godirect-js npm package](https://www.npmjs.com/package/@vernier/god
 - [Downloading the repository as a zip file](https://github.com/VernierST/godirect-examples/archive/master.zip)
 - [Using Git to clone the repository](https://github.com/VernierST/godirect-examples.git)
 
+## godirect-sensor-readout
+
+The go-direct-sensor-readout example is a simple example to get started with. It demonstrates how to get default enabled sensor(s) and log value changes.
+
+Click [here](./js/godirect-sensor-readout/) to run it in your browser, or [here](./js/godirect-sensor-readout/index.html) to view the source code.
+
 ## License
 
 All of the content in this repository is available under the terms of the [BSD 3-Clause License](./LICENSE).
