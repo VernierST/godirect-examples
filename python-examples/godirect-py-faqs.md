@@ -1,6 +1,6 @@
-# FAQs for godirect-py (Work In Progress)
+# FAQs for the godirect module (Work In Progress)
 
-## What are the requirements for using godirect-py?
+## What are the requirements for using godirect module?
 
 - A [Vernier Go Direct Sensor](https://www.vernier.com/products/sensors/go-direct-sensors)
 - A Mac, Windows, or Linux (Ubuntu) computer
@@ -44,7 +44,7 @@ Once you have Python3 installed, you will be able to use `pip` (Python package m
 
 ```pip install godirect[USB, BLE]```
 
-There is further documentation on the [godirect-py project page](https://pypi.org/project/godirect/).
+There is further documentation on the [godirect module project page](https://pypi.org/project/godirect/).
 
 ### Windows
 

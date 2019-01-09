@@ -1,6 +1,6 @@
 # FAQs for godirect-js (Work In Progress)
 
-## What are the requirements for using godirect-py?
+## What are the requirements for using godirect-js?
 - A [Vernier Go Direct Sensor](https://www.vernier.com/products/sensors/go-direct-sensors)
 - A computer or mobile device that run the Chrome browser
 

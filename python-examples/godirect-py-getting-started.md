@@ -13,7 +13,7 @@ After Python 3 is installed, you will be able to use `pip` to install the `godir
 ```
 pip install godirect[usb,ble]
 ```
-There are some helpful hints about installing the godirect module on the [Go Direct FAQ page](./godirect-py-faqs.md), and more detailed instructions on installing the `godirect` module at the [Python Packaging Index site](https://pypi.org/project/godirect/) or in the [godirect-py repository](https://github.com/VernierST/godirect-py).
+There are some helpful hints about installing the godirect module on the [Go Direct FAQ page](./godirect-py-faqs.md), and more detailed instructions on installing the `godirect` module at the [Python Packaging Index site](https://pypi.org/project/godirect/) or in the [godirect module repository](https://github.com/VernierST/godirect-py).
 
 ## Get godirect-examples
 
