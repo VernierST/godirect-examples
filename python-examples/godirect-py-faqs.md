@@ -28,13 +28,13 @@ When installing on Windows, be sure to modify the installation to enable the "Ad
 
 - Go to Add or Remove programs, find Python 3 and select Modify.
 
-![Modify windows install](win_modify_py3_install.png)
+![Modify windows install](./images/win_modify_py3_install.png)
 - You should now be on the Optional Features screen. Ensure these are selected and click Next.
 
-![Optional Features of Windows installer](win_modify_py3_next.png)
+![Optional Features of Windows installer](./images/win_modify_py3_next.png)
 - You should now be on the Advanced Options screen. Check the “Add Python to environment variables” button, if it is not already checked. Click Install.
 
-![Advanced Features of Windows installer](win_modify_py3_advanced.png)
+![Advanced Features of Windows installer](./images/win_modify_py3_advanced.png)
 
 ## How do I install the godirect module?
 
@@ -50,13 +50,13 @@ There is further documentation on the [godirect-py project page](https://pypi.or
 
 Getting the godirect module installed to work with USB on Windows may require some extra steps. It is possible that your install will fail with a message that looks like this:
 
-![Build Tools install error](win_msvc_build_tools_error.png).
+![Build Tools install error](./images/win_msvc_build_tools_error.png).
 
 If so, follow the instructions given to download [Microsoft Visual C++ Build Tools](https://visualstudio.microsoft.com/downloads/).
 
 Grab the latest version of the Tools for Visual Studio 2017.
 
-![Build Tools download](win_msvc_build_tools_download.png)
+![Build Tools download](./images/win_msvc_build_tools_download.png)
 
 ## Where can I find examples of using the godirect module?
 
