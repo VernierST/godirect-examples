@@ -15,7 +15,7 @@ Install the [godirect-js npm package](https://www.npmjs.com/package/@vernier/god
 
 The go-direct-sensor-readout example is a simple example to get started with. It demonstrates how to get default enabled sensor(s) and log value changes.
 
-Click [here](./js/godirect-sensor-readout/) to run it in your browser, or [here](./js/godirect-sensor-readout/index.html) to view the source code.
+Click [here](./godirect-sensor-readout/) to run it in your browser, or [here](./godirect-sensor-readout/index.html) to view the source code.
 
 ## License
 
