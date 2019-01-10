@@ -10,8 +10,8 @@ To get started talking to Vernier Go Direct Sensors, take a look at some of the 
 
 Once you have the examples on your computer, you can start to explore either the Python or JavaScript examples.
 
-- [Python examples](./python-examples)
-- [JavaScript examples](./javascript-examples)
+- [Python examples](./python)
+- [JavaScript examples](./javascript)
 
 ## License
 
