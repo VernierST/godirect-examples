@@ -3,7 +3,7 @@
 ## What are the requirements for using godirect module?
 
 - A [Vernier Go Direct Sensor](https://www.vernier.com/products/sensors/go-direct-sensors)
-- A Mac, Windows, or Linux (Ubuntu) computer
+- A Mac, Windows, or Linux computer
 - You must have Python3 installed, since godirect is written for Python 3. See: [How do I install Python 3?](#how-do-i-install-python-3)
 - You must have the godirect module and its dependencies installed. See: [How do I install the godirect module?](#How-do-I-install-the-godirect-module)
 - If you wish to connect to your Go Direct device using Bluetooth Low Energy, you will need to have a [Bluegiga BLED112 Bluetooth® Low Energy Dongle](https://www.silabs.com/products/wireless/bluetooth/bluetooth-low-energy-modules/bled112-bluetooth-smart-dongle)
