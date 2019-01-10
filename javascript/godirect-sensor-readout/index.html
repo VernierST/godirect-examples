@@ -4,7 +4,7 @@
   <title>Go Direct Sensor Readout</title>
   <meta name="description" content="Simple expample of connecting to a Vernier Go Direct® Sensor with WebBluetooth and logging out the default sensor value">
   <meta charset="utf-8">
-  <script type="module" src="https://unpkg.com/@vernier/godirect/dist/godirect.min.js"></script>
+  <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script>
 </head>
 
 <body>
@@ -31,7 +31,7 @@
 
         enabledSensors.forEach(sensor => {
           sensor.on('value-changed', (sensor) => {
-            // Only collect 10 samples and disconnect. 
+            // Only collect 10 samples and disconnect.
             if (sensor.values.length > 10){
               gdxDevice.close();
             }
