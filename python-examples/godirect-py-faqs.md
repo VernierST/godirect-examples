@@ -4,13 +4,13 @@
 
 - A [Vernier Go Direct Sensor](https://www.vernier.com/products/sensors/go-direct-sensors)
 - A Mac, Windows, or Linux (Ubuntu) computer
-- You must have Python3 installed, since godirect is written for Python 3. See [How do I install Python 3](#how-do-i-install-python-3)
-- You must have the godirect module and its dependencies installed. See [How do I install the godirect module](#How-do-I-install-the-godirect-module)
+- You must have Python3 installed, since godirect is written for Python 3. See: [How do I install Python 3?](#how-do-i-install-python-3)
+- You must have the godirect module and its dependencies installed. See: [How do I install the godirect module?](#How-do-I-install-the-godirect-module)
 - If you wish to connect to your Go Direct device using Bluetooth Low Energy, you will need to have a [Bluegiga BLED112 Bluetooth® Low Energy Dongle](https://www.silabs.com/products/wireless/bluetooth/bluetooth-low-energy-modules/bled112-bluetooth-smart-dongle)
 
 ## Why do I have to use Python3?
 
-Python 3.0 was released in 2008. The final 2.x version 2.7 release came out in mid-2010, with a statement of extended support for this end-of-life release. The 2.x branch will see no new major releases after that. 3.x is under active development and has already seen over five years of stable releases, including version 3.3 in 2012, 3.4 in 2014, 3.5 in 2015, and 3.6 in 2016. This means that all recent standard library improvements, for example, are only available by default in Python 3.x. [Source](https://wiki.python.org/moin/Python2orPython3)
+Python 3.0 was released in 2008. The final 2.x version 2.7 release came out in mid-2010, with a statement of extended support for this end-of-life release. The 2.x branch will see no new major releases after that. 3.x is under active development and has already seen over five years of stable releases, including version 3.3 in 2012, 3.4 in 2014, 3.5 in 2015, and 3.6 in 2016. This means that all recent standard library improvements, for example, are only available by default in Python 3.x. [(Source)](https://wiki.python.org/moin/Python2orPython3)
 
 ## How do I get started with Python?
 
