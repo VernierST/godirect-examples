@@ -6,7 +6,7 @@
 
 ## How do I get started with JavaScript?
 Here are some generally helpful links for getting started with JavaScript
-- [JavaScript Tutorial](https://www.w3schools.com/js/)
+- [JavaScript Tutorials](https://javascript.info/)
 
 ## Where can I find examples of using the godirect-js library?
 - Official examples that use godirect-js can be found in the Vernier [godirect-examples repository](./).
