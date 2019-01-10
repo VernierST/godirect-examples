@@ -9,4 +9,4 @@ Here are some generally helpful links for getting started with JavaScript
 - [JavaScript Tutorial](https://www.w3schools.com/js/)
 
 ## Where can I find examples of using the godirect-js library?
-- Official examples that use godirect-js can be found in the Vernier [godirect-examples repository](https://github.com/VernierST/godirect-examples).
+- Official examples that use godirect-js can be found in the Vernier [godirect-examples repository](./).

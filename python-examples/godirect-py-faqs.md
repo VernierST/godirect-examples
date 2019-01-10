@@ -4,8 +4,8 @@
 
 - A [Vernier Go Direct Sensor](https://www.vernier.com/products/sensors/go-direct-sensors)
 - A Mac, Windows, or Linux (Ubuntu) computer
-- You must have Python3 installed, since godirect is written for Python 3
-- You must have the [godirect module and its dependencies installed](#how-do-I-install-the-godirect-module). See the below
+- You must have Python3 installed, since godirect is written for Python 3. See [How do I install Python 3](#how-do-i-install-python-3)
+- You must have the godirect module and its dependencies installed. See [How do I install the godirect module](#How-do-I-install-the-godirect-module)
 - If you wish to connect to your Go Direct device using Bluetooth Low Energy, you will need to have a [Bluegiga BLED112 Bluetooth® Low Energy Dongle](https://www.silabs.com/products/wireless/bluetooth/bluetooth-low-energy-modules/bled112-bluetooth-smart-dongle)
 
 ## Why do I have to use Python3?
@@ -52,12 +52,10 @@ Getting the godirect module installed to work with USB on Windows may require so
 
 ![Build Tools install error](./images/win_msvc_build_tools_error.png).
 
-If so, follow the instructions given to download [Microsoft Visual C++ Build Tools](https://visualstudio.microsoft.com/downloads/).
-
-Grab the latest version of the Tools for Visual Studio 2017.
+If so, follow the instructions to download and install the [Microsoft Visual C++ Build Tools](https://visualstudio.microsoft.com/downloads/). The latest version of the tools download can be found in the All Downloads section by expanding Tools for Visual Studio 2017.
 
 ![Build Tools download](./images/win_msvc_build_tools_download.png)
 
 ## Where can I find examples of using the godirect module?
 
-- Official examples that use the godirect module can be found in the Vernier [godirect-examples repository](https://github.com/VernierST/godirect-examples).
+- Official examples that use the godirect module can be found in the Vernier [godirect-examples repository](./).
