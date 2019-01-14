@@ -21,6 +21,6 @@ You will need to get a copy of the examples to your computer through one of thes
 - [Downloading the repository as a zip file](https://github.com/VernierST/godirect-examples/archive/master.zip)
 - [Using Git to clone the repository](https://github.com/VernierST/godirect-examples.git)
 
-## Run an example
+## Work through the examples
 
-Now that you have installed Python3, installed the godirect module, and downloaded the examples, it is time to run an example. Start with the gdx_getting_started examples as outlined [here](./).
+Walk through [**the provided examples**](./), now that you have everything you need to start talking to Go Direct devices using Python 3.
