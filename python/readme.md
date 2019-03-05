@@ -4,6 +4,8 @@ If you are new to Python, you may want to visit our [Getting started with Go Dir
 
 The examples in this folder will walk you through some of the basics of talking to a Go Direct device using Python. Under the hood, they all use the the [godirect module](https://pypi.org/project/godirect/) to communicate with the Go Direct devices. However, to make things a bit simpler, we created a layer to abstract some of the details away and provide cleaner paths to the most common functions. That layer is named `gdx` and can be found in the [/gdx/](./gdx) folder. All of the examples in this folder make use of it for a cleaner, simpler entry point into coding with Go Direct devices.
 
+For other ideas and more advanced examples, take a look in the [/advanced_examples/](./advanced/examples) folder.
+
 ## Example 1: User Prompts and Collecting Data
 
 The [gdx_getting_started_1.py](https://github.com/VernierST/godirect-examples/blob/master/python/gdx_getting_started_1.py) example shows you how to use the gdx functions to:
