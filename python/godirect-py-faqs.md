@@ -56,6 +56,17 @@ If so, follow the instructions to download and install the [Microsoft Visual C++
 
 ![Build Tools download](./images/win_msvc_build_tools_download.png)
 
+### USB on Linux Systems
+
+In order to communicate with Go Direct devices over USB on Linux systems, you will need to provide a udev rule to grant the proper permissions for the device. You can create such a rule in the proper directory with this command:
+
+```
+sudo su -c 'cat <<EOT >/etc/udev/rules.d/vstlibusb.rules
+SUBSYSTEM=="usb", ATTRS{idVendor}=="08f7", MODE="0666"
+SUBSYSTEM=="usb_device", ATTRS{idVendor}=="08f7", MODE="0666"
+EOT'
+```
+
 ## Where can I find examples of using the godirect module?
 
 - Official examples that use the godirect module can be found in the Vernier [godirect-examples repository](./).
