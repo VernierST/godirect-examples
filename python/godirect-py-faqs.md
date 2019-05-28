@@ -42,7 +42,7 @@ When installing on Windows, be sure to modify the installation to enable the "Ad
 
 Once you have Python3 installed, you will be able to use `pip` (Python package manager) to install the godirect module and other Python modules that you may need. To install the godirect module so that it can work with Go Direct devices over USB and Bluetooth Low Energy (BLE), run the following command:
 
-```pip install godirect[USB, BLE]```
+```pip install godirect[usb,ble]```
 
 There is further documentation on the [godirect module project page](https://pypi.org/project/godirect/).
 
