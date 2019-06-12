@@ -34,7 +34,7 @@ class gdx:
                 i += 1
             x = input("Select one device:")
             selected = int(x)
-            if selected < number_found_devices:
+            if selected <= number_found_devices and selected > 0:
                 self.selected_device = found_devices[selected-1]
             else:
                 print("Selection was invalid")
