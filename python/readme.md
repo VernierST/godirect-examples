@@ -38,7 +38,7 @@ The [gdx_getting_started_4.py](https://github.com/VernierST/godirect-examples/bl
 
 ## Example 5: Export Sensor Data as CSV
 
-The The [gdx_getting_started_5.py](https://github.com/VernierST/godirect-examples/blob/master/python/gdx_getting_started_5.py) example provides some ideas about what you can do with sensor data by using the the built-in csv Python module. It shows you how to:
+The The [gdx_getting_started_5.py](https://github.com/VernierST/godirect-examples/blob/master/python/gdx_getting_started_5.py) example provides some ideas about what you can do with sensor data by using the built-in csv Python module. It shows you how to:
 - Connect to a Go Direct device through a USB cable
 - Set the active sensors and collection rate
 - Collect a few measurements from the enabled sensors
