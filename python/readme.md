@@ -2,7 +2,7 @@
 
 If you are new to Python, you may want to visit our [Getting started with Go Direct and Python page](./godirect-py-getting-started.md) or our [Go Direct FAQ page](./godirect-py-faqs.md) for some tips and troubleshooting ideas.
 
-The examples in this folder will walk you through some of the basics of talking to a Go Direct device using Python. Under the hood, they all use the the [godirect module](https://pypi.org/project/godirect/) to communicate with the Go Direct devices. However, to make things a bit simpler, we created a layer to abstract some of the details away and provide cleaner paths to the most common functions. That layer is named `gdx` and can be found in the [/gdx/](./gdx) folder. All of the examples in this folder make use of it for a cleaner, simpler entry point into coding with Go Direct devices.
+The examples in this folder will walk you through some of the basics of talking to a Go Direct device using Python. Under the hood, they all use the [godirect module](https://pypi.org/project/godirect/) to communicate with the Go Direct devices. However, to make things a bit simpler, we created a layer to abstract some of the details away and provide cleaner paths to the most common functions. That layer is named `gdx` and can be found in the [/gdx/](./gdx) folder. All of the examples in this folder make use of it for a cleaner, simpler entry point into coding with Go Direct devices.
 
 For other ideas and more advanced examples, take a look in the [/advanced_examples/](./advanced_examples) folder.
 
@@ -38,7 +38,7 @@ The [gdx_getting_started_4.py](https://github.com/VernierST/godirect-examples/bl
 
 ## Example 5: Export Sensor Data as CSV
 
-The The [gdx_getting_started_5.py](https://github.com/VernierST/godirect-examples/blob/master/python/gdx_getting_started_5.py) example provides some ideas about what you can do with sensor data by using the built-in csv Python module. It shows you how to:
+The [gdx_getting_started_5.py](https://github.com/VernierST/godirect-examples/blob/master/python/gdx_getting_started_5.py) example provides some ideas about what you can do with sensor data by using the built-in csv Python module. It shows you how to:
 - Connect to a Go Direct device through a USB cable
 - Set the active sensors and collection rate
 - Collect a few measurements from the enabled sensors
