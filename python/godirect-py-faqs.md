@@ -40,9 +40,9 @@ When installing on Windows, be sure to modify the installation to enable the "Ad
 
 ### General
 
-Once you have Python3 installed, you will be able to use `pip` (Python package manager) to install the godirect module and other Python modules that you may need. To install the godirect module so that it can work with Go Direct devices over USB and Bluetooth Low Energy (BLE), run the following command:
+Once you have Python3 installed, you will be able to use `pip3` (Python 3 package manager) to install the godirect module and other Python modules that you may need. To install the godirect module so that it can work with Go Direct devices over USB and Bluetooth Low Energy (BLE), run the following command:
 
-```pip install godirect[usb,ble]```
+```pip3 install godirect[USB,BLE]```
 
 There is further documentation on the [godirect module project page](https://pypi.org/project/godirect/).
 
@@ -58,14 +58,11 @@ If so, follow the instructions to download and install the [Microsoft Visual C++
 
 ### USB on Linux Systems
 
-In order to communicate with Go Direct devices over USB on Linux systems, you will need to provide a udev rule to grant the proper permissions for the device. You can create such a rule in the proper directory with this command:
+In order to communicate with Go Direct devices over USB on Linux systems, you will need to provide a special udev rule that allows the device to be identified when it is plugged in. You will find a copy of this file (vstlibusb.rules) in this directory. To move it to the proper location, you will need super-user privileges.
 
-```
-sudo su -c 'cat <<EOT >/etc/udev/rules.d/vstlibusb.rules
-SUBSYSTEM=="usb", ATTRS{idVendor}=="08f7", MODE="0666"
-SUBSYSTEM=="usb_device", ATTRS{idVendor}=="08f7", MODE="0666"
-EOT'
-```
+In a terminal, navigate to the folder containing the vstlibusb.rules file. Use this command to move the file to the /etc/udev/rules.d directory:
+
+```sudo cp vstlibusb.rules /etc/udev/rules.d/.```
 
 ## Where can I find examples of using the godirect module?
 
