@@ -10,6 +10,7 @@ For other ideas and more advanced examples, take a look in the [/advanced_exampl
 The [gdx_getting_started_1.html](./gdx_getting_started_1.html) example shows how you can use the gdx functions to list information on all of the sensor channels on a Go Direct device. This includes sensor channel number, sensor description, units, and "incompatible sensors".
 - Connect to a Go Direct device over BLE
 - Obtain and show sensor information
+- Disconnect
 
 ## Example 2: Using Defaults and Collecting Data
 The [gdx_getting_started_2.html](./gdx_getting_started_2.html) example uses a Bluetooth Low Energy (BLE) connection and demonstrates how you can use the gdx functions to:

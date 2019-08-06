@@ -16,10 +16,26 @@
   <pre id="output"></pre>
  
   <script>
+   /* 
+  * This example uses the GDX JavaScript library to collect and manipulate data from a Vernier GoDirect Sensor. 
+  * Press the 'Connect to Device' button to open communication to the device in a Chrome browser.
+  * Press the 'Download CSV' to save a copy of the data as a csv file.
+  *
+  * This program uses the following functions from the GDX Library:
+  * 
+  * gdxDevice.selectDevice();
+  * gdxDevice.close();
+  * gdxDevice.sensors.filter();
+  * gdxDevice.getSensor(int);
+  * sensor.setEnabled(bool);
+  *
+  */
   
     const selectDeviceBtn = document.querySelector('#select_device');
     const output = document.querySelector('#output');
-       var data = [];
+   
+    // create array to store data to be saved in the csv file
+    var data = [];
 
     const selectDevice = async () => {     
       try {
@@ -41,13 +57,13 @@
        
        
           sensor.on('value-changed', (sensor) => {
-            // Only collect 10 samples and disconnect.
-                 
+            // only collect 10 samples and disconnect.    
             if (sensor.values.length > 10){
               gdxDevice.close();
             }
             // log the sensor name, new value and units.
             console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
+           // add data points to the data array
             data.push(sensor.value);
             // output the change to the pre tag
             output.textContent += `\n Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`;
@@ -57,14 +73,17 @@
         console.error(err);
       }
     };
-
+// download csv function to be used when button is pressed
 function download_csv() {
     var csv = 'Sensor Values: \n';
+
+    // add each row of the the sensor data array to the csv file
     data.forEach( row => {
             csv +=  " \n" + row;
    
     });
- 
+    
+    // create and download new csv file
     console.log(csv);
     var hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);

@@ -36,10 +36,7 @@
         output.textContent += `\n Serial Number: `+gdxDevice.serialNumber;
         output.textContent += `\n Order Code: `+gdxDevice.orderCode;
         output.textContent += `\n measurementPeriod: `+gdxDevice.measurementPeriod ;
-        
-         // reassign the measurement period and display the new period
-        gdxDevice.start(measurementPeriod = 1000);
-        output.textContent += `\n measurementPeriod: `+gdxDevice.measurementPeriod ;
+      
        
         // set up timeout for battery level and battery state and print
         setTimeout(function(){ gdxDevice._getStatus().then ( (status) => {
