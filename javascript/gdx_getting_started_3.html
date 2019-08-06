@@ -1,3 +1,17 @@
+<!--
+This example uses the GDX JavaScript library to collect and manipulate data from a Vernier GoDirect Sensor. 
+Press the 'Connect to Device' button to open communication to the device in a Chrome browser.
+Press the 'Change Sensor and Collect Data' to change the sensor channel and collect 10 data points. 
+
+This program uses the following functions from the GDX Library:
+
+gdxDevice.selectDevice();
+gdxDevice.close();
+gdxDevice.sensors.filter();
+gdxDevice.getSensor(int);
+sensor.setEnabled(bool);
+-->
+
 <!doctype html>
 <html>
 <head>
@@ -12,21 +26,7 @@
   <button id ="start_collection" onclick = "chooseSensor()">Change Sensor and Collect Data</button>
   <pre id="output"></pre> 
   <script>
-    /* 
-  * This example uses the GDX JavaScript library to collect and manipulate data from a Vernier GoDirect Sensor. 
-  * Press the 'Connect to Device' button to open communication to the device in a Chrome browser.
-  * Press the 'Change Sensor and Collect Data' to change the sensor channel and collect 10 data points. 
-  * It has simple css style elements to make the webpage more appealing.
-  *
-  * This program uses the following functions from the GDX Library:
-  * 
-  * gdxDevice.selectDevice();
-  * gdxDevice.close();
-  * gdxDevice.sensors.filter();
-  * gdxDevice.getSensor(int);
-  * sensor.setEnabled(bool);
-  *
-  */
+  
     const selectDeviceBtn = document.querySelector('#select_device');
     const output = document.querySelector('#output');
     let gdxDevice = "";

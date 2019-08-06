@@ -1,4 +1,17 @@
-    
+  <!--
+  This example uses the GDX JavaScript library to collect all of the sensor information from a Vernier GoDirect Sensor. 
+  Press the 'Connect to Device' button to open communication to the device in a Chrome browser. 
+  This example demonstrates how to specify sample rate and how to enable specific sensor channels. 
+  
+  This program uses the following functions from the GDX Library:
+   
+  gdxDevice.selectDevice();
+  gdxDevice.close();
+  gdxDevice.sensors.filter();
+  gdxDevice.start(sampleRate);
+  gdxDevice.getSensor(channelNumber);
+  -->  
+
 <!doctype html>
 <html>
 <head>
@@ -14,20 +27,6 @@
   <pre id="output"></pre>
  
   <script>
-    /* 
-  * This example uses the GDX JavaScript library to collect all of the sensor information from a Vernier GoDirect Sensor. 
-  * Press the 'Connect to Device' button to open communication to the device in a Chrome browser. 
-  * This example demonstrates how to specify sample rate and how to enable specific sensor channels. 
-  *
-  * This program uses the following functions from the GDX Library:
-  * 
-  * gdxDevice.selectDevice();
-  * gdxDevice.close();
-  * gdxDevice.sensors.filter();
-  * gdxDevice.start(sampleRate);
-  * gdxDevice.getSensor(channelNumber);
-  *
-  */
  
     const selectDeviceBtn = document.querySelector('#select_device');
     const output = document.querySelector('#output');
