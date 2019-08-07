@@ -1,6 +1,6 @@
 <!--
 This example uses the GDX JavaScript library to collect and manipulate data from a Vernier GoDirect Sensor. 
-Press the 'Connect to Device' button to open communication to the device in a Chrome browser.
+Press the 'Select GoDirect Device' button to open communication to the device in a Chrome browser.
 Press the 'Change Sensor and Collect Data' to change the sensor channel and collect 10 data points. 
 
 This program uses the following functions from the GDX Library:
@@ -15,7 +15,7 @@ sensor.setEnabled(bool);
 <!doctype html>
 <html>
 <head>
-  <title>Go Direct Sensor Readout</title>
+  <title>Example 3: User Prompts and Collecting Data</title>
   <meta name="description" content="Simple example of connecting to a Vernier Go Direct® Sensor with WebBluetooth and logging out the default sensor value">
   <meta charset="utf-8">
   <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script>
@@ -37,11 +37,7 @@ sensor.setEnabled(bool);
         output.textContent += `\n Connected to `+gdxDevice.name;
         output.textContent += `\n Availiable sensors: (type the channel number into the alert box) `;
 
-        // enable all sensor to print info
-        let enabledSensors = gdxDevice.sensors.filter(s => s.enabled = true);
-       
-      
-        enabledSensors.forEach(sensor => {
+        gdxDevice.sensors.forEach(sensor => {
            output.textContent += `\n\n Sensor: ${sensor.name} units: ${sensor.unit} channel: ${sensor.number} `  ;
         
         }); 
@@ -57,7 +53,7 @@ sensor.setEnabled(bool);
       
        
           // prompt the user for a channel input choice
-          const  channel = prompt('choose a sensor');
+          const  channel = prompt('Choose a sensor');
          
          // set the desired sensor according to the channel selection
           output.textContent += `\n\n Selected sensors: `;

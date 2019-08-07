@@ -1,6 +1,6 @@
   <!--
   This example uses the GDX JavaScript library to collect all of the sensor information from a Vernier GoDirect Sensor. 
-  Press the 'Connect to Device' button to open communication to the device in a Chrome browser. 
+  Press the 'Select GoDirect Device' button to open communication to the device in a Chrome browser. 
   This example does not collect data from a sensor. 
   
   This program uses the following functions from the GDX Library:
@@ -14,8 +14,8 @@
 <!doctype html>
 <html>
 <head>
-  <title>Go Direct Sensor Readout</title>
-  <meta name="description" content="Simple example of connecting to a Vernier Go Direct® Sensor with WebBluetooth and logging out the default sensor value">
+  <title>Example 1: Showing Sensor Information</title>
+  <meta name="description" content="The gdx_getting_started_1.html example shows how you can use the gdx functions to list information on all of the sensor channels on a Go Direct device. This includes sensor channel number, sensor description, units, and 'incompatible sensors'">
   <meta charset="utf-8">
   <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script>
 </head>
@@ -42,14 +42,12 @@
         // set up timeout for battery level and battery state and print
         setTimeout(function(){ gdxDevice._getStatus().then ( (status) => {
             output.textContent += `\n\n Battery Level: `+status.battery +`%`; 
-            output.textContent += `\n Charging? (1 = yes, 0 = no): `+status.chargingStatus;
+            output.textContent += `\n Charging: `;
+            output.textContent += (status.chargingStatus === 1 ? `yes` : `no`);
          }); }, 3000);
-        
-        // enable ALL sensors not just default
-        const enabledSensors = gdxDevice.sensors.filter(s => s.enabled = true);
        
         // print each type of sensor and its units        
-        enabledSensors.forEach(sensor => {
+        gdxDevice.sensors.forEach(sensor => {
            output.textContent += `\n\n Sensor: ${sensor.name} \n units: ${sensor.unit}`;
         }); 
 

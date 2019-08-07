@@ -36,7 +36,8 @@ The [gdx_getting_started_4.html](./gdx_getting_started_4.html) example shows you
 - Disconnect
 
 ## Example 5: Export Sensor Data as CSV
-The [gdx_getting_started_5.py](./gdx_getting_started_5.html) example provides some ideas about what you can do with sensor data by using the the built-in csv Python module. It shows you how to:
+The [gdx_getting_started_5.html](./gdx_getting_started_5.html) example shows you how to store data in global array and download it as a csv file.
+ It shows you how to:
 - Connect to a Go Direct device over BLE
 - Set the active sensors and collection rate
 - Collect a few measurements from the enabled sensors
