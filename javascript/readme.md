@@ -10,6 +10,7 @@ For other ideas and more advanced examples, take a look in the [/advanced_exampl
 The [gdx_getting_started_1.html](./gdx_getting_started_1.html) example shows how you can use the gdx functions to list information on all of the sensor channels on a Go Direct device. This includes sensor channel number, sensor description, units, and "incompatible sensors".
 - Connect to a Go Direct device over BLE
 - Obtain and show sensor information
+- Disconnect
 
 ## Example 2: Using Defaults and Collecting Data
 The [gdx_getting_started_2.html](./gdx_getting_started_2.html) example uses a Bluetooth Low Energy (BLE) connection and demonstrates how you can use the gdx functions to:
@@ -35,7 +36,8 @@ The [gdx_getting_started_4.html](./gdx_getting_started_4.html) example shows you
 - Disconnect
 
 ## Example 5: Export Sensor Data as CSV
-The [gdx_getting_started_5.py](./gdx_getting_started_5.html) example provides some ideas about what you can do with sensor data by using the the built-in csv Python module. It shows you how to:
+The [gdx_getting_started_5.html](./gdx_getting_started_5.html) example shows you how to store data in global array and download it as a csv file.
+ It shows you how to:
 - Connect to a Go Direct device over BLE
 - Set the active sensors and collection rate
 - Collect a few measurements from the enabled sensors
