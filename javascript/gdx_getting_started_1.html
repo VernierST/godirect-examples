@@ -39,12 +39,9 @@
         output.textContent += `\n measurementPeriod: `+gdxDevice.measurementPeriod ;
       
        
-        // set up timeout for battery level and battery state and print
-        setTimeout(function(){ gdxDevice._getStatus().then ( (status) => {
-            output.textContent += `\n\n Battery Level: `+status.battery +`%`; 
-            output.textContent += `\n Charging: `;
-            output.textContent += (status.chargingStatus === 1 ? `yes` : `no`);
-         }); }, 3000);
+        // wait for battery level and battery state and print
+        output.textContent += `\n\n Battery Level: `+await gdxDevice.getBatteryLevel() +`%`; 
+        output.textContent += `\n Charging: ` +(await gdxDevice.getChargingState() === 1 ? `yes` : `no`);
        
         // print each type of sensor and its units        
         gdxDevice.sensors.forEach(sensor => {
