@@ -16,8 +16,13 @@ We used, and can recommend using, Glitch.com or Visual Studio Code. Glitch is an
 Visual Studio Code is more appropriate for coding more complex projects that may require version control or sophisticated debugging. VS Code provides syntax highlighting, bracket-matching, auto-indentation, and other tools to facilitate your coding experience.
 
 Both Glitch and Visual Studio Code are free. 
-- [Glitch](https://glitch.com/)
-- [Visual Studio Code] (https://code.visualstudio.com/Download)
+- [Glitch](https://glitch.com/) 
+- [Visual Studio Code](https://code.visualstudio.com/Download)
+
+## How do I import the library?
+ The easiest way to import a library is through a Content Delivery Network (CDN). This allows you to import libraries with a single line. To create programs with GoDirect compatibility put this in the heading of your html file:
+
+ ``` <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script> ```
 
 ## Where can I find examples of using the godirect-js library?
 - Official examples that use godirect-js can be found in the Vernier [godirect-examples repository](./).
