@@ -26,21 +26,25 @@ Both Glitch and Visual Studio Code are free.
 
  ## How can I use the GDX library?
  **Creating a Device**
+ 
  The device class creates an object to represent the sensor to be used in the code. This object has many properties that can be used to collect information about the sensor like the battery level, the name, the serial number, and the charging state. In addition to accessing these properties you can also modify the sensor settings through this class. Using the line of code below will assign the selected device to gdxDevice to be used later in the program. 
 
 ```const gdxDevice = await godirect.selectDevice()```
 
 **Changing the Sample Rate**
+
 To change the sample rate of the sensor, use:
 
 ```gdxDevice.start(sampleRate);```
 
 **Changing the Sensor Channel**
+
 Many Vernier sensors come with a variety of sensors all bundled into one. For example, the GDX-Force sensor can measure force, but it can also has a gyroscope and an accelerometer. The examples all use the default channel, but you can change the sensor channel to collect different types of data with the same sensor. This can be done with:
 
-```const sensor =  gdxDevice.getSensor(channelNumber);
- sensor.setEnabled(true);  
- ```
+ ```javascript
+ const sensor =  gdxDevice.getSensor(channelNumber);
+ sensor.setEnabled(true); 
+```
 
  The channel number is an integer corresponding to the available sensors on each device. Use the example program  [gdx_getting_started_1.html](./gdx_getting_started_1.html) to see available sensor channels for your sensor.
 
