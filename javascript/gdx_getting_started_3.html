@@ -39,7 +39,7 @@ Disconnect">
       try {
         gdxDevice = await godirect.selectDevice();
         output.textContent += `\n Connected to `+gdxDevice.name;
-        output.textContent += `\n Availiable sensors: (type the channel number into the alert box) `;
+        output.textContent += `\n Available sensors: (type the channel number into the alert box) `;
 
         gdxDevice.sensors.forEach(sensor => {
            output.textContent += `\n\n Sensor: ${sensor.name} units: ${sensor.unit} channel: ${sensor.number} `  ;
