@@ -1,8 +1,8 @@
-# Getting Started with JavaScript
+# Using JavaScript with Go Direct® Devices
 
 If you are new to JavaScript, you may want to visit our [Go Direct FAQ page](./godirect-js-faqs.md) for some tips and troubleshooting ideas.
 
-The examples in this folder will walk you through some of the basics of talking to a Go Direct device using JavaScript. 
+The examples in this folder will walk you through some of the basics of talking to a Go Direct® device using JavaScript.
 
 For other ideas and more advanced examples, take a look in the [/advanced_examples/](./advanced_examples) folder.
 
