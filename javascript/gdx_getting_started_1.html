@@ -45,7 +45,26 @@
        
         // print each type of sensor and its units        
         gdxDevice.sensors.forEach(sensor => {
-           output.textContent += `\n\n Sensor: ${sensor.name} \n units: ${sensor.unit}`;
+           output.textContent += `\n\n Sensor: ${sensor.name} \n Units: ${sensor.unit}`;
+
+           // Look through all the sensors to see if they exist in the mutual exclusion mask for the current sensor.
+           var incompatibleSensors = [];
+           gdxDevice.sensors.forEach(sensorToCompare => {
+             // Only look at the sensor if it isn't the current sensor
+             if (sensor.number !== sensorToCompare.number) {
+               // Shift the sensor to compare number before seeing if it is in the mask.
+               var sensorToCompareMask = (1 << sensorToCompare.number);
+               if (sensor.specs.mutalExclusionMask & sensorToCompareMask) {
+                  incompatibleSensors.push(sensorToCompare);
+               }
+             }
+           });
+           if (incompatibleSensors.length > 0) {
+            output.textContent += `\n Incompatiable Sensors: `;
+            incompatibleSensors.forEach(sensor => {
+              output.textContent += `\n\t\t`+ sensor.name;
+            });
+           }
         }); 
 
       
