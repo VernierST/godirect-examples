@@ -20,7 +20,7 @@ Both Glitch and Visual Studio Code are free.
 - [Visual Studio Code](https://code.visualstudio.com/Download)
 
 ## How do I import the GDX library?
- The easiest way to import a library is through a Content Delivery Network (CDN). This allows you to import libraries with a single line. To create programs with GoDirect compatibility put this in the header of your html file:
+ The easiest way to import a library is through a Content Delivery Network (CDN). This allows you to import libraries with a single line. To create programs with Go Direct compatibility put this in the header of your html file:
 
  ``` html
  <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script> 
