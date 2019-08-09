@@ -1,0 +1,71 @@
+  <!--
+  This example uses the GDX JavaScript library to collect all of the sensor information from a Vernier Go Direct® Sensor.
+  Press the 'Select Go Direct Device' button to open communication to the device in a Chrome browser. 
+  This example demonstrates how to specify sample rate and how to enable specific sensor channels. 
+  
+  This program uses the following functions from the GDX Library:
+   
+  gdxDevice.selectDevice();
+  gdxDevice.close();
+  gdxDevice.sensors.filter();
+  gdxDevice.start(sampleRate);
+  gdxDevice.getSensor(channelNumber);
+  -->  
+
+<!doctype html>
+<html>
+<head>
+  <title>Example 4: Setting Defaults and Passing Arguments</title>
+  <meta name="description" content="The gdx_getting_started_4.html example shows you how to avoid using prompts (and instead pass arguments) to select the active sensors and set the measurement period">
+  <meta charset="utf-8">
+  <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script>
+ 
+</head>
+
+<body>
+  <button id="select_device">Select Go Direct Device</button>
+  <pre id="output"></pre>
+ 
+  <script>
+ 
+    const selectDeviceBtn = document.querySelector('#select_device');
+    const output = document.querySelector('#output');
+   
+    const selectDevice = async () => {    
+      try {
+        const gdxDevice = await godirect.selectDevice();     
+       
+        output.textContent += `\n Connected to `+gdxDevice.name;
+        output.textContent += `\n Reading 10 measurements `;
+       
+         gdxDevice.on('device-closed', () => {
+          output.textContent += `\n\n Disconnected from `+gdxDevice.name+`\n`;
+          });
+
+          // set the sample rate to 1 second 
+          gdxDevice.start(1000);
+       
+          // enable sensor channel 1 
+          const sensor =  gdxDevice.getSensor(1);
+          sensor.setEnabled(true);
+       
+          // using the enabled sensor, collect 10 values
+          sensor.on('value-changed', (sensor) => {
+            // Only collect 10 samples and disconnect.
+            if (sensor.values.length > 10){
+              gdxDevice.close();
+            }
+            // log the sensor name, new value and units.
+            console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
+            // output the change to the pre tag
+            output.textContent += `\n Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`;
+          });
+   
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    selectDeviceBtn.addEventListener('click', selectDevice);
+  </script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!--
+This example uses the GDX JavaScript library to collect and manipulate data from a Vernier Go Direct® Sensor.
+Press the 'Select Go Direct Device' button to open communication to the device in a Chrome browser.
+Press the 'Change Sensor and Collect Data' to change the sensor channel and collect 10 data points. 
+
+This program uses the following functions from the GDX Library:
+
+gdxDevice.selectDevice();
+gdxDevice.close();
+gdxDevice.sensors.filter();
+gdxDevice.getSensor(int);
+gdxDevice.start();
+gdxDevice.stop();
+sensor.setEnabled(bool);
+-->
+
+<!doctype html>
+<html>
+<head>
+  <title>Example 3: User Prompts and Collecting Data</title>
+  <meta name="description" content="The gdx_getting_started_3.html example shows you how to use the library:
+Connect to a Go Direct device over BLE; Provide the user with a prompt to select the active sensors; Provide the user with a prompt to set the measurement period; Collect a few measurements from the enabled sensors; and
+Disconnect">
+  <meta charset="utf-8">
+  <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script>
+</head>
+
+<body>
+  <button id="select_device">Select Go Direct Device</button>
+  <button id ="start_collection" onclick = "chooseSensor()">Select Sensor and Collect Data</button>
+  <pre id="output"></pre> 
+  <script>
+  
+    const selectDeviceBtn = document.querySelector('#select_device');
+    const output = document.querySelector('#output');
+    let gdxDevice = "";
+   
+    const selectDevice = async () => {
+      try {
+        gdxDevice = await godirect.selectDevice();
+        output.textContent += `\n Connected to `+gdxDevice.name;
+        output.textContent += `\n Available sensors: (click on \"Select Sensor and Collect Data\" then type channel number into alert box) `;
+
+        gdxDevice.sensors.forEach(sensor => {
+           output.textContent += `\n\n Sensor: ${sensor.name} units: ${sensor.unit} channel: ${sensor.number} `  ;
+        
+        }); 
+        // stop the device
+        gdxDevice.stop();
+    
+      } catch (err) {
+        console.error(err);
+      }
+   
+    };
+    function chooseSensor() {
+      
+       
+          // prompt the user for a channel input choice
+          const  channel = prompt('Choose a sensor');
+         
+         // set the desired sensor according to the channel selection
+          output.textContent += `\n\n Selected sensors: `;
+          //start the device
+          gdxDevice.start();
+          
+          const sensor =  gdxDevice.getSensor(parseInt(channel));
+         
+          // enable the selected sensor channel      
+          sensor.setEnabled(true);
+
+          output.textContent += `\n Sensor: ${sensor.name} units: ${sensor.unit}`;
+         
+          gdxDevice.on('device-closed', () => {
+            output.textContent += `\n\n Disconnected from `+gdxDevice.name+`\n`;
+          });
+        
+          sensor.on('value-changed', (sensor) => {
+             if (sensor.values.length > 15){
+              gdxDevice.close();
+            }
+            
+            // collect values with the desired sensor channel and print to the output text box
+            console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
+            output.textContent += `\n Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`;
+           
+          });
+ 
+    };
+   
+   // start the selectDevice function after the button is clicked
+   selectDeviceBtn.addEventListener('click', selectDevice);
+ 
+  </script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!--
+  This example uses the GDX JavaScript library to collect and manipulate data from a Vernier Go Direct® Sensor.
+  Press the 'Select Go Direct Device' button to open communication to the device in a Chrome browser.
+  Press the 'Download CSV' to save a copy of the data as a csv file.
+  
+  This program uses the following functions from the GDX Library:
+   
+  gdxDevice.selectDevice();
+  gdxDevice.close();
+  gdxDevice.start();
+  gdxDevice.getSensor(int);
+  sensor.setEnabled(bool);
+-->    
+
+<!doctype html>
+<html>
+<head>
+  <title>Example 5: Export Sensor Data as CSV</title>
+  <meta name="description" content="The gdx_getting_started_5.html example provides some ideas about what you can do with sensor data by exporting csv.">
+  <meta charset="utf-8">
+  <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script>
+  
+</head>
+
+<body>
+  <button id="select_device">Select Go Direct Device</button>
+  <button onclick="download_csv()">Download CSV</button> 
+  
+  <pre id="output"></pre>
+ 
+  <script>
+  
+    const selectDeviceBtn = document.querySelector('#select_device');
+    const output = document.querySelector('#output');
+   
+    // create array to store data to be saved in the csv file
+    var data = [];
+
+    const selectDevice = async () => {     
+      try {
+        const gdxDevice = await godirect.selectDevice();     
+        
+        gdxDevice.start(1000);
+        
+        output.textContent += `\n Connected to `+gdxDevice.name;
+        output.textContent += `\n Reading 10 measurements `;
+       
+        
+      
+         gdxDevice.on('device-closed', () => {
+          output.textContent += `\n\n Disconnected from `+gdxDevice.name+`\n`;
+          });
+        
+        const sensor =  gdxDevice.getSensor(1);
+          sensor.setEnabled(true);
+       
+       
+          sensor.on('value-changed', (sensor) => {
+            // only collect 10 samples and disconnect.    
+            if (sensor.values.length > 10){
+              gdxDevice.close();
+            }
+            // log the sensor name, new value and units.
+            console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
+           // add data points to the data array
+            data.push(sensor.value);
+            // output the change to the pre tag
+            output.textContent += `\n Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`;
+          });
+    
+      } catch (err) {
+        console.error(err);
+      }
+    };
+// download csv function to be used when button is pressed
+function download_csv() {
+    var csv = 'Sensor Values: \n';
+
+    // add each row of the the sensor data array to the csv file
+    data.forEach( row => {
+            csv +=  " \n" + row;
+   
+    });
+    
+    // create and download new csv file
+    console.log(csv);
+    var hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'sensor.csv';
+    hiddenElement.click();
+}
+    selectDeviceBtn.addEventListener('click', selectDevice);
+  </script>
+</body>
+</html>
