@@ -20,17 +20,15 @@ Both Glitch and Visual Studio Code are free.
 - [Visual Studio Code](https://code.visualstudio.com/Download)
 
 ## How do I import the GDX library?
-To create programs with Go Direct compatibility put this in the header of your html file:
+ The easiest way to import a library is through a Content Delivery Network (CDN). This allows you to import libraries with a single line. To create programs with Go Direct compatibility put this in the header of your html file:
 
  ``` html
  <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script> 
  ```
- 
- Content Delivery Network (CDN) is the easiest way to import a library with a single line. 
 
- ## How can I use the GDX library?
- ### Creating a Device
- The device class creates an object to represent the sensor to be used in the code. This object has many properties that can be used to collect information about the sensor like the battery level, the name, the serial number, and the charging state. In addition to accessing these properties you can also modify the sensor settings through this class. Using the line of code below will assign the selected device to gdxDevice to be used later in the program. 
+## How can I use the GDX library?
+### Creating a Device
+The device class creates an object to represent the sensor to be used in the code. This object has many properties that can be used to collect information about the sensor like the battery level, the name, the serial number, and the charging state. In addition to accessing these properties you can also modify the sensor settings through this class. Using the line of code below will assign the selected device to gdxDevice to be used later in the program. 
 
 ```javascript
 const gdxDevice = await godirect.selectDevice()

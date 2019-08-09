@@ -27,7 +27,7 @@ Disconnect">
 
 <body>
   <button id="select_device">Select Go Direct Device</button>
-  <button id ="start_collection" onclick = "chooseSensor()">Change Sensor and Collect Data</button>
+  <button id ="start_collection" onclick = "chooseSensor()">Select Sensor and Collect Data"</button>
   <pre id="output"></pre> 
   <script>
   
@@ -39,7 +39,7 @@ Disconnect">
       try {
         gdxDevice = await godirect.selectDevice();
         output.textContent += `\n Connected to `+gdxDevice.name;
-        output.textContent += `\n Available sensors: (type the channel number into the alert box) `;
+        output.textContent += `\n Available sensors: (click on \"Select Sensor and Collect Data\" then type channel number into alert box) `;
 
         gdxDevice.sensors.forEach(sensor => {
            output.textContent += `\n\n Sensor: ${sensor.name} units: ${sensor.unit} channel: ${sensor.number} `  ;
