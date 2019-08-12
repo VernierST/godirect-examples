@@ -7,20 +7,20 @@ The examples in this folder will walk you through some of the basics of talking 
 For other ideas and more advanced examples, take a look in the [/advanced_examples/](./advanced_examples) folder.
 
 ## Example 1: Showing Sensor Information
-The [gdx_getting_started_1.html](./gdx_getting_started_1.html) example shows how you can use the gdx functions to list information on all of the sensor channels on a Go Direct device. This includes sensor channel number, sensor description, units, and "incompatible sensors".
+The [gdx_getting_started_1.html](https://vernierst.github.io/godirect-examples/javascript/gdx_getting_started_1.html) example shows how you can use the gdx functions to list information on all of the sensor channels on a Go Direct device. This includes sensor channel number, sensor description, units, and "incompatible sensors".
 - Connect to a Go Direct device over BLE
 - Obtain and show sensor information
 - Disconnect
 
 ## Example 2: Using Defaults and Collecting Data
-The [gdx_getting_started_2.html](./gdx_getting_started_2.html) example uses a Bluetooth Low Energy (BLE) connection and demonstrates how you can use the gdx functions to:
+The [gdx_getting_started_2.html](https://vernierst.github.io/godirect-examples/javascript//gdx_getting_started_2.html) example uses a Bluetooth Low Energy (BLE) connection and demonstrates how you can use the gdx functions to:
 - Connect to a Go Direct device over BLE
 - Use defaults to set the active sensors and collection rate
 - Collect a few measurements from the enabled sensors
 - Disconnect
 
 ## Example 3: User Prompts and Collecting Data
-The [gdx_getting_started_3.html](./gdx_getting_started_3.html) example shows you how to use the library:
+The [gdx_getting_started_3.html](https://vernierst.github.io/godirect-examples/javascript/gdx_getting_started_3.html) example shows you how to use the library:
 - Connect to a Go Direct device over BLE
 - Provide the user with a prompt to select the active sensors
 - Provide the user with a prompt to set the measurement period
@@ -28,7 +28,7 @@ The [gdx_getting_started_3.html](./gdx_getting_started_3.html) example shows you
 - Disconnect
 
 ## Example 4: Setting Defaults and Passing Arguments
-The [gdx_getting_started_4.html](./gdx_getting_started_4.html) example shows you how to avoid using prompts (and instead pass arguments) to select the active sensors and set the measurement period:
+The [gdx_getting_started_4.html](https://vernierst.github.io/godirect-examples/javascript/gdx_getting_started_4.html) example shows you how to avoid using prompts (and instead pass arguments) to select the active sensors and set the measurement period:
 - Connect to a Go Direct device over BLE
 - Set the active sensors in your program
 - Set the measurement period in your program
@@ -36,7 +36,7 @@ The [gdx_getting_started_4.html](./gdx_getting_started_4.html) example shows you
 - Disconnect
 
 ## Example 5: Export Sensor Data as CSV
-The [gdx_getting_started_5.html](./gdx_getting_started_5.html) example shows you how to store data in global array and download it as a csv file.
+The [gdx_getting_started_5.html](https://vernierst.github.io/godirect-examples/javascript/gdx_getting_started_5.html) example shows you how to store data in global array and download it as a csv file.
  It shows you how to:
 - Connect to a Go Direct device over BLE
 - Set the active sensors and collection rate
