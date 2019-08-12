@@ -1,0 +1,141 @@
+<!--
+   This example uses the GDX JavaScript library to collect and manipulate data from a Vernier GoDirect Sensor. 
+   It also contains the Desmos API for easy graphing and calculations. Press the 'Connect to Device' button to open communication
+   to the device in a Chrome browser. Use the Desmos window to view the data collected
+   and to preform simple calculations. This program collects 10 data points and disconnects from the device. 
+   It has simple css style elements to make the webpage more appealing.
+  
+   This program uses the following functions from the GDX Library:
+   
+   - gdxDevice.selectDevice();
+   - gdxDevice.close();
+   - gdxDevice.enableDefaultSensors();
+   - gdxDevice.sensors.filter();
+-->    
+
+<!doctype html>
+<html>
+<head>
+  <title>Go Direct Sensor Readout</title>
+  <meta name="description" content="Simple example of connecting to a Vernier Go Direct® Sensor with WebBluetooth and logging out the default sensor value">
+  <meta charset="utf-8">
+  <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://www.desmos.com/api/v1.3/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+  <!--add the Desmos and GoDirect Libraries-->
+  <!--add style elements (optional)-->
+<style>
+  body {
+    background-color: #A1E49E;
+  }
+   .button {
+  background-color: white;
+  border: none;
+  color: green;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  }
+  div.fixed {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  border: 3px solid #73AD21;
+}
+</style>
+  
+</head>
+
+<body>
+  
+  <!--format web page-->
+ <div align="left"> <button  class="button" id="select_device">Select Go Direct Device</button>
+  <pre  id="output"></pre> 
+ 
+</div>
+
+<!--create calculator and used fixed class to send it to upper right corner of web page-->
+<div  class = "fixed" id="calculator" style="width: 1000px; height: 600px;"></div> 
+
+
+  <script >
+    let elt = document.getElementById('calculator');
+    let calc = Desmos.GraphingCalculator(elt);
+    // x &y arrays to store values to graph
+    let xvalues = [];
+    let yvalues = [];
+    
+    // update table function to add values to the graph
+    function updateTable () { 
+      calc.setExpressions([
+       { id: 'table1',
+         type: 'table',
+         columns: [
+          {latex: 'x_1', values: xvalues},
+          {latex: 'y_1', values: yvalues} ] }, 
+          
+          // linear regression equation to find line of best fit, can be changed depending on data
+          { id: 'regression', latex: 'y_1~mx_1+b'} 
+         
+      ]);                                      
+    }
+    
+    updateTable();
+
+    const selectDeviceBtn = document.querySelector('#select_device');
+    const output = document.querySelector('#output'); 
+    var count = 0;
+    const selectDevice = async () => {
+      try {
+        const gdxDevice = await godirect.selectDevice();
+       
+        output.textContent += `\n Connected to `+gdxDevice.name;
+        output.textContent += `\n Reading 10 measurements \n`;
+        output.textContent += `\n If you can't see your sensor values on the graph right away, \n Zoom out of the graph in the Desmos Window \n`;
+       
+        gdxDevice.on('device-closed', () => {
+          output.textContent += `\n\n Disconnected from `+gdxDevice.name+`\n`;
+        });
+       
+        gdxDevice.enableDefaultSensors();
+      
+        const enabledSensors = gdxDevice.sensors.filter(s => s.enabled);
+        enabledSensors.forEach(sensor => {
+          sensor.on('value-changed', (sensor) => {
+            // Only collect 10 samples and disconnect.
+            if (sensor.values.length > 10){
+              gdxDevice.close();
+            }
+            // log the sensor name, new value and units.
+            console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
+            // output the change to the pre tag
+          output.textContent += `\n Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`;
+          
+            let y = sensor.value;
+            let x = count++;
+           // add the x & y values to the x & y arrays
+            xvalues.push(x.toPrecision(4));
+            yvalues.push(y.toPrecision(4));
+           
+            // update the graph with the current values
+            updateTable();
+            
+                
+          });
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    
+    // start the selectDevice function after the button is clicked
+    selectDeviceBtn.addEventListener('click', selectDevice);
+    
+  </script>
+</body>
+</html>
