@@ -1,0 +1,199 @@
+<!--
+   This example uses the GDX JavaScript library to collect and manipulate data from 2 Vernier Go Direct Sensors. 
+   It also contains the chart.js library for graphing. Press the 'Connect to Device' button to open communication
+   to the device in a Chrome browser. This program collects 10 data points from each sensor, graphs them, and disconnects from each device. 
+  
+   This program uses the following functions from the GDX Library:
+   
+   - gdxDevice.selectDevice();
+   - gdxDevice.close();
+   - gdxDevice.enableDefaultSensors();
+   - gdxDevice.sensors.filter();
+-->
+<!doctype html>
+<html>
+
+<head>
+	<title>Line Chart</title>
+	<title>Go Direct Sensor Readout</title>
+  <meta name="description" content="Simple expample of connecting to a Vernier Go Direct® Sensor with WebBluetooth and logging out the default sensor value">
+  <meta charset="utf-8">
+  <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script>
+  <script src= "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+
+	<style>
+	canvas{
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
+	</style>
+</head>
+
+<body>
+  <button id="select_device">Select Go Direct Device</button>
+  <pre id="output"></pre>
+
+	<div style="width:75%;">
+		<canvas id="canvas"></canvas>
+	</div>
+	<br>
+	<br>
+
+    <script> 
+    
+  // chart.js line colors 
+  window.chartColors = {
+	red: 'rgb(255, 99, 132)',
+	orange: 'rgb(255, 159, 64)'
+};
+    
+    const selectDeviceBtn = document.querySelector('#select_device');
+    const output = document.querySelector('#output');
+		
+    const sensorUnit = "";
+    const device1 = [];
+    const device2 = [];
+      
+    const selectDevice = async () => {
+      try {
+        // connect to the gdx device  
+        gdxDevice = await godirect.selectDevice();
+        gdxDevice2 = await godirect.selectDevice();
+        output.textContent += `\n Connected to `+gdxDevice.name;
+        output.textContent += `\n Connected to `+gdxDevice2.name;
+        output.textContent += `\n Reading 10 measurements \n`;
+        
+        // print message that first device has closed when it's closed
+        gdxDevice.on('device-closed', () => {
+           output.textContent += `\n\n Disconnected from `+gdxDevice.name+`\n`;
+        });
+        
+        // print message that second device has closed when it's closed
+        gdxDevice2.on('device-closed', () => {
+           output.textContent += `\n\n Disconnected from `+gdxDevice2.name+`\n`;
+        });
+    
+       // enable the default sensors for both devices 
+       gdxDevice.enableDefaultSensors();
+       gdxDevice2.enableDefaultSensors();
+        
+        // set the enabledSensors to the sensors used 
+        const enabledSensors = gdxDevice.sensors.filter(s => s.enabled);
+        const enabledSensors2 = gdxDevice2.sensors.filter(s => s.enabled);
+       
+        // add line to chart for each device 
+        const device1Line =   addLine(gdxDevice);
+        const device2Line = addLine(gdxDevice2);
+    
+        // for each enabled sensor on the first device, collect 10 data points
+        enabledSensors.forEach(sensor => {
+          sensor.on('value-changed', (sensor) => {
+            // Only collect 10 samples and disconnect, the 20 accounts for 10 data points of the second device
+            if (sensor.values.length > 20){
+              gdxDevice.close();
+            }
+            // log the sensor name, new value and units.
+            console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
+            // add data from sensor to line 
+            device1Line.data.push(sensor.value);
+            //update line on chart with newest sensor value
+            window.myLine.update();
+            output.textContent += `\n Sensor: ${gdxDevice.name} value: ${sensor.value} units: ${sensor.unit}`;
+          });
+        });
+        
+        // for each enabled sensor on the second device, collect 10 data points, same as first device 
+        enabledSensors2.forEach(sensor => {
+          sensor.on('value-changed', (sensor) => {
+            // Only collect 10 samples and disconnect.
+            if (sensor.values.length > 10){
+              gdxDevice2.close();
+            }
+            device2Line.data.push(sensor.value);
+             window.myLine.update();
+           
+            // log the sensor name, new value and units.
+            console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
+            output.textContent += `\n Sensor: ${gdxDevice2.name} value: ${sensor.value} units: ${sensor.unit}`;
+          });
+        });
+      
+      } catch (err) {
+        console.error(err);
+      }
+    };
+       
+      // configuration for the chart, change all initial chart settings here
+      var config = {
+			type: 'line',
+			data: {
+				labels: [0,1,2,3,4,5,6,7,8,9,10],
+				datasets: [],
+      },
+        options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Chart.js Line Chart'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Time'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Value'
+						}
+					}]
+				}
+			} 
+    };		
+    
+    window.onload = function() {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			window.myLine = new Chart(ctx, config);
+		}; 
+		
+		var colorNames = Object.keys(window.chartColors);
+	
+      selectDeviceBtn.addEventListener('click', selectDevice);
+    
+    // add line function to add new dataset for each device connected
+    function addLine(device){
+      
+      var colorName = colorNames[config.data.datasets.length % colorNames.length];
+			var newColor = window.chartColors[colorName];
+			
+            // config of the new dataset
+            var newDataset = {
+				label: device.name,
+				backgroundColor: newColor,
+				borderColor: newColor,
+				data: [],
+				fill: false
+			};
+			config.data.datasets.push(newDataset);
+			window.myLine.update();
+      // return the dataset to be used later
+      return newDataset;
+    }
+   
+	</script>
+</body>
+
+</html>
