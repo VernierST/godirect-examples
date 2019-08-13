@@ -1,6 +1,6 @@
 <!--
    This example uses the GDX JavaScript library to collect and manipulate data from a Vernier Go Direct Sensor. 
-   It also contains the Desmos API for easy graphing and calculations. Press the 'Connect to Device' button to open communication
+   It also contains the Desmos API for easy graphing and calculations. Press the 'Select Go Direct Device' button to open communication
    to the device in a Chrome browser. Use the Desmos window to view the data collected
    and to preform simple calculations. This program collects 10 data points and disconnects from the device. 
    It has simple css style elements to make the webpage more appealing.
@@ -114,11 +114,11 @@
             // log the sensor name, new value and units.
             console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
             // output the change to the pre tag
-          output.textContent += `\n Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`;
+            output.textContent += `\n Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`;
           
             let y = sensor.value;
             let x = count++;
-           // add the x & y values to the x & y arrays
+            // add the x & y values to the x & y arrays
             xvalues.push(x.toPrecision(4));
             yvalues.push(y.toPrecision(4));
            

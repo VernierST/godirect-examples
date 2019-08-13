@@ -1,6 +1,6 @@
 <!--
    This example uses the GDX JavaScript library to collect and manipulate data from a Vernier Go Direct Sensor. 
-   It also contains the chart.js library for graphing. Press the 'Connect to Device' button to open communication
+   It also contains the chart.js library for graphing. Press the 'Select Go Direct Device' button to open communication
    to the device in a Chrome browser. This program collects 10 data points, graphs them, and disconnects from the device. 
   
    This program uses the following functions from the GDX Library:
@@ -96,7 +96,7 @@
     };
        
  	  // chart setup
-      let config = {
+    let config = {
 		  // type of chart, could be 'line' or 'bar' 			
 			type: 'line', 		
 			data: {
@@ -149,28 +149,28 @@
 			window.myLine = new Chart(ctx, config);
 		}; 
 		
-		let colorNames = Object.keys(window.chartColors);
+	let colorNames = Object.keys(window.chartColors);
 	
 	    
-			config.data.datasets.forEach(function(dataset) {
-				// send the data to the dataset to be added to the line
-				dataset.data.pop();   
-			});
+	config.data.datasets.forEach(function(dataset) {
+		// send the data to the dataset to be added to the line
+		dataset.data.pop();   
+	});
       
-	  // start the selectDevice function when the button is pressed
-      selectDeviceBtn.addEventListener('click', selectDevice); 		
+    // start the selectDevice function when the button is pressed
+    selectDeviceBtn.addEventListener('click', selectDevice); 		
   
   // addData function to add data to the chart
   function addData(chart, unit) { 
-	// label the chart with the units from the sensor
-    chart.data.label = unit; 			
-	// for each data point in the data set, add the sensorReading value
-    chart.data.datasets.forEach((dataset) => { 		
+	 // label the chart with the units from the sensor
+     chart.data.label = unit; 			
+	 // for each data point in the data set, add the sensorReading value
+     chart.data.datasets.forEach((dataset) => { 		
         dataset.data.push(sensorReadings.pop());
-    });
+     });
 	 
-   // update the chart line
-   window.myLine.update(); 		
+    // update the chart line
+    window.myLine.update(); 		
   }
 	</script>
 </body>
