@@ -4,7 +4,7 @@ If you are new to JavaScript, you may want to visit our [Go Direct FAQ page](./g
 
 The examples in this folder will walk you through some advanced examples of connecting to a Go Direct device using JavaScript. 
 
-For more basic examples, take a look in the [/advanced_examples/](./advanced_examples) folder.
+For more basic examples, take a look in the [javascript](./javascript) folder.
 
 ## Example 1: Making a Chart
 The [gdx_making_a_chart.html](./gdx_making_a_chart.html) example shows how you can use the gdx functions to create a chart of sensor data using the chart.js library and:
