@@ -174,11 +174,11 @@
     // add line function to add new dataset for each device connected
     function addLine(device){
       
-      var colorName = colorNames[config.data.datasets.length % colorNames.length];
-			var newColor = window.chartColors[colorName];
+    var colorName = colorNames[config.data.datasets.length % colorNames.length];
+    var newColor = window.chartColors[colorName];
 			
-            // config of the new dataset
-      var newDataset = {
+    // config of the new dataset
+    var newDataset = {
 				label: device.name,
 				backgroundColor: newColor,
 				borderColor: newColor,
@@ -189,7 +189,7 @@
 			window.myLine.update();
       // return the dataset to be used later
       return newDataset;
-    }
+     }
    
 	</script>
 </body>
