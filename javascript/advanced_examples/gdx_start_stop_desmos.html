@@ -1,0 +1,153 @@
+<!--
+  This example uses the GDX JavaScript library to collect and manipulate data from a Vernier GoDirect Sensor. 
+  It also contains the Desmos API for easy graphing and calculations. Press the 'Select Go Direct Device' button to open communication
+   to the device in a Chrome browser. Use the start/stop buttons to control the flow of data. Use the Desmos window to view the data collected
+   and to preform simple calculations. 
+  
+   This program uses the following functions from the GDX Library:
+   
+   - gdxDevice.selectDevice();
+   - gdxDevice.start(samplePeriod);
+   -  gdxDevice.stop();
+   - gdxDevice.close();
+-->    
+<!doctype html>
+<html>
+<head>
+  <title>Desmos Calculations with Go Direct Sensors and Start/Stop Buttons</title>
+  <meta name="description" content="Connect to a Vernier Go Direct® Sensor with WebBluetooth, graph the data in a Desmos window and preform simple calculations. ">
+  <meta charset="utf-8">
+  
+  <!--include the Desmos and the GoDirect libraries-->
+  <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://www.desmos.com/api/v1.3/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+  
+<!--style the webpage with css (optional)-->
+<style>
+   .button {
+  background-color: green;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  }
+  div.fixed {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  border: 3px solid #73AD21;
+}
+</style>
+  
+</head>
+
+<body>  
+ <!--format the webpage -->
+ <div align="left"> 
+   
+   <!--run the selectDevice function when the 'Select Go Direct Device' button is pressed-->
+   <button  class="button" id="select_device" onclick="selectDevice()">Select Go Direct Device</button>
+  
+   <!--run the startCollection function when the 'start collection' button is pressed-->
+   <button  class="button" id="start_collection" onclick="startCollection()" >Start Collection</button>
+    
+   <!--run the stopCollection function when the 'stop collection' button is pressed-->
+   <button  class="button" id="stop_collection" onclick="stopCollection()" >Stop Collection</button>
+     
+  <pre  id="output"></pre> 
+
+</div>
+
+<!--create the calculator on the webpage-->
+<div  class = "fixed" id="calculator" style="width: 950px; height: 600px;"></div> 
+
+  <script > 
+    // setup the calculator     
+    let elt = document.getElementById('calculator');
+    let calc = Desmos.GraphingCalculator(elt);
+    
+    // store the x & y values to be graphed 
+    let xvalues = [''];
+    let yvalues = [''];
+    
+    function updateTable () {     
+      calc.setExpressions([
+       { id: 'table1',
+         type: 'table',
+         columns: [
+          {latex: 'x_1', values: xvalues},
+          {latex: 'y_1', values: yvalues} ] },
+          { id: 'regression', latex: 'y_1~mx_1+b'}
+      ]);                                      
+    }
+    
+    updateTable();
+   
+    const selectDeviceBtn = document.querySelector('#select_device');
+    const output = document.querySelector('#output'); 
+    let count = 0;
+    // create global object gdxDevice to be used in other 
+    let gdxDevice = "";  
+    
+    const selectDevice = async () => {
+      try {
+        // connect to the device
+        gdxDevice = await godirect.selectDevice(); 
+       
+        output.textContent += `\n Connected to `+gdxDevice.name;
+        output.textContent += `\n Press start to start collection \n`;
+        output.textContent += `\n If you can't see your sensor values on the graph right away, \n Zoom out of the graph in the Desmos Window \n`;
+      } catch (err) {
+        console.error(err);
+      }
+    };
+     // start collection function 
+     const startCollection = async () => {  
+       
+        const enabledSensors = gdxDevice.sensors.filter(s => s.enabled);
+            enabledSensors.forEach(sensor => {
+            sensor.on('value-changed', (sensor) => {
+         
+            // log the sensor name, new value and units.
+            console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
+            // output the change to the pre tag
+            output.textContent += `\n Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`;
+            // add a sensor value every 0.5 on the x, change according to sampleRate, 0.5 = 500 ms period 
+            ount += 0.5;     
+          
+            let y = sensor.value;   
+            let x = count;
+            // add the x & y values to their respective arrays, round the number 4 places
+            xvalues.push(x.toPrecision(4));
+            yvalues.push(y.toPrecision(4));
+           
+            // update the table with the new sensor values
+            updateTable(); 
+           
+                
+          });
+        });
+       
+     } 
+     // stop collection function
+     const stopCollection = async () => { 
+         // disconnect from the device
+         gdxDevice.close();
+          
+         // print that the device is disconnected
+         gdxDevice.on('device-closed', () => {
+         output.textContent += `\n\n Disconnected from `+gdxDevice.name+`\n`;
+        });
+       
+         
+       }
+  </script>
+</body>
+</html>
