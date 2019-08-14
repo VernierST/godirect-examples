@@ -6,18 +6,18 @@ The examples in this folder will walk you through some advanced examples of conn
 
 For more basic examples, take a look in the [javascript](../) folder.
 
-## Example 1: Using a Digital Photogate
-The [gdx_digital_photogate.html](./gdx_digital_photogate.html) example shows how use GDX functions to detect when Gate 1 is blocked on a digital photogate by:
-- Connect to a Go Direct Photogate over BLE
-- Detect when Gate 1 is blocked
-- Display a secret message with the p5.js library 
-- Disconnect
-
-## Example 2: Making a Chart
+## Example 1: Making a Chart
 The [gdx_making_a_chart.html](./gdx_making_a_chart.html) example shows how you can use the gdx functions to create a chart of sensor data using the chart.js library and:
 - Connect to a Go Direct device over BLE
 - Collect 10 data points
 - Graph 10 data points 
+- Disconnect
+
+## Example 2: Using a Photogate
+The [gdx_digital_photogate.html](./gdx_digital_photogate.html) example shows how use GDX functions to detect when Gate 1 is blocked on a photogate by:
+- Connect to a Go Direct Photogate over BLE
+- Detect when Gate 1 is blocked
+- Display a secret message with the p5.js library 
 - Disconnect
 
 ## Example 3: Start and Stop Data Collection
