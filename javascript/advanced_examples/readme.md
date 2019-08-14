@@ -14,7 +14,7 @@ The [gdx_making_a_chart.html](./gdx_making_a_chart.html) example shows how you c
 - Disconnect
 
 ## Example 2: Using a Photogate
-The [gdx_digital_photogate.html](./gdx_digital_photogate.html) example shows how use GDX functions to detect when Gate 1 is blocked on a photogate by:
+The [gdx_photogate.html](./gdx_photogate.html) example shows how use GDX functions to detect when Gate 1 is blocked on a photogate by:
 - Connect to a Go Direct Photogate over BLE
 - Detect when Gate 1 is blocked
 - Display a secret message with the p5.js library 
