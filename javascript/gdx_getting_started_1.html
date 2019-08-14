@@ -48,6 +48,13 @@
            output.textContent += `\n\n Sensor: ${sensor.name} \n units: ${sensor.unit}`;
         }); 
 
+        gdxDevice.close();
+     
+        // when the device is closed, display disconnection message 
+        gdxDevice.on('device-closed', () => {
+          output.textContent += `\n\n Disconnected from `+gdxDevice.name+`\n`;
+        });
+
       
       } catch (err) {
         console.error(err);
