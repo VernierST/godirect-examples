@@ -19,11 +19,11 @@
   <meta charset="utf-8">
   <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.js"></script>
-
 </head>
 
 <body>
   <button id="select_device">Select GDX Photogate</button>
+  <button onlcick = "disconnectDevice()">Disconnect</button>
   <pre id="output"></pre>
 
   <script>
@@ -70,6 +70,20 @@
         console.error(err);
       }
     };
+   
+    // disconnect from device button
+    const disconnectDevice = async () => {
+    
+    // close the device
+    gdxDevice.close();
+     
+    // when the device is closed, display disconnection message 
+    gdxDevice.on('device-closed', () => {
+      output.textContent += `\n\n Disconnected from `+gdxDevice.name+`\n`;
+    });   
+    
+    };
+
     // start the selectDevice function after the button is clicked
     selectDeviceBtn.addEventListener('click', selectDevice);
   </script>
