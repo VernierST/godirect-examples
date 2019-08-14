@@ -1,10 +1,10 @@
-# Getting Started with JavaScript
+# Advanced JavaScript Examples
 
-If you are new to JavaScript, you may want to visit our [Go Direct FAQ page](./godirect-js-faqs.md) for some tips and troubleshooting ideas.
+If you are new to JavaScript, you may want to visit our [Go Direct FAQ page](../godirect-js-faqs.md/) for some tips and troubleshooting ideas.
 
 The examples in this folder will walk you through some advanced examples of connecting to a Go Direct device using JavaScript. 
 
-For more basic examples, take a look in the [javascript](./javascript) folder.
+For more basic examples, take a look in the [javascript](../) folder.
 
 ## Example 1: Making a Chart
 The [gdx_making_a_chart.html](./gdx_making_a_chart.html) example shows how you can use the gdx functions to create a chart of sensor data using the chart.js library and:
@@ -13,7 +13,14 @@ The [gdx_making_a_chart.html](./gdx_making_a_chart.html) example shows how you c
 - Graph 10 data points 
 - Disconnect
 
-## Example 2: Start and Stopping Data Collection
+## Example 2: Using a Photogate
+The [gdx_photogate.html](./gdx_photogate.html) example shows how use GDX functions to detect when Gate 1 is blocked on a photogate by:
+- Connect to a Go Direct Photogate over BLE
+- Detect when Gate 1 is blocked
+- Display a secret message with the p5.js library 
+- Disconnect
+
+## Example 3: Start and Stop Data Collection
 The [gdx_start_stop_desmos.html](./gdx_start_stop_desmos.html) example uses a Bluetooth Low Energy (BLE) connection and demonstrates how you can use the gdx functions to:
 - Connect to a Go Direct device over BLE
 - Start Collection with a button
@@ -21,7 +28,7 @@ The [gdx_start_stop_desmos.html](./gdx_start_stop_desmos.html) example uses a Bl
 - Find the line of best fit for the data
 - Stop Collection and Disconnect
 
-## Example 3: User Prompts and Collecting Data
+## Example 4: User Prompts and Collecting Data
 The [gdx_using_desmos.html](./gdx_using_desmos.html) example shows you how to use the library:
 - Connect to a Go Direct device over BLE
 - Collect 10 data points
@@ -29,7 +36,7 @@ The [gdx_using_desmos.html](./gdx_using_desmos.html) example shows you how to us
 - Find the line of best fit for the data
 - Disconnect
 
-## Example 4: Connecting to Two Devices
+## Example 5: Connecting to Two Devices
 The [gdx_using_two_devices.html](./gdx_using_two_devices.html) example shows you how to connect to two Go Direct Devices using the GDX and Chart.js library:
 - Connect to a Go Direct device over BLE
 - Connect to a second Go Direct Device
