@@ -23,18 +23,40 @@
 </head>
 
 <body>
+  <h1>Vernier Go Direct<sup>&reg</sup> JavaScript</h1>
+  <h2>Example 5: Export Sensor Data as CSV</h2>
+  <p>
+    This example shows how you can use the godirect-js module to communicate with a <a href="https://www.vernier.com/products/sensors/go-direct-sensors/">Vernier Go Direct Sensor</a>. This includes:
+    <ul>
+      <li>Select a Go Direct Device</li>
+      <li>Use defaults to set the active sensors and collection rate </li>
+      <li>Collect 10 measurements from the enabled sensors</li>
+      <li>Disconnect</li>
+    </ul>
+  </p>
   <button id="select_device">Select Go Direct Device</button>
-  <button onclick="download_csv()">Download CSV</button> 
-  
+  <div id="error"></div>
   <pre id="output"></pre>
- 
+  <button id="csv" onclick="download_csv()">Download CSV</button>
+
   <script>
-  
     const selectDeviceBtn = document.querySelector('#select_device');
+    const csvBtn = document.querySelector('#csv');
     const output = document.querySelector('#output');
+    const error = document.querySelector('#error');
+
+    csvBtn.style.visibility='hidden';
+
+    if (!navigator.bluetooth) {
+      error.innerHTML = `<p><b>Web Bluetooth API is needed for this example.</b></p>`;
+      error.innerHTML += `<p>This browser does not have support yet. <a href="https://webbluetoothcg.github.io/web-bluetooth/">More information</a></p>`;
+      selectDeviceBtn.style.visibility='hidden';
+    }
+
    
     // create array to store data to be saved in the csv file
-    var data = [];
+    let data = [];
+    let sensor = null;
 
     const selectDevice = async () => {     
       try {
@@ -44,52 +66,56 @@
         
         output.textContent += `\n Connected to `+gdxDevice.name;
         output.textContent += `\n Reading 10 measurements `;
-       
-        
       
-         gdxDevice.on('device-closed', () => {
+        gdxDevice.on('device-closed', () => {
           output.textContent += `\n\n Disconnected from `+gdxDevice.name+`\n`;
-          });
+          csvBtn.style.visibility='visible';
+
+        });
         
-        const sensor =  gdxDevice.getSensor(1);
-          sensor.setEnabled(true);
-       
-       
-          sensor.on('value-changed', (sensor) => {
-            // only collect 10 samples and disconnect.    
-            if (sensor.values.length > 10){
-              gdxDevice.close();
-            }
-            // log the sensor name, new value and units.
-            console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
-           // add data points to the data array
-            data.push(sensor.value);
-            // output the change to the pre tag
-            output.textContent += `\n Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`;
-          });
+        sensor = gdxDevice.getSensor(1);
+        sensor.setEnabled(true);
+
+        sensor.on('value-changed', (sensor) => {
+          // only collect 10 samples and disconnect.
+          if (sensor.values.length > 10){
+            gdxDevice.close();
+          }
+          // log the sensor name, new value and units.
+          console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
+         // add data points to the data array
+          data.push(sensor.value);
+          // output the change to the pre tag
+          output.textContent += `\n Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`;
+        });
     
       } catch (err) {
         console.error(err);
+        error.innerText += "\n "+err;
+        if (err.toString().includes('cross-origin')) {
+          error.innerHTML+= '\n<p><b>Are you running in an embedded iframe? Try running this example in its own window.</b></p>'
+        }
       }
     };
-// download csv function to be used when button is pressed
-function download_csv() {
-    var csv = 'Sensor Values: \n';
 
-    // add each row of the the sensor data array to the csv file
-    data.forEach( row => {
-            csv +=  " \n" + row;
-   
-    });
-    
-    // create and download new csv file
-    console.log(csv);
-    var hiddenElement = document.createElement('a');
-    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
-    hiddenElement.target = '_blank';
-    hiddenElement.download = 'sensor.csv';
-    hiddenElement.click();
-}
+    // download csv function to be used when button is pressed
+    function download_csv() {
+      let csv = sensor.name;
+
+      // add each row of the the sensor data array to the csv file
+      data.forEach( row => {
+        csv +=  " \n" + row;
+      });
+
+      // create and download new csv file
+      console.log(csv);
+      let hiddenElement = document.createElement('a');
+      hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+      hiddenElement.target = '_blank';
+      hiddenElement.download = 'sensor.csv';
+      hiddenElement.click();
+    }
+
     selectDeviceBtn.addEventListener('click', selectDevice);
   </script>
 </body>
