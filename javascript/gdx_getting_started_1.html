@@ -42,12 +42,12 @@
     </ul>
   </p>
   <button id="select_device">Select a Go Direct Device</button>
-  <div id="error" color="red"></div>
+  <div id="error"></div>
   <pre id="output"></pre>
   <script>
+    const selectDeviceBtn = document.querySelector('#select_device');
     const output = document.querySelector('#output');
     const error = document.querySelector('#error');
-    const selectDeviceBtn = document.querySelector('#select_device');
     if (!navigator.bluetooth) {
       error.innerHTML = `<p><b>Web Bluetooth API is needed for this example.</b></p>`;
       error.innerHTML += `<p>This browser does not have support yet. <a href="https://webbluetoothcg.github.io/web-bluetooth/">More information</a></p>`;
