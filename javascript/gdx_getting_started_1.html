@@ -1,3 +1,4 @@
+      
   <!--
   This example uses the GDX JavaScript library to collect all of the sensor information from a Vernier Go Go Direct® Sensor.
   Press the 'Select Go Direct Device' button to open communication to the device in a Chrome browser. 
@@ -15,38 +16,61 @@
 <html>
 <head>
   <title>Example 1: Showing Sensor Information</title>
-  <meta name="description" content="The gdx_getting_started_1.html example shows how you can use the gdx functions to list information on all of the sensor channels on a Go Direct device. This includes sensor channel number, sensor description, units, and 'incompatible sensors'">
+  <meta name="description" content="Vernier Go Direct JavaScript Example">
   <meta charset="utf-8">
   <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script>
 </head>
 
 <body>
-  <button id="select_device">Select Go Direct Device</button>
+  <h1>Vernier Go Direct<sup>&reg</sup> JavaScript</h1>
+  <h2>Example 1: Showing Sensor Information</h2>
+  <p>
+    This example shows how you can use the godirect-js module to list information on a <a href="https://www.vernier.com/products/sensors/go-direct-sensors/">Vernier Go Direct Sensor</a>. This includes:
+    <ul>
+      <li>Name</li>
+      <li>Serial Number</li>
+      <li>Order Code</li>
+      <li>Typical Measurement Period</li>
+      <li>Battery Level</li>
+      <li>Charging State</li>
+      <li>Sensors:</li>
+      <ul>
+        <li>Name</li>
+        <li>Units</li>
+        <li>Incompatible Sensors</li>
+      </ul>
+    </ul>
+  </p>
+  <button id="select_device">Select a Go Direct Device</button>
+  <div id="error" color="red"></div>
   <pre id="output"></pre>
-
   <script>
-
-    const selectDeviceBtn = document.querySelector('#select_device');
     const output = document.querySelector('#output');
+    const error = document.querySelector('#error');
+    const selectDeviceBtn = document.querySelector('#select_device');
+    if (!navigator.bluetooth) {
+      error.innerHTML = `<p><b>Web Bluetooth API is needed for this example.</b></p>`;
+      error.innerHTML += `<p>This browser does not have support yet. <a href="https://webbluetoothcg.github.io/web-bluetooth/">More information</a></p>`;
+      selectDeviceBtn.style.visibility='hidden';
+    }
     const selectDevice = async () => {
+      error.textContent = "";
       try {
         const gdxDevice = await godirect.selectDevice();
-
         // print name, serial number, order code and measurement period
-        output.textContent += `\n Connected to `+gdxDevice.name;
+        output.textContent = `\n Connected to `+gdxDevice.name;
         output.textContent += `\n Serial Number: `+gdxDevice.serialNumber;
         output.textContent += `\n Order Code: `+gdxDevice.orderCode;
-        output.textContent += `\n measurementPeriod: `+gdxDevice.measurementPeriod ;
+        output.textContent += `\n Typical Measurement Period: `+gdxDevice.measurementPeriod + ` ms/sample`;
       
        
         // wait for battery level and battery state and print
-        output.textContent += `\n\n Battery Level: `+await gdxDevice.getBatteryLevel() +`%`; 
+        output.textContent += `\n Battery Level: `+await gdxDevice.getBatteryLevel() +`%`;
         output.textContent += `\n Charging: ` +(await gdxDevice.getChargingState() === 1 ? `yes` : `no`);
        
         // print each type of sensor and its units        
         gdxDevice.sensors.forEach(sensor => {
            output.textContent += `\n\n Sensor: ${sensor.name} \n Units: ${sensor.unit}`;
-
            // Look through all the sensors to see if they exist in the mutual exclusion mask for the current sensor.
            var incompatibleSensors = [];
            gdxDevice.sensors.forEach(sensorToCompare => {
@@ -66,18 +90,19 @@
             });
            }
         }); 
-
         gdxDevice.close();
      
         // when the device is closed, display disconnection message 
         gdxDevice.on('device-closed', () => {
           output.textContent += `\n\n Disconnected from `+gdxDevice.name+`\n`;
         });
-
       
       } catch (err) {
         console.error(err);
-          output.textContent += err;
+        error.innerText += "\n "+err;
+        if (err.toString().includes('cross-origin')) {
+          error.innerHTML+= '\n<p><b>Are you running in an embedded iframe? Try running this example in its own window.</b></p>'
+        }
       }
    
     };
