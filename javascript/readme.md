@@ -23,8 +23,7 @@ The [gdx_getting_started_2.html](https://vernierst.github.io/godirect-examples/j
 The [gdx_getting_started_3.html](https://vernierst.github.io/godirect-examples/javascript/gdx_getting_started_3.html) example shows you how to use the library:
 - Connect to a Go Direct device over BLE
 - Provide the user with a prompt to select the active sensors
-- Provide the user with a prompt to set the measurement period
-- Collect a few measurements from the enabled sensors
+- Collect 15 measurements from the enabled sensors
 - Disconnect
 
 ## Example 4: Setting Defaults and Passing Arguments
@@ -32,15 +31,15 @@ The [gdx_getting_started_4.html](https://vernierst.github.io/godirect-examples/j
 - Connect to a Go Direct device over BLE
 - Set the active sensors in your program
 - Set the measurement period in your program
-- Collect a few measurements from the enabled sensors
+- Collect 10 measurements from the enabled sensors
 - Disconnect
 
 ## Example 5: Export Sensor Data as CSV
 The [gdx_getting_started_5.html](https://vernierst.github.io/godirect-examples/javascript/gdx_getting_started_5.html) example shows you how to store data in global array and download it as a csv file.
  It shows you how to:
 - Connect to a Go Direct device over BLE
-- Set the active sensors and collection rate
-- Collect a few measurements from the enabled sensors
+- Set the first sensor active
+- Collect 10 measurements
 - Allow the user to output the data as a comma-separated-value file
 
 ## License
