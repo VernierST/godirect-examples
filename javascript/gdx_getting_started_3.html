@@ -26,66 +26,98 @@ Disconnect">
 </head>
 
 <body>
+  <h1>Vernier Go Direct<sup>&reg</sup> JavaScript</h1>
+  <h2>Example 3:  User Prompts and Collecting Data</h2>
+  <p>
+    This example shows how you can use the godirect-js module to communicate with a <a href="https://www.vernier.com/products/sensors/go-direct-sensors/">Vernier Go Direct Sensor</a>. This includes:
+    <ul>
+      <li>Select a Go Direct Device</li>
+      <li>Provide the user with a prompt to select the active sensors</li>
+      <li>Collect 15 measurements from the enabled sensors</li>
+      <li>Disconnect</li>
+    </ul>
+  </p>
   <button id="select_device">Select Go Direct Device</button>
-  <button id ="start_collection" onclick = "chooseSensor()">Select Sensor and Collect Data</button>
+  <div id="error"></div>
+  <pre id="sensors"></pre>
+  <button id ="select_sensors" onclick = "chooseSensor()">Select Sensor and Collect Data</button>
   <pre id="output"></pre> 
   <script>
-  
-    const selectDeviceBtn = document.querySelector('#select_device');
-    const output = document.querySelector('#output');
     let gdxDevice = "";
+    const selectDeviceBtn = document.querySelector('#select_device');
+    const selectSensorsBtn = document.querySelector('#select_sensors');
+    const output = document.querySelector('#output');
+    const error = document.querySelector('#error');
+
+    selectSensorsBtn.style.visibility='hidden';
+
+    if (!navigator.bluetooth) {
+      error.innerHTML = `<p><b>Web Bluetooth API is needed for this example.</b></p>`;
+      error.innerHTML += `<p>This browser does not have support yet. <a href="https://webbluetoothcg.github.io/web-bluetooth/">More information</a></p>`;
+      selectDeviceBtn.style.visibility='hidden';
+    }
    
     const selectDevice = async () => {
       try {
-        gdxDevice = await godirect.selectDevice();
-        output.textContent += `\n Connected to `+gdxDevice.name;
-        output.textContent += `\n Available sensors: (click on \"Select Sensor and Collect Data\" then type channel number into alert box) `;
+        const bleDevice = await navigator.bluetooth.requestDevice({
+          filters: [{ namePrefix: 'GDX' }],
+          optionalServices: ['d91714ef-28b9-4f91-ba16-f0d9a604f112']
+        });
+        // create the device and open it, but don't start measurements
+        gdxDevice = await godirect.createDevice(bleDevice, true /* open */, false /*don't start measurements*/);
+
+        selectSensorsBtn.style.visibility='visible';
+        selectDeviceBtn.style.visibility='hidden';
+
+        sensors.textContent = `Connected to ` + gdxDevice.name;
+        sensors.textContent += `\n\n Available sensors: `;
 
         gdxDevice.sensors.forEach(sensor => {
-           output.textContent += `\n\n Sensor: ${sensor.name} units: ${sensor.unit} channel: ${sensor.number} `  ;
-        
+           sensors.textContent += `\n ${sensor.number}: ${sensor.name} units: ${sensor.unit}`  ;
         }); 
-        // stop the device
-        gdxDevice.stop();
     
       } catch (err) {
         console.error(err);
+        error.innerText += "\n "+err;
+        if (err.toString().includes('cross-origin')) {
+          error.innerHTML+= '\n<p><b>Are you running in an embedded iframe? Try running this example in its own window.</b></p>'
+        }
       }
    
     };
     function chooseSensor() {
-      
-       
-          // prompt the user for a channel input choice
-          const  channel = prompt('Choose a sensor');
-         
-         // set the desired sensor according to the channel selection
-          output.textContent += `\n\n Selected sensors: `;
-          //start the device
-          gdxDevice.start();
-          
-          const sensor =  gdxDevice.getSensor(parseInt(channel));
-         
-          // enable the selected sensor channel      
-          sensor.setEnabled(true);
-
-          output.textContent += `\n Sensor: ${sensor.name} units: ${sensor.unit}`;
-         
-          gdxDevice.on('device-closed', () => {
-            output.textContent += `\n\n Disconnected from `+gdxDevice.name+`\n`;
-          });
+      // prompt the user for a channel input choice
+      const channel = prompt('Enter the number of the sensor');
+      const sensor =  gdxDevice.getSensor(parseInt(channel));
+      if (sensor) {
+        selectSensorsBtn.style.visibility='hidden';
         
-          sensor.on('value-changed', (sensor) => {
-             if (sensor.values.length > 15){
-              gdxDevice.close();
-            }
-            
-            // collect values with the desired sensor channel and print to the output text box
-            console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
-            output.textContent += `\n Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`;
-           
-          });
- 
+        // enable the selected sensor channel
+        sensor.setEnabled(true);
+        //start the device
+        gdxDevice.start();
+
+        output.textContent = `\n Selected Sensor: ${sensor.name} units: ${sensor.unit}`;
+
+        gdxDevice.on('device-closed', () => {
+          output.textContent += `\n\n Disconnected from `+gdxDevice.name+`\n`;
+          selectDeviceBtn.style.visibility = 'visible';
+        });
+
+        sensor.on('value-changed', (sensor) => {
+          if (sensor.values.length > 15){
+            gdxDevice.close();
+          }
+
+          // collect values with the desired sensor channel and print to the output text box
+          console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
+          output.textContent += `\n Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`;
+
+        });
+      }
+      else {
+        output.textContent = `Invalid sensor selection.`;
+      }
     };
    
    // start the selectDevice function after the button is clicked
