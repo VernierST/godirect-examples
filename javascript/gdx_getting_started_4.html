@@ -23,13 +23,32 @@
 </head>
 
 <body>
+  <h1>Vernier Go Direct<sup>&reg</sup> JavaScript</h1>
+  <h2>Example 4: Setting Defaults and Passing Arguments</h2>
+  <p>
+    This example shows how you can use the godirect-js module to communicate with a <a href="https://www.vernier.com/products/sensors/go-direct-sensors/">Vernier Go Direct Sensor</a>. This includes:
+    <ul>
+      <li>Select a Go Direct Device</li>
+      <li>Set the active sensors in your program</li>
+      <li>Set the measurement period in your program</li>
+      <li>Collect 10 measurements from the enabled sensors</li>
+      <li>Disconnect</li>
+    </ul>
+  </p>
   <button id="select_device">Select Go Direct Device</button>
+  <div id="error"></div>
   <pre id="output"></pre>
  
   <script>
  
     const selectDeviceBtn = document.querySelector('#select_device');
     const output = document.querySelector('#output');
+    const error = document.querySelector('#error');
+    if (!navigator.bluetooth) {
+      error.innerHTML = `<p><b>Web Bluetooth API is needed for this example.</b></p>`;
+      error.innerHTML += `<p>This browser does not have support yet. <a href="https://webbluetoothcg.github.io/web-bluetooth/">More information</a></p>`;
+      selectDeviceBtn.style.visibility='hidden';
+    }
    
     const selectDevice = async () => {    
       try {
@@ -63,6 +82,10 @@
    
       } catch (err) {
         console.error(err);
+        error.innerText += "\n "+err;
+        if (err.toString().includes('cross-origin')) {
+          error.innerHTML+= '\n<p><b>Are you running in an embedded iframe? Try running this example in its own window.</b></p>'
+        }
       }
     };
     selectDeviceBtn.addEventListener('click', selectDevice);

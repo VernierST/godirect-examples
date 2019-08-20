@@ -1,4 +1,4 @@
-  <!--
+ <!--
   This example uses the GDX JavaScript library to collect all of the sensor information from a Vernier Go Direct® Sensor.
   Press the 'Select Go Direct Device' button to open communication to the device in a Chrome browser. 
   This example collects 10 data points and disconnects.
@@ -21,12 +21,30 @@
 </head>
 
 <body>
+  <h1>Vernier Go Direct<sup>&reg</sup> JavaScript</h1>
+  <h2>Example 2:  Using Defaults and Collecting Data</h2>
+  <p>
+    This example shows how you can use the godirect-js module to communicate with a <a href="https://www.vernier.com/products/sensors/go-direct-sensors/">Vernier Go Direct Sensor</a>. This includes:
+    <ul>
+      <li>Select a Go Direct Device</li>
+      <li>Use defaults to set the active sensors and collection rate </li>
+      <li>Collect 10 measurements from the enabled sensors</li>
+      <li>Disconnect</li>
+    </ul>
+  </p>
   <button id="select_device">Select Go Direct Device</button>
+  <div id="error"></div>
   <pre id="output"></pre>
 
   <script>
     const selectDeviceBtn = document.querySelector('#select_device');
     const output = document.querySelector('#output');
+    const error = document.querySelector('#error');
+    if (!navigator.bluetooth) {
+      error.innerHTML = `<p><b>Web Bluetooth API is needed for this example.</b></p>`;
+      error.innerHTML += `<p>This browser does not have support yet. <a href="https://webbluetoothcg.github.io/web-bluetooth/">More information</a></p>`;
+      selectDeviceBtn.style.visibility='hidden';
+    }
 
     const selectDevice = async () => {
       try {
@@ -56,6 +74,10 @@
         });
       } catch (err) {
         console.error(err);
+        error.innerText += "\n "+err;
+        if (err.toString().includes('cross-origin')) {
+          error.innerHTML+= '\n<p><b>Are you running in an embedded iframe? Try running this example in its own window.</b></p>'
+        }
       }
     };
 
