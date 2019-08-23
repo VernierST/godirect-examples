@@ -57,8 +57,9 @@
     try {
       // connect to the gdx device  
       gdxDevice = await godirect.selectDevice();
-      gdxDevice2 = await godirect.selectDevice();
       output.textContent += `\n Connected to `+gdxDevice.name;
+
+      gdxDevice2 = await godirect.selectDevice();
       output.textContent += `\n Connected to `+gdxDevice2.name;
       output.textContent += `\n Reading 10 measurements \n`;
         
