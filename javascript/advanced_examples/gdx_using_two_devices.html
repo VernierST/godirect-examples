@@ -1,5 +1,5 @@
 <!--
-   This example uses the GDX JavaScript library to collect and manipulate data from 2 Vernier Go Direct Sensors. 
+   This example uses the Go Direct JavaScript library to collect and manipulate data from 2 Vernier Go Direct Sensors. 
    It also contains the chart.js library for graphing. This program collects 10 data points from each sensor, 
    graphs them, and disconnects from each device. 
   -->
@@ -126,15 +126,15 @@
       })(deviceObject));
       deviceObject.device.open(false);
         
-      } catch (err) {
-        console.error(err);
-        deviceObject.device = null;
-      }
-    };
-       
-      // configuration for the chart, change all initial chart settings here
-      var config = {
-			type: 'line',
+    } catch (err) {
+      console.error(err);
+      deviceObject.device = null;
+    }
+  };
+      
+  // configuration for the chart, change all initial chart settings here
+  var config = {
+    type: 'line',
 			data: {
 				labels: [0,1,2,3,4,5,6,7,8,9,10],
 				datasets: [],
@@ -161,45 +161,45 @@
 							labelString: 'Time'
 						}
 					}],
-					yAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						}
-					}]
-				}
-			} 
-    };		
+        yAxes: [{
+          display: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Value'
+          }
+        }]
+      }
+    } 
+  };		
     
-    window.onload = function() {
-			var ctx = document.getElementById('canvas').getContext('2d');
-			window.myLine = new Chart(ctx, config);
-		}; 
-		
-		var colorNames = Object.keys(window.chartColors);
-	
-    selectDeviceBtn.addEventListener('click', selectCorrectDevice);
+  window.onload = function() {
+    var ctx = document.getElementById('canvas').getContext('2d');
+    window.myLine = new Chart(ctx, config);
+  }; 
+  
+  var colorNames = Object.keys(window.chartColors);
+
+  selectDeviceBtn.addEventListener('click', selectCorrectDevice);
+  
+  // add line function to add new dataset for each device connected
+  function addLine(device, sensor){
     
-    // add line function to add new dataset for each device connected
-    function addLine(device, sensor){
-      
     var colorName = colorNames[config.data.datasets.length % colorNames.length];
     var newColor = window.chartColors[colorName];
-			
+      
     // config of the new dataset
     var newDataset = {
-				label: `${device.name}:${sensor.name}`,
-				backgroundColor: newColor,
-				borderColor: newColor,
-				data: [],
-				fill: false
-		  };
-			config.data.datasets.push(newDataset);
-			window.myLine.update();
+        label: `${device.name}:${sensor.name}`,
+        backgroundColor: newColor,
+        borderColor: newColor,
+        data: [],
+        fill: false
+      };
+      config.data.datasets.push(newDataset);
+      window.myLine.update();
       // return the dataset to be used later
       return newDataset;
-     }
+    }
 
 	</script>
 </body>
