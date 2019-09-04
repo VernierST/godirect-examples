@@ -44,7 +44,7 @@
   <p>
     This example shows how you can use the <a href="https://www.npmjs.com/package/@vernier/godirect">Vernier Go Direct Module</a> to connect to a <a href="https://www.vernier.com/products/sensors/go-direct-sensors/">Vernier Go Direct Sensor</a> and add it to desmos for further manipulation.
   </p>
-  <div align="left"> <button  class="button" id="select_device">Select Go Direct Device</button>
+  <div> <button  class="button" id="select_device">Select Go Direct Device</button>
   <div id="calculator" style="width: 1000px; height: 600px;"></div> 
   <pre id="output"></pre> 
   </div>
@@ -75,7 +75,7 @@
 
     const selectDeviceBtn = document.querySelector('#select_device');
     const output = document.querySelector('#output'); 
-    var count = 0;
+    let count = 0;
     const selectDevice = async () => {
       try {
         const gdxDevice = await godirect.selectDevice();
