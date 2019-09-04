@@ -1,67 +1,53 @@
 <!--
-   This example uses the GDX JavaScript library to collect and manipulate data from a Vernier Go Direct Sensor. 
+   This example uses the Go Direct JavaScript library to collect and manipulate data from a Vernier Go Direct Sensor. 
    It also contains the Desmos API for easy graphing and calculations. Press the 'Select Go Direct Device' button to open communication
-   to the device in a Chrome browser. Use the Desmos window to view the data collected
-   and to preform simple calculations. This program collects 10 data points and disconnects from the device. 
+   to the device. Use the Desmos window to view the data collected and to preform simple calculations. 
+   This program collects 10 data points and disconnects from the device. 
    It has simple css style elements to make the webpage more appealing.
-  
-   This program uses the following functions from the GDX Library:
-   
-   - gdxDevice.selectDevice();
-   - gdxDevice.close();
-   - gdxDevice.enableDefaultSensors();
-   - gdxDevice.sensors.filter();
 -->    
-
 <!doctype html>
 <html>
 <head>
   <title>Desmos Calculations with Go Direct Sensor Data</title>
   <meta name="description" content="Connect to a Vernier Go Direct® Sensor with WebBluetooth and graph 10 data points in the Desmos window">
   <meta charset="utf-8">
-  <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://www.desmos.com/api/v1.3/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
   <!--add the Desmos and Go Direct Libraries-->
+  <script src="https://unpkg.com/@vernier/godirect/dist/godirect.min.umd.js"></script>
+  <script src="https://www.desmos.com/api/v1.3/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--add style elements (optional)-->
-<style>
-  body {
-    background-color: #A1E49E;
-  }
-   .button {
-  background-color: white;
-  border: none;
-  color: green;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  }
-  div.fixed {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 300px;
-  border: 3px solid #73AD21;
-}
-</style>
-  
+  <style>
+    .button {
+      background-color: white;
+      border: 2px solid green;
+      color: green;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+    div.fixed {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 300px;
+      border: 3px solid #73AD21;
+    }
+  </style>  
 </head>
 
 <body>
-  
-  <!--format web page-->
- <div align="left"> <button  class="button" id="select_device">Select Go Direct Device</button>
-  <pre  id="output"></pre> 
- 
-</div>
-
-<!--create calculator and used fixed class to send it to upper right corner of web page-->
-<div  class = "fixed" id="calculator" style="width: 1000px; height: 600px;"></div> 
-
+  <h1>Vernier Go Direct<sup>&reg</sup> JavaScript Advanced Example</h1>
+  <p>
+    This example shows how you can use the <a href="https://www.npmjs.com/package/@vernier/godirect">Vernier Go Direct Module</a> to connect to a <a href="https://www.vernier.com/products/sensors/go-direct-sensors/">Vernier Go Direct Sensor</a> and add it to desmos for further manipulation.
+  </p>
+  <div> <button  class="button" id="select_device">Select Go Direct Device</button>
+  <div id="calculator" style="width: 1000px; height: 600px;"></div> 
+  <pre id="output"></pre> 
+  </div>
 
   <script >
     let elt = document.getElementById('calculator');
@@ -89,7 +75,7 @@
 
     const selectDeviceBtn = document.querySelector('#select_device');
     const output = document.querySelector('#output'); 
-    var count = 0;
+    let count = 0;
     const selectDevice = async () => {
       try {
         const gdxDevice = await godirect.selectDevice();
@@ -123,9 +109,7 @@
             yvalues.push(y.toPrecision(4));
            
             // update the graph with the current values
-            updateTable();
-            
-                
+            updateTable();       
           });
         });
       } catch (err) {
