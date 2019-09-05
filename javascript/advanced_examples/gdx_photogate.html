@@ -43,7 +43,7 @@
           });
   
           // Create the device and start measurements.
-          gdxDevice = await godirect.createDevice(bleDevice, true, true);
+          gdxDevice = await godirect.createDevice(bleDevice);
   
           disconnectDeviceBtn.style.visibility='visible';
           selectDeviceBtn.style.visibility='hidden';

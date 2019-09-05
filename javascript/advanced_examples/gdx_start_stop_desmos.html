@@ -104,14 +104,8 @@
         });
 
         // Create the device but don't open or start measurements.
-        gdxDevice = await godirect.createDevice(bleDevice, false, false);
+        gdxDevice = await godirect.createDevice(bleDevice, {open:false, startMeasurements:false});
        
-        output.textContent += `\n Connected to `+gdxDevice.name;
-        output.textContent += `\n Press start to start collection \n`;
-        output.textContent += `\n If you can't see your sensor values on the graph right away, \n Zoom out of the graph in the Desmos Window \n`;
-
-        selectDeviceBtn.textContent = `Disconnect from ${gdxDevice.name}`;
- 
          // print that the device is disconnected
          gdxDevice.on('device-closed', () => {
            output.textContent += `\n\n Disconnected from `+gdxDevice.name+`\n`;
@@ -121,29 +115,32 @@
 
 
          gdxDevice.on('device-opened', () => {
-          const enabledSensors = gdxDevice.sensors.filter(s => s.enabled);
-          enabledSensors.forEach(sensor => {
-              output.textContent += `\n Sensor Enabled: ${sensor.name}`;
-            
-            sensor.on('value-changed', (sensor) => {
-        
-              // log the sensor name, new value and units.
-              console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
-              // output the change to the pre tag
-              output.textContent += `\n Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`;
-            
-              let y = sensor.value;   
-              let x = count;
-              // add the x & y values to their respective arrays, round the number 4 places
-              xvalues.push(x.toPrecision(4));
-              yvalues.push(y.toPrecision(4));
-            
-              // add a sensor value every delta on the x, change according to sampleRate
-              count += delta;     
+          output.textContent += `\n Connected to `+gdxDevice.name;
+          output.textContent += `\n Press start to start collection \n`;
+          output.textContent += `\n If you can't see your sensor values on the graph right away, \n Zoom out of the graph in the Desmos Window \n`;
 
-              // update the table with the new sensor values
-              updateTable();                   
-            });
+          selectDeviceBtn.textContent = `Disconnect from ${gdxDevice.name}`;
+
+          // Only enable one sensor since that is all this example can handle.
+          const sensor = gdxDevice.sensors[0];
+          sensor.setEnabled(true);
+          sensor.on('value-changed', (sensor) => {
+            // log the sensor name, new value and units.
+            console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
+            // output the change to the pre tag
+            output.textContent += `\n Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`;
+          
+            let y = sensor.value;   
+            let x = count;
+            // add the x & y values to their respective arrays, round the number 4 places
+            xvalues.push(x.toPrecision(4));
+            yvalues.push(y.toPrecision(4));
+          
+            // add a sensor value every delta on the x, change according to sampleRate
+            count += delta;     
+
+            // update the table with the new sensor values
+            updateTable();                   
           });
          });
 

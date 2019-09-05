@@ -90,7 +90,7 @@
       });
 
       // Create the device but don't open or start measurements.
-      deviceObject.device = await godirect.createDevice(bleDevice, false, false);
+      deviceObject.device = await godirect.createDevice(bleDevice, {open:false, startMeasurements:false});
   
       // print message that first device has closed when it's closed
       deviceObject.device.on('device-closed', () => ((deviceObject) => {
@@ -124,7 +124,7 @@
 
         startMeasurements();
       })(deviceObject));
-      deviceObject.device.open(false);
+      await deviceObject.device.open(false);
         
     } catch (err) {
       console.error(err);
@@ -173,22 +173,22 @@
   };		
     
   window.onload = function() {
-    var ctx = document.getElementById('canvas').getContext('2d');
+    const ctx = document.getElementById('canvas').getContext('2d');
     window.myLine = new Chart(ctx, config);
   }; 
   
-  var colorNames = Object.keys(window.chartColors);
+  const colorNames = Object.keys(window.chartColors);
 
   selectDeviceBtn.addEventListener('click', selectCorrectDevice);
   
   // add line function to add new dataset for each device connected
   function addLine(device, sensor){
     
-    var colorName = colorNames[config.data.datasets.length % colorNames.length];
-    var newColor = window.chartColors[colorName];
+    const colorName = colorNames[config.data.datasets.length % colorNames.length];
+    const newColor = window.chartColors[colorName];
       
     // config of the new dataset
-    var newDataset = {
+    const newDataset = {
         label: `${device.name}:${sensor.name}`,
         backgroundColor: newColor,
         borderColor: newColor,
