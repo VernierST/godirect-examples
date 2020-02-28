@@ -6,7 +6,9 @@
 - A Mac, Windows, or Linux computer
 - You must have Python3 installed, since godirect is written for Python 3. See: [How do I install Python 3?](#how-do-i-install-python-3)
 - You must have the godirect module and its dependencies installed. See: [How do I install the godirect module?](#How-do-I-install-the-godirect-module)
-- If you wish to connect to your Go Direct device using Bluetooth Low Energy, you will need to have a [Bluegiga BLED112 Bluetooth® Low Energy Dongle](https://www.silabs.com/products/wireless/bluetooth/bluetooth-low-energy-modules/bled112-bluetooth-smart-dongle)
+- If you wish to connect to your Go Direct device using Bluetooth Low Energy, you will either need:
+  - A Bluetooth Low Energy compatible radio on your Windows or Linux machine and the ```bleak``` python module installed. See the [Can I use my built in Bluetooth radio](#Can-I-use-my-built-in-Bluetooth-radio) section below.
+  - A [Bluegiga BLED112 Bluetooth® Low Energy Dongle](https://www.silabs.com/products/wireless/bluetooth/bluetooth-low-energy-modules/bled112-bluetooth-smart-dongle)
 
 ## Why do I have to use Python3?
 
@@ -56,6 +58,14 @@ If so, follow the instructions to download and install the [Microsoft Visual C++
 
 ![Build Tools download](./images/win_msvc_build_tools_download.png)
 
+### Linux
+
+Some Linux distros will not include all of the tools required by the godirect module and its dependencies. If you see errors when you run the pip3 install, you might need to first install the two packages as shown below, before trying again:
+
+```sudo apt install libusb1.0.0```
+
+```sudo apt install libudev-dev```
+
 ### USB on Linux Systems
 
 In order to communicate with Go Direct devices over USB on Linux systems, you will need to provide a special udev rule that allows the device to be identified when it is plugged in. You will find a copy of this file (vstlibusb.rules) in this directory. To move it to the proper location, you will need super-user privileges.
@@ -63,6 +73,14 @@ In order to communicate with Go Direct devices over USB on Linux systems, you wi
 In a terminal, navigate to the folder containing the vstlibusb.rules file. Use this command to move the file to the /etc/udev/rules.d directory:
 
 ```sudo cp vstlibusb.rules /etc/udev/rules.d/.```
+
+### Can I use my built-in Bluetooth radio
+
+**Note:** As of 02/25/2020 this only works on Windows and Linux and *does not* work on Mac.
+
+The godirect module (version 1.0.6) can communicate with Go Direct devices using the built-in Bluetooth radio on your computer, rather than requiring the Bluegiga BLED112 Bluetooth® Low Energy Dongle. In oreder to enable this functionality, you simply need to install another python module:
+
+```pip3 install bleak```
 
 ## Where can I find examples of using the godirect module?
 
