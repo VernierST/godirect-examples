@@ -27,7 +27,7 @@ the serial number) or "proximity_pairing", or leave it blank.
 from gdx import gdx
 gdx = gdx.gdx()
 
-gdx.open_ble("GDX-FOR 071000U9") #replace "GDX-FOR 071000U9" with the name of your device (order code, space, serial number)
+gdx.open_ble("GDX-FOR 07200006") #replace "GDX-FOR 071000U9" with the name of your device (order code, space, serial number)
 
 device_info = gdx.device_info() # device_info list [0 = name, 1 = description, 2 = battery %, 3 = charger state, 4 = rssi]
 battery_level = device_info[2]
