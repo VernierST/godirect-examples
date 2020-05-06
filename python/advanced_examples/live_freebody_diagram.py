@@ -19,9 +19,15 @@ import os
 import sys
 
 # This allows us to import the local gdx module that is up one directory
-gdx_module_path = os.path.abspath(os.path.join('..'))
+gdx_module_path = os.path.abspath(os.path.join('.'))
+# If the module is not found, uncomment and try two dots. Also, uncomment the print(sys.path)
+#gdx_module_path = os.path.abspath(os.path.join('..'))
 if gdx_module_path not in sys.path:
     sys.path.append(gdx_module_path)
+
+# If there is an error trying to find the gdx module, uncomment this to see where
+# the program is looking to find the gdx folder
+#print(sys.path)
 
 from gdx import gdx
 from vpython import *
