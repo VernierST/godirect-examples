@@ -260,6 +260,12 @@ logging.getLogger('bleak').propagate = False
 
 ![Python 3 Install](./images/win_modify_py3_last.png)
 
+- If you are using Python v3.8 and installing the bleak module, you may encounter an error like this:
+
+`error: option --single-version-externally-managed not recognized`
+
+This is a known incompatibility and the options to work around it are described here: https://github.com/hbldh/bleak/issues/147
+
 ## License
 
 All of the content in this repository is available under the terms of the [BSD 3-Clause License](../LICENSE).
