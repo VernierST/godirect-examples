@@ -10,7 +10,6 @@ This guide shows you how to get started writing Python programs for your Vernier
 - [Download and Run an Example](#download-and-run-an-example)
 - [About the Getting Started Examples](#about-the-getting-started-examples)
 - [Notes Regarding the gdx Functions](#notes-regarding-the-gdx-functions)
-- [Working with the godirect Module vs gdx Functions](#working-with-the-godirect-module-vs-gdx-functions)
 - [Troubleshooting and Notes](#troubleshooting-and-notes)
 
 If you are new to Python you should look over all of the steps. If you are familiar with Python you might just focus on installing the godirect module and downloading the examples.
