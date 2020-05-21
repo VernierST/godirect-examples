@@ -9,7 +9,7 @@ The resulting freebody diagram is "Y" shaped. As you run the program, move the G
 The freebody diagram will update itself to reflect the GDX-FOR's current orientation and the force 
 exerted by its load cell.
 
-This program is written to connect to GDX-FOR via Bluetooth, and therefore requires the BlueGiga BLE dongle. 
+This program is written to connect to GDX-FOR via Bluetooth. 
 You can run the program connected to GDX-FOR via USB; just change line 25 to "gdx.open_usb".
 
 This program requires the godirect-py, vpython, and math packages.
