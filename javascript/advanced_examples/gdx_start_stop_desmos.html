@@ -78,8 +78,7 @@
          type: 'table',
          columns: [
           {latex: 'x_1', values: xvalues},
-          {latex: 'y_1', values: yvalues} ] },
-          { id: 'regression', latex: 'y_1~mx_1+b'}
+          {latex: 'y_1', values: yvalues} ] }
       ]);                                      
     }
     
@@ -120,14 +119,11 @@
           output.textContent += `\n If you can't see your sensor values on the graph right away, \n Zoom out of the graph in the Desmos Window \n`;
 
           selectDeviceBtn.textContent = `Disconnect from ${gdxDevice.name}`;
-          gdxDevice.enableDefaultSensors();
 
-          const enabledSensors = gdxDevice.sensors.filter(s => s.enabled);
-          enabledSensors.forEach(sensor => {
-              output.textContent += `\n Sensor Enabled: ${sensor.name}`;
-            
+          // Only enable one sensor since that is all this example can handle.
+          const sensor = gdxDevice.sensors[0];
+          sensor.setEnabled(true);
             sensor.on('value-changed', (sensor) => {
-        
               // log the sensor name, new value and units.
               console.log(`Sensor: ${sensor.name} value: ${sensor.value} units: ${sensor.unit}`);
               // output the change to the pre tag
@@ -144,7 +140,6 @@
 
               // update the table with the new sensor values
               updateTable();                   
-            });
           });
          });
 

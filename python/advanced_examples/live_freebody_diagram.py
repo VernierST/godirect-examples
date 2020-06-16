@@ -9,7 +9,7 @@ The resulting freebody diagram is "Y" shaped. As you run the program, move the G
 The freebody diagram will update itself to reflect the GDX-FOR's current orientation and the force 
 exerted by its load cell.
 
-This program is written to connect to GDX-FOR via Bluetooth, and therefore requires the BlueGiga BLE dongle. 
+This program is written to connect to GDX-FOR via Bluetooth. 
 You can run the program connected to GDX-FOR via USB; just change line 25 to "gdx.open_usb".
 
 This program requires the godirect-py, vpython, and math packages.
@@ -19,9 +19,15 @@ import os
 import sys
 
 # This allows us to import the local gdx module that is up one directory
-gdx_module_path = os.path.abspath(os.path.join('..'))
+gdx_module_path = os.path.abspath(os.path.join('.'))
+# If the module is not found, uncomment and try two dots. Also, uncomment the print(sys.path)
+#gdx_module_path = os.path.abspath(os.path.join('..'))
 if gdx_module_path not in sys.path:
     sys.path.append(gdx_module_path)
+
+# If there is an error trying to find the gdx module, uncomment this to see where
+# the program is looking to find the gdx folder
+#print(sys.path)
 
 from gdx import gdx
 from vpython import *
