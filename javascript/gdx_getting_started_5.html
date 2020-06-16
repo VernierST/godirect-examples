@@ -82,8 +82,10 @@
     let sensor = null;
 
     const selectDevice = async () => {     
+      const bluetooth = document.querySelector('input[name="type"]:checked').value === "1";
+      error.textContent = "";
       try {
-        const gdxDevice = await godirect.selectDevice();     
+        const gdxDevice = await godirect.selectDevice(bluetooth);
         
         gdxDevice.start(1000);
         

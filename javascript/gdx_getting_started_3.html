@@ -31,57 +31,32 @@ Disconnect">
   <p>
     This example shows how you can use the godirect-js module to communicate with a <a href="https://www.vernier.com/products/sensors/go-direct-sensors/">Vernier Go Direct Sensor</a>. This includes:
     <ul>
-      <li>Select a Go Direct Device</li>
+      <li>Select a Go Direct Device with Bluetooth</li>
       <li>Provide the user with a prompt to select the active sensors</li>
       <li>Collect 15 measurements from the enabled sensors</li>
       <li>Disconnect</li>
     </ul>
   </p>
-
-  <p id="connection_type">
-    <input type="radio" id="ble" name="type" value="1" checked>
-    <label id="ble_label" for="ble">Bluetooth</label>
-    <input type="radio" id="usb" name="type" value="0">
-    <label id="usb_label" for="usb">USB</label><br>
-  </p>
-  <button id="select_device">Select a Go Direct Device</button>
+  <button id="select_device">Select Go Direct Device</button>
   <div id="error"></div>
   <pre id="sensors"></pre>
   <button id ="select_sensors" onclick = "chooseSensor()">Select Sensor and Collect Data</button>
-  <pre id="output"></pre>
+  <pre id="output"></pre> 
   <script>
     let gdxDevice = "";
-    const selectSensorsBtn = document.querySelector('#select_sensors');
-    const usbBtn = document.querySelector('#usb');
-    const usbLabel = document.querySelector('#usb_label');
-    const bleBtn = document.querySelector('#ble');
-    const bleLabel = document.querySelector('#ble_label');
     const selectDeviceBtn = document.querySelector('#select_device');
+    const selectSensorsBtn = document.querySelector('#select_sensors');
     const output = document.querySelector('#output');
     const error = document.querySelector('#error');
 
-    if (navigator.bluetooth) {
-      bleLabel.innerHTML = `Bluetooth`;
-    } else {
-      if (navigator.hid) usbBtn.checked = true;
-      bleLabel.innerHTML = `Bluetooth <span style="color:red">Not Supported</span> <a href="https://webbluetoothcg.github.io/web-bluetooth/">More information</a>`;
-      bleBtn.disabled = true;
-    }
-
-    if (navigator.hid) {
-      usbLabel.innerHTML = `USB`;
-    } else {
-      if (navigator.bluetooth) bleBtn.checked = true;
-      usbLabel.innerHTML = `USB <span style="color:red">Not Supported</span> <a href="https://wicg.github.io/webhid/">More information</a>`;
-      usbBtn.disabled = true;
-    }
-
-    if (!navigator.bluetooth && !navigator.hid) {
-      selectDeviceBtn.style.visibility='hidden';
-    } 
-    
     selectSensorsBtn.style.visibility='hidden';
 
+    if (!navigator.bluetooth) {
+      error.innerHTML = `<p><b>Web Bluetooth API is needed for this example.</b></p>`;
+      error.innerHTML += `<p>This browser does not have support yet. <a href="https://webbluetoothcg.github.io/web-bluetooth/">More information</a></p>`;
+      selectDeviceBtn.style.visibility='hidden';
+    }
+   
     const selectDevice = async () => {
       try {
         const bleDevice = await navigator.bluetooth.requestDevice({
