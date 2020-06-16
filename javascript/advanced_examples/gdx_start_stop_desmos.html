@@ -43,7 +43,7 @@
 <body>  
   <h1>Vernier Go Direct<sup>&reg</sup> JavaScript Advanced Example</h1>
 	<p>
-		This example shows how you can use the <a href="https://www.npmjs.com/package/@vernier/godirect">Vernier Go Direct Module</a> to connect to a <a href="https://www.vernier.com/products/sensors/go-direct-sensors/">Vernier Go Direct Sensor</a> and put data into Desmos.
+		This example shows how you can use the <a href="https://www.npmjs.com/package/@vernier/godirect">Vernier Go Direct Module</a> to connect to a <a href="https://www.vernier.com/products/sensors/go-direct-sensors/">Vernier Go Direct Sensor</a> with bluetooth and put data into Desmos.
 	</p>
 
   <div> 
@@ -104,14 +104,8 @@
         });
 
         // Create the device but don't open or start measurements.
-        gdxDevice = await godirect.createDevice(bleDevice, false, false);
-       
-        output.textContent += `\n Connected to `+gdxDevice.name;
-        output.textContent += `\n Press start to start collection \n`;
-        output.textContent += `\n If you can't see your sensor values on the graph right away, \n Zoom out of the graph in the Desmos Window \n`;
-
-        selectDeviceBtn.textContent = `Disconnect from ${gdxDevice.name}`;
- 
+        gdxDevice = await godirect.createDevice(bleDevice,  {open: false, startMeasurements: false});
+        
          // print that the device is disconnected
          gdxDevice.on('device-closed', () => {
            output.textContent += `\n\n Disconnected from `+gdxDevice.name+`\n`;
@@ -121,6 +115,13 @@
 
 
          gdxDevice.on('device-opened', () => {
+          output.textContent += `\n Connected to `+gdxDevice.name;
+          output.textContent += `\n Press start to start collection \n`;
+          output.textContent += `\n If you can't see your sensor values on the graph right away, \n Zoom out of the graph in the Desmos Window \n`;
+
+          selectDeviceBtn.textContent = `Disconnect from ${gdxDevice.name}`;
+          gdxDevice.enableDefaultSensors();
+
           const enabledSensors = gdxDevice.sensors.filter(s => s.enabled);
           enabledSensors.forEach(sensor => {
               output.textContent += `\n Sensor Enabled: ${sensor.name}`;
