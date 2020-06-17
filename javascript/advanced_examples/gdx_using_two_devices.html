@@ -27,8 +27,13 @@
   <p>
     This example shows how you can use the <a href="https://www.npmjs.com/package/@vernier/godirect">Vernier Go Direct Module</a> to connect and collect from multiple <a href="https://www.vernier.com/products/sensors/go-direct-sensors/">Vernier Go Direct Sensor</a>.
   </p>
+	<p id="connection_type">
+		<input type="radio" id="ble" name="type" value="1" checked>
+		<label id="ble_label" for="ble">Bluetooth</label>
+		<input type="radio" id="usb" name="type" value="0">
+		<label id="usb_label" for="usb">USB</label><br>
+	</p>
   <button id="select_device">Connect to Go Direct Device</button>  
-  <pre id="status"></pre>
 	<div style="width:75%;">
 		<canvas id="canvas"></canvas>
 	</div>
@@ -43,10 +48,34 @@
   };
    
   // find the UI elements we need to manipulate
+  const usbBtn = document.querySelector('#usb');
+  const usbLabel = document.querySelector('#usb_label');
+  const bleBtn = document.querySelector('#ble');
+  const bleLabel = document.querySelector('#ble_label');
+  const connectionType = document.querySelector('#connection_type');
   const selectDeviceBtn = document.querySelector('#select_device');
   const output = document.querySelector('#output');
-  const status = document.querySelector('#status');
-  
+
+  if (navigator.bluetooth) {
+			bleLabel.innerHTML = `Bluetooth`;
+		} else {
+			if (navigator.hid) usbBtn.checked = true;
+			bleLabel.innerHTML = `Bluetooth <span style="color:red">Not Supported</span> <a href="https://webbluetoothcg.github.io/web-bluetooth/">More information</a>`;
+			bleBtn.disabled = true;
+		}
+
+		if (navigator.hid) {
+			usbLabel.innerHTML = `USB`;
+		} else {
+			if (navigator.bluetooth) bleBtn.checked = true;
+			usbLabel.innerHTML = `USB <span style="color:red">Not Supported</span> <a href="https://wicg.github.io/webhid/">More information</a>`;
+			usbBtn.disabled = true;
+		}
+
+		if (!navigator.bluetooth && !navigator.hid) {
+			selectDeviceBtn.style.visibility='hidden';
+		} 
+
   // Instruct the user to connect the first go device
   selectDeviceBtn.textContent = `Connect to 1st Go Direct Device`;
 
@@ -60,13 +89,12 @@
       if (deviceObject1.device) {
         // Once the first device is connected, instruct the user to connect the second.
         selectDeviceBtn.textContent = `Connect to 2nd Go Direct Device`;
-        status.innerHTML = `Connected to <b>`+deviceObject1.device.name+`</b>`;
       }
     } else {
       await selectDevice(deviceObject2);
       if (deviceObject2.device) {
         selectDeviceBtn.style.visibility='hidden';
-        status.innerHTML += ` & <b>`+deviceObject2.device.name+`</b> and collecting data`;
+        connectionType.style.visibility='hidden';
       }
     }
   }; 
@@ -82,15 +110,41 @@
 
   async function selectDevice(deviceObject) 
   {
+    const bluetooth = document.querySelector('input[name="type"]:checked').value === "1";
     try {
-      // connect to the gdx device  
-      const bleDevice = await navigator.bluetooth.requestDevice({
-        filters: [{ namePrefix: 'GDX' }],
-        optionalServices: ['d91714ef-28b9-4f91-ba16-f0d9a604f112']
-      });
+      let deviceSelected;
+
+      if (bluetooth) {
+        if (!navigator.bluetooth) {
+          return Promise.reject(new Error('No Web Bluetooth support.'));
+        }
+
+        deviceSelected = await navigator.bluetooth.requestDevice({
+          filters: [{ namePrefix: 'GDX' }],
+          optionalServices: ['d91714ef-28b9-4f91-ba16-f0d9a604f112']
+        });
+      } else {
+        if (!navigator.hid) {
+          return Promise.reject(new Error('No Web HID support.'));
+        }
+        const devices = await navigator.hid.requestDevice({
+          filters:
+          [
+            {
+              vendorId: 0x08f7,
+              productId: 0x0010
+            },
+          ]
+        });
+        // UI only alllows one at a time anyways so just grab the first one.
+        // eslint-disable-next-line prefer-destructuring
+        deviceSelected = devices[0];
+      }
+
+      if (!deviceSelected) throw new DOMException(`No device selected.`);
 
       // Create the device but don't open or start measurements.
-      deviceObject.device = await godirect.createDevice(bleDevice, {open:false, startMeasurements:false});
+      deviceObject.device = await godirect.createDevice(deviceSelected, {open: false, startMeasurements: false});
   
       // print message that first device has closed when it's closed
       deviceObject.device.on('device-closed', () => ((deviceObject) => {
@@ -101,6 +155,8 @@
       })(deviceObject));
 
       deviceObject.device.on('device-opened', () => ((deviceObject) => {
+        output.textContent += `\nConnected to `+deviceObject.device.name+`\n`;
+
         // Enable the first sensor
         const enabledSensor = deviceObject.device.sensors[0];
         

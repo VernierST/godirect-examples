@@ -32,23 +32,50 @@
       <li>Disconnect</li>
     </ul>
   </p>
-  <button id="select_device">Select Go Direct Device</button>
+
+  <p id="connection_type">
+    <input type="radio" id="ble" name="type" value="1" checked>
+    <label id="ble_label" for="ble">Bluetooth</label>
+    <input type="radio" id="usb" name="type" value="0">
+    <label id="usb_label" for="usb">USB</label><br>
+  </p>
+  <button id="select_device">Select a Go Direct Device</button>
   <div id="error"></div>
   <pre id="output"></pre>
-
   <script>
+    const usbBtn = document.querySelector('#usb');
+    const usbLabel = document.querySelector('#usb_label');
+    const bleBtn = document.querySelector('#ble');
+    const bleLabel = document.querySelector('#ble_label');
     const selectDeviceBtn = document.querySelector('#select_device');
     const output = document.querySelector('#output');
     const error = document.querySelector('#error');
-    if (!navigator.bluetooth) {
-      error.innerHTML = `<p><b>Web Bluetooth API is needed for this example.</b></p>`;
-      error.innerHTML += `<p>This browser does not have support yet. <a href="https://webbluetoothcg.github.io/web-bluetooth/">More information</a></p>`;
-      selectDeviceBtn.style.visibility='hidden';
+
+    if (navigator.bluetooth) {
+      bleLabel.innerHTML = `Bluetooth`;
+    } else {
+      if (navigator.hid) usbBtn.checked = true;
+      bleLabel.innerHTML = `Bluetooth <span style="color:red">Not Supported</span> <a href="https://webbluetoothcg.github.io/web-bluetooth/">More information</a>`;
+      bleBtn.disabled = true;
     }
 
+    if (navigator.hid) {
+      usbLabel.innerHTML = `USB`;
+    } else {
+      if (navigator.bluetooth) bleBtn.checked = true;
+      usbLabel.innerHTML = `USB <span style="color:red">Not Supported</span> <a href="https://wicg.github.io/webhid/">More information</a>`;
+      usbBtn.disabled = true;
+    }
+
+    if (!navigator.bluetooth && !navigator.hid) {
+      selectDeviceBtn.style.visibility='hidden';
+    } 
+
     const selectDevice = async () => {
+      const bluetooth = document.querySelector('input[name="type"]:checked').value === "1";
+      error.textContent = "";
       try {
-        const gdxDevice = await godirect.selectDevice();
+        const gdxDevice = await godirect.selectDevice(bluetooth);
 
         output.textContent += `\n Connected to `+gdxDevice.name;
         output.textContent += `\n Reading 10 measurements \n`;

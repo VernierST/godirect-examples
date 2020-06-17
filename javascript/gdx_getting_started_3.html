@@ -31,7 +31,7 @@ Disconnect">
   <p>
     This example shows how you can use the godirect-js module to communicate with a <a href="https://www.vernier.com/products/sensors/go-direct-sensors/">Vernier Go Direct Sensor</a>. This includes:
     <ul>
-      <li>Select a Go Direct Device</li>
+      <li>Select a Go Direct Device with Bluetooth</li>
       <li>Provide the user with a prompt to select the active sensors</li>
       <li>Collect 15 measurements from the enabled sensors</li>
       <li>Disconnect</li>
@@ -64,7 +64,7 @@ Disconnect">
           optionalServices: ['d91714ef-28b9-4f91-ba16-f0d9a604f112']
         });
         // create the device and open it, but don't start measurements
-        gdxDevice = await godirect.createDevice(bleDevice, {open:true, startMeasurements:false});
+        gdxDevice = await godirect.createDevice(bleDevice,  {open: true, startMeasurements: false}));
 
         selectSensorsBtn.style.visibility='visible';
         selectDeviceBtn.style.visibility='hidden';
