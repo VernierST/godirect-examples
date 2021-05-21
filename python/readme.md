@@ -20,7 +20,6 @@ We have developed a Python module called `godirect` that allows you to communica
 
 - A Vernier Go Direct Sensor
 - A Windows® 10, macOS®, Linux, or Raspberry Pi computer
-  - Mac users take note that the native BLE hardware that comes installed on your Mac is currently not supported by godirect. If you wish to connect your Mac to your Go Direct device using BLE, you will need to have a [Bluegiga BLED112 Bluetooth® Low Energy Dongle](https://www.silabs.com/products/wireless/bluetooth/bluetooth-low-energy-modules/bled112-bluetooth-smart-dongle).
 - An installation of Python 3
 - An installation of the Vernier godirect module for Python 3
 
@@ -54,11 +53,7 @@ The `pip3` commands are executed by running them in your operating systems’ to
 ### Windows
 Run the following command in Powershell or Command Prompt to install the godirect module for USB and BLE:
 
-`pip3 install godirect[USB,BLE]`
-
-If you received an error, read below the next pip3 command for a possible solution. If there was no error, then the next step is to install a module called Bleak. This module is required to support communication through your computer’s Bluetooth radio. Bleak is installed by running the following command:
-
-`pip3 install bleak`
+`pip3 install godirect`
 
 If you received an error during the installation of godirect, part of which looks like the message below, it is probably because your Windows system does not have the appropriate compiler. The godirect module includes a package that requires a C++ compiler.
 
@@ -71,24 +66,18 @@ In order to install without this failure, you will need to follow the instructio
 ### Mac
 Run the following command in Terminal to install the godirect module for USB and BLE: 
 
-`pip3 install godirect[USB,BLE]`
-
-BLE support on Mac is currently only with the use of a [Bluegiga BLED112 Bluetooth® Low Energy Dongle](https://www.silabs.com/products/wireless/bluetooth/bluetooth-low-energy-modules/bled112-bluetooth-smart-dongle). You will need this dongle if you wish to talk to the Go Direct sensors via BLE.
+`pip3 install godirect`
 
 ### Linux (and Linux on Raspberry Pi)
 Run the following command in your terminal to install the godirect module for USB and BLE: 
 
-`pip3 install godirect[USB,BLE]`
+`pip3 install godirect`
 
 Some Linux distributions will not include all of the tools required by the godirect module and its dependencies. If you see errors when you run the `pip3` install, you might need to first install the two packages as shown below, before trying again:
 
 `sudo apt install libusb1.0.0`
 
 `sudo apt install libudev-dev`
-
-In order to support communication through your computer’s Bluetooth radio, a module called Bleak must be installed by running the following command in your terminal:
-
-`pip3 install bleak`
 
 In order to communicate with Go Direct devices over USB on Linux systems, you will need to provide a special udev rule that allows the device to be identified when it is plugged in. The rule file is located on our github directory. Use the following steps to download the rule file and then move it to the proper location:
 - Download the rule file (vstlibusb.rules) from our [github directory](https://github.com/VernierST/godirect-examples/tree/master/python).
@@ -105,6 +94,14 @@ In order to communicate with Go Direct devices over USB on Linux systems, you wi
     - Run this command to move the file to the /etc/udev/rules.d directory:
       - `sudo cp vstlibusb.rules /etc/udev/rules.d/.`
   - The rule will not take effect until you plug in a Go Direct device by USB. If a Go Direct device is already connected to the Linux computer, disconnect it and plug it in again. You may need to reboot your device.
+
+## Bluegiga Dongle
+
+If you wish to connect to Go Direct device using a [Bluegiga BLED112 Bluetooth® Low Energy Dongle](https://www.silabs.com/products/wireless/bluetooth/bluetooth-low-energy-modules/bled112-bluetooth-smart-dongle), rather than the native BLuetooth radio, you will need to install the vernierpygatt module with this command:
+
+`pip3 install vernierpygatt`
+
+You will also need to pass `use_ble_bg=True` into the godirect module. There is a comment regarding this in the `gdx.ble_open` function in the gdx.py file.
 
 ## Confirm Installation of the godirect Module
 
@@ -237,13 +234,9 @@ As stated earlier, these gdx functions are available in the gdx.py file, in the 
 - If you are using Windows, it must be Windows 10.
 - The godirect module will pair your Go Direct sensor to your computer. You do not need to manually pair the device in Settings. In fact, this will probably cause issues. 
 - If possible, as a first step in troubleshooting, try using your Go Direct sensor with our free [Graphical Analysis™ 4](https://www.vernier.com/product/graphical-analysis-4/) app. Do you have success connecting via Bluetooth with the app?
-- If your computer does not have on-board bluetooth, or if you are using a Mac, you can use the Bluegiga bluetooth dongle, as mentioned in the [Getting Started Requirements](#getting-started-requirements) section of this document. 
-- If you are using your computer’s on-board Bluetooth and you are getting an error, make sure that you have the Bleak module installed:  ```pip3 install bleak```
-- Version 1.0.6 of godirect added native BLE support on Windows and Linux (Including RPi). Older versions only support Bluetooth with the Bluegiga dongle.
-- If you are using the gdx module, it has a command to quiet the Bleak module’s logging output. If you are not using gdx you can use the command: 
-```python
-logging.getLogger('bleak').propagate = False
-```
+- If you are using your computer’s on-board Bluetooth and you are getting an error, make sure that you have the latest Bleak module installed:  ```pip3 install bleak```
+- Version 1.1.0 of godirect added native BLE support on Windows, Mac and Linux (Including RPi). Version 1.0.6 only supported native BLE on Windows and Linux. Older versions only support Bluetooth with the Bluegiga bluetooth dongle.
+- If your computer does not have on-board bluetooth, you can use the Bluegiga bluetooth dongle, as mentioned in the [Bluegiga Dongle](#bluegiga-dongle) section of this document.
 
 ### Installing Python on Windows
 - When installing on Windows, be sure to modify the installation to enable the "Add Python to environment variables" option in the "Advanced Options" part of the installer. If you missed this step, you can always modify your installation, like so:

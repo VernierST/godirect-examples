@@ -15,10 +15,8 @@ from godirect import GoDirect
 import logging
 logging.basicConfig()
 #logging.getLogger('godirect').setLevel(logging.DEBUG)
+#logging.getLogger('bleak').setLevel(logging.DEBUG)
 #logging.getLogger('pygatt').setLevel(logging.DEBUG)
-
-#mute the debug output from bleak
-logging.getLogger('bleak').propagate = False 
 
 # The first USB device found will be used. If no USB devices are found, then 
 # the BLE device with the strongest signal over -100dB is used.
