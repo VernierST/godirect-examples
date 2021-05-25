@@ -80,7 +80,7 @@ Some Linux distributions will not include all of the tools required by the godir
 `sudo apt install libudev-dev`
 
 In order to communicate with Go Direct devices over USB on Linux systems, you will need to provide a special udev rule that allows the device to be identified when it is plugged in. The rule file is located on our github directory. Use the following steps to download the rule file and then move it to the proper location:
-- Download the rule file (vstlibusb.rules) from our [github directory](https://github.com/VernierST/godirect-examples/tree/master/python).
+- Download the rule file (vstlibusb.rules) from our [github directory](https://github.com/VernierST/godirect-examples/tree/main/python).
 - Use the File Manager to move the vstlibusb.rules file to the Desktop
 - Open the terminal
 - Navigate to the folder containing the vstlibusb.rules file
