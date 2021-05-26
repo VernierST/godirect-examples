@@ -100,6 +100,7 @@ to INFO or DEBUG to see more communication detail.
 import logging
 logging.basicConfig()
 logging.getLogger('godirect').setLevel(logging.DEBUG)
+logging.getLogger('bleak').setLevel(logging.DEBUG)
 logging.getLogger('pygatt').setLevel(logging.DEBUG)
 ```
 

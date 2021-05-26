@@ -10,10 +10,8 @@ import time
 
 logging.basicConfig()
 #logging.getLogger('godirect').setLevel(logging.DEBUG)
+#logging.getLogger('bleak').setLevel(logging.DEBUG)
 #logging.getLogger('pygatt').setLevel(logging.DEBUG)
-
-#mute the debug output from bleak
-logging.getLogger('bleak').propagate = False 
 
 class gdx:
     
