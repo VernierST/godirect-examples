@@ -1,6 +1,6 @@
 # Go Direct® Library Examples
 
-Official examples for [Vernier Go Direct Sensors](https://www.vernier.com/products/sensors/go-direct-sensors) in both Python and JavaScript.
+Official examples for [Vernier Go Direct Sensors](https://www.vernier.com/products/sensors/go-direct-sensors)<sup>1</sup> in both Python and JavaScript.
 
 ## Getting Started
 
@@ -19,3 +19,4 @@ All of the content in this repository is available under the terms of the [BSD 3
 
 Vernier products are designed for educational use. Our products are not designed nor are they recommended for any industrial, medical, or commercial process such as life support, patient diagnosis, control of a manufacturing process, or industrial testing of any kind.
 
+<sup>1</sup> Go Direct spectrometers are not supported.
