@@ -1,8 +1,10 @@
 # FAQs for Go Direct JavaScript
 
 ## What are the requirements for using godirect-js?
-- A [Vernier Go Direct Sensor](https://www.vernier.com/products/sensors/go-direct-sensors)
+- A [Vernier Go Direct Sensor](https://www.vernier.com/products/sensors/go-direct-sensors) <sup>1</sup>
 - A computer or mobile device that run the Chrome browser
+
+<sup>1</sup> Go Direct spectrometers are not supported.
 
 ## How do I get started with JavaScript?
 Here are some generally helpful links for getting started with JavaScript

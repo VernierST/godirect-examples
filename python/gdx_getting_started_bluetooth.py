@@ -35,7 +35,7 @@ gdx.start()
 
 for i in range(0,20):
     measurements = gdx.read()
-    if measurements == None: 
+    if measurements == None:
         break 
     print(measurements)
 

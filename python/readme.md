@@ -1,6 +1,6 @@
 # Getting Started with Vernier Go Direct® Sensors and Python
 
-This guide shows you how to get started writing Python programs for your Vernier Go Direct sensors. The guide contains the following topics:
+This guide shows you how to get started writing Python programs for your Vernier Go Direct<sup>1</sup> sensors. The guide contains the following topics:
 
 - [Getting Started Requirements](#getting-started-requirements)
 - [Install Python 3](#install-python-3)
@@ -13,6 +13,8 @@ This guide shows you how to get started writing Python programs for your Vernier
 - [Troubleshooting and Notes](#troubleshooting-and-notes)
 
 If you are new to Python you should look over all of the steps. If you are familiar with Python you might just focus on installing the godirect module and downloading the examples.
+
+<sup>1</sup> Go Direct spectrometers are not supported.
 
 ## Getting Started Requirements
 
