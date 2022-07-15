@@ -24,7 +24,7 @@ gdx.select_sensors([1,2,3]), gdx.start(100)
 '''
 
 # This code imports the gdx functions. 
-from gdx import gdx
+from gdx_modules import gdx
 gdx = gdx.gdx()
 
 # This code uses the gdx functions to collect data from your Go Direct sensors. 

@@ -25,13 +25,14 @@ gdx.open_ble("GDX-MD 0B1010H3"), gdx.select_sensors([5]), gdx.start(50)
 
 '''
 
-from gdx import gdx
+from gdx_modules import gdx
 gdx = gdx.gdx()
-  
-gdx.open_ble()
 
-gdx.select_sensors()
-gdx.start() 
+gdx.open_ble('GDX-FOR 071000U9')
+#gdx.open('ble', 'GDX-FOR 071000U9', vpython=False)
+
+gdx.select_sensors([1])
+gdx.start(100) 
 
 for i in range(0,20):
     measurements = gdx.read()
