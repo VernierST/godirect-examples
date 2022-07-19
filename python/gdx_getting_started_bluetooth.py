@@ -32,13 +32,14 @@ gdx.open_ble('GDX-FOR 071000U9')
 #gdx.open('ble', 'GDX-FOR 071000U9', vpython=False)
 
 gdx.select_sensors([1])
-gdx.start(100) 
+gdx.start(250) 
 
-for i in range(0,20):
+for i in range(0,5):
     measurements = gdx.read()
     if measurements == None:
         break 
     print(measurements)
 
+gdx.stop()
 gdx.stop()
 gdx.close()

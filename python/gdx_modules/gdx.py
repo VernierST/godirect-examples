@@ -10,8 +10,10 @@ import time
 
 #Don't call the class directly since it will cause a recursive error
 # Instead, import the module and then call the class in the code.
-import gdx_modules.gdx_vpython
+#import gdx_modules.gdx_vpython
+from gdx_modules import gdx_vpython as gdxvp
 #vp = gdx_modules.gdx_vpython.ver_vpython()
+vp = gdxvp.ver_vpython()
 
 
 logging.basicConfig()
@@ -40,21 +42,50 @@ class gdx:
     ble_open = False
     # is this a vpython program
     vpython = False
+    # is this the first time calling start() in a vpython program?
+    vp_first_start = True
+    # store the period. may be used in vp_start_button()
+    period = 100
+    # vp start button flag. Use this to determine if gdx.start() or gdx.stop() need to be called
+    vp_start_button_flag = False
 
     def __init__(self):
 
         self.godirect = GoDirect(use_ble=False, use_usb=False) 
     
-    def close_vp(self):
+    def vp_close_button(self):
+
+        # First check to make sure there are devices connected.      
+        if not gdx.devices:
+            print("vp_close_button() - no device connected")
+            return
         
-        vp = gdx_modules.gdx_vpython.ver_vpython()
+        #vp = gdx_modules.gdx_vpython.ver_vpython()
         is_closed = vp.closed_button()
+        if is_closed == True:
+            self.stop()
+            self.close()
         return is_closed
 
-    def start_vp(self):
+    def vp_start_button(self):
+
+        # First check to make sure there are devices connected.      
+        if not gdx.devices:
+            print("vp_start_button() - no device connected")
+            return
         
-        vp = gdx_modules.gdx_vpython.ver_vpython()
+        #vp = gdx_modules.gdx_vpython.ver_vpython()
         is_running = vp.start_button()
+        # only want to call start and stop on the button press
+        if gdx.vp_start_button_flag != is_running:
+            if is_running == True:
+                self.start(gdx.period)
+                print("vp gdx start period = ", gdx.period)
+                gdx.vp_start_button_flag = True
+            else:
+                self.stop()
+                print("vp gdx stop")
+                gdx.vp_start_button_flag = False
         return is_running
     
     # new, updated 'open' function to combine ble and usb and also 
@@ -68,12 +99,19 @@ class gdx:
         # in the console
         if connection == 'usb':
             self.open_usb(device_to_open)
-        if connection == 'ble':
-            self.open_ble(device_to_open)
+        try:
+            if connection == 'ble':
+                self.open_ble(device_to_open)
+        except:
+            print("Error with bluetooth: make sure it is turned on.")
+        if not gdx.devices:
+            print("open() - no device connected")
+            return
+        
         # if they are using vpython, then create the canvas and start/stop/close buttons
         gdx.vpython = vpython
         if gdx.vpython == True:
-            vp = gdx_modules.gdx_vpython.ver_vpython()
+            #vp = gdx_modules.gdx_vpython.ver_vpython()
             vp.setup_canvas()
 
 
@@ -302,12 +340,24 @@ class gdx:
         if period < 10:
             input("Be aware that sampling at a period less than 10ms may be problemeatic. Press Enter to continue ")
         
+        
+        # if this is a vpython program don't don't start here
+        # because it will be using the start/stop buttons
+        if gdx.vpython == True and gdx.vp_first_start == True:
+            pass
         # Start data collection (of the enabled sensors) for each active device.
-        i = 0
-        while i < len(gdx.devices):
-            print("start device ", i, sep="")
-            gdx.devices[i].start(period=period)
-            i +=1           
+        else:
+            i = 0
+            while i < len(gdx.devices):
+                print("start device ", i, sep="")
+                gdx.devices[i].start(period=period)
+                i +=1 
+        
+        # store the period in case it is needed in vp_start_button()
+        gdx.period = period
+        # if this is the first call to start() change this flag 
+        if gdx.vp_first_start == True:
+            gdx.vp_first_start = False        
 
     
     def read(self):             

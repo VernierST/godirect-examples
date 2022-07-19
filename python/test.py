@@ -4,22 +4,21 @@ from gdx_modules import gdx
 gdx = gdx.gdx()
 
 
-# Set the rate for data collection
-dt_period = 250
-
 gdx.open(connection='ble', device_to_open='GDX-FOR 071000U9', vpython=True)
 gdx.select_sensors([1])
-gdx.start(period=dt_period)
+gdx.start(period=250)    # Set the rate for data collection
 
-while gdx.close_vp() == False:
+while gdx.vp_close_button() == False:    
     #print("close button = False")
     rate(50)
-    running = gdx.start_vp()
-    print("start button = ", running)
-    if running == True:
+    if gdx.vp_start_button() == True:
         #gdx.read_ch()
-        gdx.read()
         print("start")
-    #print("running")
+        measurements = gdx.read()
+        if measurements == None:
+            break 
+        print(measurements)
+        
+    print("loop running")
 
 print("Done")
