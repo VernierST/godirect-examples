@@ -19,11 +19,11 @@ gdx.enabled_sensor_info()
 Note: This example assumes one Go Direct device
 '''
 
-from gdx import gdx
+from gdx_modules import gdx
 gdx = gdx.gdx()
 
-#gdx.open_usb() #uncomment this function and comment out the ble function if you wish to connect via USB
-gdx.open_ble() 
+gdx.open_usb() #uncomment this function and comment out the ble function if you wish to connect via USB
+#gdx.open_ble() 
 
 # Return the device_info list [name, description, battery %, charger state, rssi]
 input('press enter to get device info')

@@ -28,8 +28,15 @@ gdx.open_ble("GDX-MD 0B1010H3"), gdx.select_sensors([5]), gdx.start(50)
 from gdx_modules import gdx
 gdx = gdx.gdx()
 
-gdx.open_ble('GDX-FOR 071000U9')
-#gdx.open('ble', 'GDX-FOR 071000U9', vpython=False)
+#gdx.open_ble('GDX-FOR 071000U9')
+#gdx.open_ble()
+#gdx.open_usb('GDX-FOR 071000U9')
+#gdx.open_usb()
+#gdx.open('usb', 'GDX-FOR 071000U9')
+#gdx.open('usb')
+#gdx.open('ble', 'GDX-FOR 071000U9')
+gdx.open('ble', 'proximity_pairing')
+#gdx.open('ble')
 
 gdx.select_sensors([1])
 gdx.start(250) 
@@ -40,6 +47,5 @@ for i in range(0,5):
         break 
     print(measurements)
 
-gdx.stop()
 gdx.stop()
 gdx.close()

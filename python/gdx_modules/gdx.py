@@ -8,12 +8,8 @@ from godirect import GoDirect
 import logging
 import time    
 
-#Don't call the class directly since it will cause a recursive error
-# Instead, import the module and then call the class in the code.
-#import gdx_modules.gdx_vpython
-from gdx_modules import gdx_vpython as gdxvp
-#vp = gdx_modules.gdx_vpython.ver_vpython()
-vp = gdxvp.ver_vpython()
+from gdx_modules import gdx_vpython
+vp = gdx_vpython.ver_vpython()
 
 
 logging.basicConfig()
@@ -93,20 +89,11 @@ class gdx:
     def open(self, connection='usb', device_to_open=None, vpython=False):
         """
         """
-        
-        # if vpython=True and device_to_open is left blank, create the UI
-        # to select the device in the vpython terminal, otherwise it shows 
-        # in the console
-        if connection == 'usb':
+              
+        if connection == 'ble':
+            self.open_ble(device_to_open)
+        else:
             self.open_usb(device_to_open)
-        try:
-            if connection == 'ble':
-                self.open_ble(device_to_open)
-        except:
-            print("Error with bluetooth: make sure it is turned on.")
-        if not gdx.devices:
-            print("open() - no device connected")
-            return
         
         # if they are using vpython, then create the canvas and start/stop/close buttons
         gdx.vpython = vpython
@@ -123,24 +110,27 @@ class gdx:
         # Call the godirect module to open a USB connection
         self.godirect.__init__(use_ble=False, use_usb=True)
 
-        found_devices = self.godirect.list_devices()
-        number_found_devices = len(found_devices)
-        print("number of usb devices found = " +str(number_found_devices))
-
-        if number_found_devices == 0:
-            print("open_usb() - no device connected")
-            gdx.devices = []
-
+        found_devices, number_found_devices = self.find_devices()
+        
+        if number_found_devices >= 1: 
+            # need to have the usb device open in order to get its name
+            open_usb_devices = self.open_all_usb_devices_to_get_name(found_devices)  
+            if open_usb_devices >= 1:                            
+                if device_to_open != None: 
+                    self.select_dev_using_sn(found_devices, device_to_open)
+                else:
+                    self.user_chooses_device(found_devices) 
+            else:
+                print("USB device found but error trying to open")
+                print("Open Graphical Analysis to verify a connection") 
         else:
-            gdx.devices = found_devices
-            print("attempting to open", len(gdx.devices), "device(s)...")
-            i=0
-            while i < len(gdx.devices): 
-                open_device_success = gdx.devices[i].open()
-                print("open device ",i, " = ", open_device_success, sep="")
-                i +=1               
-
-
+            str1 = "No Go Direct device found \n\n"
+            str2 = "Troubleshooting tips... \n"
+            str3 = "Reconnect the USB cable \n"
+            str4 = "Try a different USB port \n"
+            str5 = "Try a different USB cable \n"
+            str6 = "Open GA (Graphical Analysis) to verify a good connection \n" 
+            print(str1 + str2 + str3 +str4 +str5 +str6)     
 
     def open_ble(self, device_to_open=None):
         """ Open a Go Direct device via bluetooth for data collection. 
@@ -163,84 +153,165 @@ class gdx:
         # use_ble_bg equal to True (uncomment the command)
         self.godirect.__init__(use_ble=True, use_ble_bg=False, use_usb=False)
         #self.godirect.__init__(use_ble=True, use_ble_bg=True, use_usb=False)
-        
-        # Find all available bluetooth devices 
-        found_devices = self.godirect.list_devices() 
-        number_found_devices = len(found_devices)
-        print("number of ble devices found = " +str(number_found_devices))
-        
-        # Was there 1 or more Go Direct ble devices found?      
-        if number_found_devices >= 1: 
+        found_devices, number_found_devices = self.find_devices()
              
-            # The case below occurs when the device_to_open parameter = "proximity_pairing"
-            # In the for loop each device, in the list of found_devices, is pulled out one at a time.
-            # That device's rssi is compared to the previous highest rssi.
-            # The device with the highest rssi is stored as the device to open                
+        # Was there 1 or more Go Direct ble devices found? 
+        # print("found " +str(number_found_devices) + " devices:")     
+        if number_found_devices >= 1: 
+                           
             if device_to_open == "proximity_pairing": 
-                print ("begin proximity pairing")
-                i=1
-                rmax=-99
-                dmax=0
-                for device in found_devices:
-                    print(str(i)+": "+str(device))
-                    v=device.rssi
-                    if v>rmax:
-                        dmax=i
-                        rmax=v
-                        #print("rmax: ", rmax," dmax: ", dmax)
-                    i+= 1
-                x=dmax
-                selected = int(x)
-                if selected <= number_found_devices:
-                    gdx.devices.append(found_devices[selected-1])
-                    print("proximity device to open = ", found_devices[selected-1] )
-                else:
-                    print("Error in proximity selection")
-
-            # The case below occurs when the device_to_open argument is given a specific device
-            # name or names, such as "GDX-FOR 071000U9" or "GDX-FOR 071000U9, GDX-HD 151000C1"
-            # In the for loop each device to open is compared to the devices found in the list of 
-            # found_devices. If the names match, then we store the device as a device to open.               
+                self.proximity_pairing(found_devices, number_found_devices)                 
             elif device_to_open != None: 
-                device_to_open_list = device_to_open.split(", ")
-                print("searching for device(s) ", device_to_open_list)
-                for x in device_to_open_list:
-                    for device in found_devices: 
-                        if x == str(device.name):
-                            print("device_to_open_found = True")
-                            gdx.devices.append(device)                
-            
-            # The case below occurs when there is no device_to_open argument. In this case, provide 
-            # a list of all discovered ble sensors and the user chooses which device or devices to open.          
-            elif device_to_open == None: 
-                #print("found " +str(number_found_devices) + " devices:")
-                
-                i=1
-                for d in found_devices:
-                    print(str(i)+": "+str(d))
-                    i += 1
-                print("Enter device number. To select multiple devices, separate with commas (no spaces):", end=' ')
-                user_selected_device = []
-                for s in input().split(','):
-                    user_selected_device.append(int(s))
-                for selected in user_selected_device: 
-                    gdx.devices.append(found_devices[selected-1])
-        
-            # Open the device or devices that were selected in one of the cases above.         
-            i = 0
-            print("attempting to open", len(gdx.devices), "device(s)...")
-            while i < len(gdx.devices): 
-                open_device_success = gdx.devices[i].open()
-                print("open device ",i, " = ", open_device_success, sep="")
-                if open_device_success:
-                    gdx.ble_open = True
-                time.sleep(1)
-                i +=1    
-		
+                self.select_dev_using_sn(found_devices, device_to_open)
+            else:
+                self.user_chooses_device(found_devices) 
+
+            open_success = self.open_selected_device()  
+            if open_success == False:
+                print("Go Direct device found but not able to be opened")
+                print("Troubleshoot by opening Graphical Analysis to test")               
+                      
         else:
-            print("open_ble() - No Go Direct Devices Found on Bluetooth")
-     
-           
+            str1 = "No Go Direct device found \n\n"
+            str2 = "Troubleshooting tips... \n"
+            str3 = "Make sure device is powered on \n"
+            str4 = "Confirm computer Bluetooth is on \n"
+            str5 = "Open GA (Graphical Analysis) to verify a good connection \n" 
+            print(str1 + str2 + str3 +str4 +str5)
+    
+    def find_devices(self):
+        """
+        """
+        try:
+            found_devices = self.godirect.list_devices()
+            number_found_devices = len(found_devices)
+            print("number of devices found = " +str(number_found_devices))
+        except:
+            #print("No Go Direct devices found")
+            found_devices = 0
+            number_found_devices = 0
+            gdx.devices = []
+        if number_found_devices == 0:
+            gdx.devices = []
+        return found_devices, number_found_devices
+
+    def open_all_usb_devices_to_get_name(self, found_devices):
+        """ Unfortunately, cannot get the name (like, 'GDX-FOR 071000U9') from
+        a USB device until it is open. So, first open, then let user select the
+        device.
+        """
+
+        #print("attempting to open", len(found_devices), "device(s)...")
+        i = 0
+        open_usb_devices = 0
+        while i < len(found_devices): 
+            open_device_success = found_devices[i].open()
+            if open_device_success:
+                open_usb_devices += 1
+            #print("open device ",i, " = ", open_device_success, sep="")
+            i += 1 
+
+        return open_usb_devices
+    
+    def select_dev_using_sn(self, found_devices, device_to_open):
+        """ The case below occurs when the device_to_open argument is given a specific device
+            name or names, such as "GDX-FOR 071000U9" or "GDX-FOR 071000U9, GDX-HD 151000C1"
+            In the for loop each device to open is compared to the devices found in the list of 
+            found_devices. If the names match, then we store the device as a device to open.
+        """
+
+        device_to_open_list = device_to_open.split(", ")
+        for x in device_to_open_list:
+            print("name of device wanting to open: ", x)
+            for device in found_devices: 
+                print("name of available device: ", str(device.name))
+                if x == str(device.name):
+                    print("device names match = True")
+                    gdx.devices.append(device) 
+                else:
+                    print("device names match = False") 
+
+
+    def user_chooses_device(self, found_devices):
+        """ The case below occurs when there is no device_to_open argument. In this case, provide 
+            a list of all discovered ble sensors and the user chooses which device or devices to open.
+        """
+
+        i=1
+        print('\n')
+        print("List of found devices")
+        for d in found_devices:
+            print(str(i)+": "+str(d))
+            i += 1
+        
+        if len(found_devices) == 1:
+            # If there is just 1 usb or ble device the user only has to hit Enter
+            print('\n')
+            print("One device found. Press 'enter' to connect", end=' ')
+            input()
+            gdx.devices.append(found_devices[0])
+        else:
+            print('\n')
+            print("In the list above, find the serial number of the device")
+            print("you wish to connect. To the left of the serial number is")
+            print("a number. To select this device, type in this number")
+            print("and then press 'enter'. To select multiple devices, separate")
+            print("the numbers with commas with no spaces(e.g., 1,2):", end=' ')
+        
+            user_selected_device = []
+            for s in input().split(','):
+                user_selected_device.append(int(s))
+            for selected in user_selected_device: 
+                gdx.devices.append(found_devices[selected-1])
+            print('\n')
+
+    def proximity_pairing(self, found_devices, number_found_devices):
+        """ The case below occurs when the device_to_open parameter = "proximity_pairing"
+            In the for loop each device, in the list of found_devices, is pulled out one at a time.
+            That device's rssi is compared to the previous highest rssi.
+            The device with the highest rssi is stored as the device to open  
+        """
+
+        print ("begin proximity pairing")
+        i=1
+        rmax=-99
+        dmax=0
+        for device in found_devices:
+            print(str(i)+": "+str(device))
+            v=device.rssi
+            if v>rmax:
+                dmax=i
+                rmax=v
+                #print("rmax: ", rmax," dmax: ", dmax)
+            i+= 1
+        x=dmax
+        selected = int(x)
+        if selected <= number_found_devices:
+            gdx.devices.append(found_devices[selected-1])
+            print("proximity device to open = ", found_devices[selected-1] )
+        else:
+            print("Error in proximity selection")
+
+    def open_selected_device(self):
+        """ Open the device or devices that were selected in one of the cases above.
+        """
+        
+        open_success = False
+        i = 0
+        print("attempting to open", len(gdx.devices), "device(s)...")
+        while i < len(gdx.devices): 
+            open_device_success = gdx.devices[i].open()
+            print("open device ",i, " = ", open_device_success, sep="")
+            if open_device_success:
+                open_success = True
+                gdx.ble_open = True
+            else:
+                open_success = False
+                return open_success
+            time.sleep(1)
+            i +=1   
+
+        return open_success 
 
     def select_sensors(self, sensors=None):
         """ Select the sensors you wish to enable for data collection. 

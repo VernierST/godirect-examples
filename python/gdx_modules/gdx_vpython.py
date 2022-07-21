@@ -1,11 +1,7 @@
 import logging
-import time
-from typing_extensions import Self    
+  
 
-# Can we install the vpython library with godirect?
-from vpython import canvas, button, box
-from time import perf_counter
-from vpython import label, wtext, checkbox, button, rate, clock
+
 
 # from gdx_modules.gdx import gdx_class
 # gdx = gdx_class()
@@ -27,11 +23,12 @@ class ver_vpython:
     def __init__(self):  
         """
         """
-        #print("__init__ file in gdx_vpython")
-        #self.closed = False
-        #self.gdx = gdx_modules.gdx.gdx()
 
     def setup_canvas(self):
+
+        # Can we install the vpython library with godirect?
+        #from vpython import canvas, button, box, wtext, checkbox, rate
+        from vpython import canvas, box, button
 
         # if they are using vpython, then create the canvas and start/stop/close buttons
         global startbutton, closebutton
@@ -45,7 +42,9 @@ class ver_vpython:
     def print_to_canvas(self):
         """ Discovers all Go Direct devices with a USB connection and opens those devices
         for data collection. 
-		"""     
+		"""  
+        from vpython import canvas
+
         canvas.get_selected().append_to_caption('Must specify device channels.')
         canvas.get_selected().caption = 'test caption'
         raise AttributeError('Must specify device channels.')     
@@ -64,7 +63,7 @@ class ver_vpython:
 
     
 def vp_start_stop(f):
-    #gdxvp = gdx_modules.gdx.gdx()
+    
     if f.text == 'Start':
         f.text = 'Stop'
         #print("ver python period = ", ver_vpython.period)
@@ -79,7 +78,7 @@ def vp_start_stop(f):
 
 
 def vp_closed():
-    #gdxvp = gdx_modules.gdx.gdx()
+    from vpython import rate
 
     ver_vpython.closed = True
     ver_vpython.running = False
