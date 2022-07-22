@@ -64,25 +64,33 @@ class gdx:
         return is_closed
 
     def vp_start_button(self):
+        """ The flag allows us to determines if the state of the button has 
+        changed since the last time it was checked. If it has just been pressed 
+        into the Start (True) or Stop (False) state then the Go Direct hardware 
+        needs to be started or stopped and the flag needs to be updated.
+        """
 
         # First check to make sure there are devices connected.      
         if not gdx.devices:
             print("vp_start_button() - no device connected")
             return
         
-        #vp = gdx_modules.gdx_vpython.ver_vpython()
-        is_running = vp.start_button()
-        # only want to call start and stop on the button press
-        if gdx.vp_start_button_flag != is_running:
-            if is_running == True:
+        # the 'start_button_state' = True when it is in the Start position
+        # and = False when in the Stop position. 
+        start_button_state = vp.start_button()
+
+        # Check to see if the state of the button has changed (just been pressed)
+        if gdx.vp_start_button_flag != start_button_state:
+            if start_button_state == True:
                 self.start(gdx.period)
-                print("vp gdx start period = ", gdx.period)
+                print("vp gdx start")
                 gdx.vp_start_button_flag = True
             else:
                 self.stop()
                 print("vp gdx stop")
                 gdx.vp_start_button_flag = False
-        return is_running
+
+        return start_button_state
     
     # new, updated 'open' function to combine ble and usb and also 
     # setup the vpython canvas
@@ -412,7 +420,7 @@ class gdx:
             input("Be aware that sampling at a period less than 10ms may be problemeatic. Press Enter to continue ")
         
         
-        # if this is a vpython program don't don't start here
+        # if this is a vpython program don't start here
         # because it will be using the start/stop buttons
         if gdx.vpython == True and gdx.vp_first_start == True:
             pass
@@ -723,14 +731,12 @@ class gdx:
             [[name1,rssi1],[name2,rssi2],[name3,rssi3]]
 		""" 
         
-        # If you are going to call this several times, there might be a reason to only call the init code once.
+        # If you are going to call this several times, there might be a reason to only call 
+        # the init code once.
         # The first time you call this function set init = True, the following times set init = False.
         if init == True:
-
             self.godirect.__init__(use_ble=True, use_usb=False)
-    
-            gdx.ble_open = True
-
+            gdx.ble_open = False
             print("Begin search for ble devices...")
  
         # Find all available bluetooth devices 
