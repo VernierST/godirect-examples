@@ -1,10 +1,5 @@
 import logging
-
-from matplotlib.pyplot import gray
   
-
-
-
 # from gdx_modules.gdx import gdx_class
 # gdx = gdx_class()
 #import gdx_modules.gdx
@@ -12,15 +7,20 @@ from matplotlib.pyplot import gray
 
 #Are these variable required outside the class? 
 # woutput = wtext(text='')
-# startbutton = None
+# collectbutton = None
 # closebutton = None
 
 class ver_vpython:
 
 
     closed = False
-    start_button_state = False
-    #period = 100
+    collect_button_state = False
+    period = 0.01
+    time = 0
+    plot_1 = None    # vpython gcurve for the graph canvas
+    graph_canvas = None
+    cb = None    # collect button
+    clsb = None    # close button
 
     def __init__(self):  
         """
@@ -28,20 +28,84 @@ class ver_vpython:
 
     def setup_canvas(self):
 
-        # Can we install the vpython library with godirect?
+        # Can we install the vpython library, with godirect?
         #from vpython import canvas, button, box, wtext, checkbox, rate
-        from vpython import canvas, box, button
+        from vpython import button, scene
+        #global collectbutton, closebutton
+        # if they are using vpython, then create the canvas and collect/stop/close buttons
+        
+        #global collectbutton, closebutton
+        
+        scene.width = 0
+        scene.height = 10
 
-        # if they are using vpython, then create the canvas and start/stop/close buttons
-        global startbutton, closebutton
-        canvas(width=2, height=2)
-        box()
-        #startbutton = button(text='<b>COLLECT</b>', bind=vp_start_stop)  
-        #<h1 style="color: #2ecc71">freeCodeCamp</h1>
-        #startbutton = button(text='<h1 style="color: #2ecc71">COLLECT</h1>', bind=vp_start_stop)  
-        startbutton = button(text='<b style="color:green; font-size:26px"> COLLECT </b>', bind=vp_start_stop)
-        canvas.get_selected().append_to_caption('  ')
-        closebutton = button(text='<b style="color:red; font-size:26px">   CLOSE   </b>', bind=vp_closed)
+        scene.append_to_title('\n')
+        collectbutton = button(text='<b style="color:green; font-size:26px"> COLLECT </b>', 
+                            pos=scene.title_anchor, bind=vp_collect_stop)
+        ver_vpython.cb = collectbutton
+        scene.append_to_title('  ')
+        closebutton = button(text='<b style="color:red; font-size:26px">   CLOSE   </b>', 
+                            pos=scene.title_anchor, bind=vp_closed)
+        ver_vpython.clsb = closebutton
+        scene.append_to_title('\n')
+
+    def canvas_delete(self):
+        from vpython import canvas, scene
+
+        ver_vpython.cb.delete()
+        ver_vpython.clsb.delete()
+        scene.delete()
+        current = canvas.get_selected()
+        if current:
+            current.delete()
+
+        
+    def graph(self, state='init', data=[]):
+        from vpython import graph, gcurve, color
+
+        if state == 'init': 
+            gd = graph(xtitle='Time', ytitle='Data', scroll=True,
+                width=400, xmin=0, xmax=5, fast=False)
+            ver_vpython.graph_canvas = gd
+            plot_1 = gcurve(color=color.red)
+            ver_vpython.plot_1 = plot_1
+            ver_vpython.plot_1.plot(0,0)
+
+        elif state == 'plot':
+            ver_vpython.plot_1.plot(ver_vpython.time, data)
+            ver_vpython.time = ver_vpython.time + ver_vpython.period
+            print('vp time = ', ver_vpython.time)
+
+        elif state == 'clear':
+            ver_vpython.plot_1.delete()
+
+        else:
+            ver_vpython.graph_canvas.delete()
+
+    def graph_init(self, column_headers):
+        from vpython import graph, gcurve, color
+        if column_headers == None:
+            column_headers = 'Data'
+        gd = graph(xtitle='Time', ytitle=column_headers, scroll=True,
+        width=400, xmin=0, xmax=5, fast=False)
+        ver_vpython.graph_canvas = gd
+        plot_1 = gcurve(color=color.red)
+        ver_vpython.plot_1 = plot_1
+        ver_vpython.plot_1.plot(0,0)
+
+    def graph_plot(self, data=[]):
+        print('time = ', ver_vpython.time)
+        ver_vpython.plot_1.plot(ver_vpython.time, data)
+        ver_vpython.time = ver_vpython.time + ver_vpython.period
+        
+
+    def graph_clear(self, column_headers):
+        if column_headers == None:
+            column_headers = 'Data'
+        ver_vpython.graph_canvas.ytitle = column_headers
+        ver_vpython.plot_1.delete()
+    def graph_delete(self):
+        ver_vpython.graph_canvas.delete()
 
 
     def print_to_canvas(self):
@@ -53,13 +117,13 @@ class ver_vpython:
         canvas.get_selected().caption = 'test caption'
         raise AttributeError('Must specify device channels.')     
 
-    def start_button(self):
-        """ Return value = True if the button is in the Start state. Return
+    def collect_button(self):
+        """ Return value = True if the button is in the Collect state. Return
         value = False if it is in the Stop state.
         """
         from vpython import rate, color
 
-        if ver_vpython.start_button_state:
+        if ver_vpython.collect_button_state:
             return True
             
         else:
@@ -76,38 +140,42 @@ class ver_vpython:
             return False
 
     
-def vp_start_stop(f):
+def vp_collect_stop(f):
     """ This function gets called only when the button has been pressed. Return
-    value = True if the button is in the Start state.
+    value = True if the button is in the Collect state.
     """
     
     if f.text == '<b style="color:green; font-size:26px"> COLLECT </b>':
         f.text = '<b style="color:black; font-size:26px">    STOP     </b>'
         #
         # "Change the class variable’s value using the class name only."
-        ver_vpython.start_button_state = True
+        ver_vpython.collect_button_state = True
 
     else:
         f.text = '<b style="color:green; font-size:26px"> COLLECT </b>'
-        ver_vpython.start_button_state = False
+        ver_vpython.collect_button_state = False
 
 def vp_closed():
-    from vpython import rate
+    from vpython import rate, canvas
 
     ver_vpython.closed = True
-    ver_vpython.start_button_state = False
+    ver_vpython.collect_button_state = False
     # gdx = gdx_modules.gdx.gdx()
     # #x = ver.readall() # clear things out
-    # ver.start_button_state = False
+    # ver.collect_button_state = False
     #gdxvp.stop()
-    n = 0
-    while True: # shut down gracefully
-        rate(100)
-        n += 1
-        if n > 100: break
+    # n = 0
+    # while True: # shut down gracefully
+    #     rate(100)
+    #     n += 1
+    #     if n > 100: break
     #gdxvp.close()
-    startbutton.delete()
-    closebutton.delete()
+    # current = canvas.get_selected()
+    # if current:
+    #     current.delete()
+    
+    #collectbutton.delete()
+    #closebutton.delete()
     
 
 

@@ -48,6 +48,20 @@ class gdx:
     def __init__(self):
 
         self.godirect = GoDirect(use_ble=False, use_usb=False) 
+
+    def vp_setup(self, graph=False, meters=False):
+
+        # if they are using vpython, then create the canvas and start/stop/close buttons
+        gdx.vpython = True
+    
+        vp.setup_canvas()
+        if graph:
+            #vp.graph(state='init')
+            column_headers= self.enabled_sensor_info()
+            vp.graph_init(column_headers)
+
+    def vp_graph(self, measurement):
+        vp.graph_plot(data=measurement)
     
     def vp_close_button(self):
 
@@ -61,9 +75,12 @@ class gdx:
         if is_closed == True:
             self.stop()
             self.close()
+            #vp.graph(state='delete')
+            vp.graph_delete()
+            vp.canvas_delete()
         return is_closed
 
-    def vp_start_button(self):
+    def vp_collect_button(self):
         """ The flag allows us to determines if the state of the button has 
         changed since the last time it was checked. If it has just been pressed 
         into the Start (True) or Stop (False) state then the Go Direct hardware 
@@ -72,16 +89,19 @@ class gdx:
 
         # First check to make sure there are devices connected.      
         if not gdx.devices:
-            print("vp_start_button() - no device connected")
+            print("vp_collect_button() - no device connected")
             return
         
         # the 'start_button_state' = True when it is in the Start position
         # and = False when in the Stop position. 
-        start_button_state = vp.start_button()
+        start_button_state = vp.collect_button()
 
         # Check to see if the state of the button has changed (just been pressed)
         if gdx.vp_start_button_flag != start_button_state:
             if start_button_state == True:
+                column_headers= self.enabled_sensor_info()
+                vp.graph_clear(column_headers)
+                gdx_vpython.ver_vpython.time = 0
                 self.start(gdx.period)
                 print("vp gdx start")
                 gdx.vp_start_button_flag = True
@@ -102,12 +122,6 @@ class gdx:
             self.open_ble(device_to_open)
         else:
             self.open_usb(device_to_open)
-        
-        # if they are using vpython, then create the canvas and start/stop/close buttons
-        gdx.vpython = vpython
-        if gdx.vpython == True:
-            #vp = gdx_modules.gdx_vpython.ver_vpython()
-            vp.setup_canvas()
 
 
     def open_usb(self, device_to_open=None):
@@ -423,6 +437,9 @@ class gdx:
         # if this is a vpython program don't start here
         # because it will be using the start/stop buttons
         if gdx.vpython == True and gdx.vp_first_start == True:
+            # set the period variable in gdx_vpython
+            gdx_vpython.ver_vpython.period = period/1000
+            #vp.period = period
             pass
         # Start data collection (of the enabled sensors) for each active device.
         else:
@@ -434,6 +451,7 @@ class gdx:
         
         # store the period in case it is needed in vp_start_button()
         gdx.period = period
+            
         # if this is the first call to start() change this flag 
         if gdx.vp_first_start == True:
             gdx.vp_first_start = False        
@@ -488,6 +506,7 @@ class gdx:
                             sensor.clear()
                             values = []
                 i +=1  
+            
             return retvalues
         
 
