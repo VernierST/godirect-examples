@@ -13,7 +13,7 @@ gdx = gdx.gdx()
 # remove vpython = True and instead load that automatically in gdx.vp_setup()
 #gdx.open(connection='ble', device_to_open='GDX-FOR 071000U9', vpython=True)
 #gdx.open(connection='usb', device_to_open='GDX-FOR 071000U9', vpython=True, canvas=c2)
-gdx.open(connection='usb', device_to_open='GDX-FOR 071000U9', vpython=True)
+gdx.open(connection='usb', device_to_open='GDX-FOR 071000U9')
 #gdx.open(connection='usb', device_to_open='GDX-FOR 071000U9', vpython=True, canvas=None)
 # this would place it below the buttons
 # c2 = canvas(width=200, height=200)
@@ -24,9 +24,9 @@ gdx.open(connection='usb', device_to_open='GDX-FOR 071000U9', vpython=True)
 #         width=400, xmin=0, xmax=5, fast=False)
 # g = gcurve(color=color.red)
 
-gdx.select_sensors([1])
+gdx.select_sensors([1,2])
 
-gdx.vp_setup(graph=True)
+gdx.vp_setup(buttons=True, graph=True, meters=True)
 
 # don't call start() until after vpython=True has been set
 gdx.start(period=250)    # Set the rate for data collection
@@ -34,21 +34,28 @@ gdx.start(period=250)    # Set the rate for data collection
 # rate(50) is now in gdx_vpython
 #g.plot(0,0)
 #g.delete()
-i=0 
-while not gdx.vp_close_button(): 
-    #g.delete()  
-    
-    while gdx.vp_collect_button():
+
+while gdx.vp_close_button() == False:  # Run the main loop until the user clicks the Close button
+    while gdx.vp_collect_button() == True:   # Run the inner loop only when user clicks Collect button
         #gdx.read_ch()
         print("start collecting")
         measurements = gdx.read()
         if measurements == None:
             break 
-        gdx.vp_graph(measurements[0])
-        #g.plot(i, measurements[0])
+        gdx.vp_graph(measurements)
+        gdx.vp_meter(measurements)
         print(measurements)
-        i+=1
-        
-    #print("loop running")
+
+# if there are no buttons, can still send data to the graph
+# for i in range(0,20):
+#     measurements = gdx.read()
+#     if measurements == None:
+#         break 
+#     gdx.vp_graph(measurements[0])
+#     print(measurements)
+    
+# these can be removed when using the vpython Close button (is that okay?)        
+# gdx.stop()
+# gdx.close()
 
 print("Done")

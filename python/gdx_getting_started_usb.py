@@ -29,8 +29,8 @@ gdx = gdx.gdx()
 
 # This code uses the gdx functions to collect data from your Go Direct sensors. 
 gdx.open_usb()
-gdx.select_sensors()
-gdx.start() 
+gdx.select_sensors([1])
+gdx.start(1000) 
 
 for i in range(0,5):
     measurements = gdx.read()

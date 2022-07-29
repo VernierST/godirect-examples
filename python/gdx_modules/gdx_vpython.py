@@ -1,4 +1,5 @@
 import logging
+from turtle import pos
   
 # from gdx_modules.gdx import gdx_class
 # gdx = gdx_class()
@@ -18,7 +19,11 @@ class ver_vpython:
     period = 0.01
     time = 0
     plot_1 = None    # vpython gcurve for the graph canvas
+    plot_2 = None
+    plot_3 = None
     graph_canvas = None
+    meter_canvas = None
+    meter_text = None
     cb = None    # collect button
     clsb = None    # close button
 
@@ -52,35 +57,14 @@ class ver_vpython:
     def canvas_delete(self):
         from vpython import canvas, scene
 
+        # this also seems to work for deleting the button object
+        #canvas.delete(ver_vpython.cb)
         ver_vpython.cb.delete()
         ver_vpython.clsb.delete()
         scene.delete()
         current = canvas.get_selected()
         if current:
             current.delete()
-
-        
-    def graph(self, state='init', data=[]):
-        from vpython import graph, gcurve, color
-
-        if state == 'init': 
-            gd = graph(xtitle='Time', ytitle='Data', scroll=True,
-                width=400, xmin=0, xmax=5, fast=False)
-            ver_vpython.graph_canvas = gd
-            plot_1 = gcurve(color=color.red)
-            ver_vpython.plot_1 = plot_1
-            ver_vpython.plot_1.plot(0,0)
-
-        elif state == 'plot':
-            ver_vpython.plot_1.plot(ver_vpython.time, data)
-            ver_vpython.time = ver_vpython.time + ver_vpython.period
-            print('vp time = ', ver_vpython.time)
-
-        elif state == 'clear':
-            ver_vpython.plot_1.delete()
-
-        else:
-            ver_vpython.graph_canvas.delete()
 
     def graph_init(self, column_headers):
         from vpython import graph, gcurve, color
@@ -92,20 +76,83 @@ class ver_vpython:
         plot_1 = gcurve(color=color.red)
         ver_vpython.plot_1 = plot_1
         ver_vpython.plot_1.plot(0,0)
+        plot_2 = gcurve(color=color.blue)
+        ver_vpython.plot_2 = plot_2
+        ver_vpython.plot_2.plot(0,0)
+        plot_3 = gcurve(color=color.black)
+        ver_vpython.plot_3 = plot_3
+        ver_vpython.plot_3.plot(0,0)
 
-    def graph_plot(self, data=[]):
+    def graph_plot(self, data):
         print('time = ', ver_vpython.time)
-        ver_vpython.plot_1.plot(ver_vpython.time, data)
+        if data == None:
+            return
+        else:
+            len_data = len(data)
+            if len_data == 1:
+                ver_vpython.plot_1.plot(ver_vpython.time, data[0])
+            elif len_data == 2:
+                ver_vpython.plot_1.plot(ver_vpython.time, data[0])
+                ver_vpython.plot_2.plot(ver_vpython.time, data[1])
+            else:
+                ver_vpython.plot_1.plot(ver_vpython.time, data[0])
+                ver_vpython.plot_2.plot(ver_vpython.time, data[1])
+                ver_vpython.plot_3.plot(ver_vpython.time, data[2])
+
         ver_vpython.time = ver_vpython.time + ver_vpython.period
         
 
     def graph_clear(self, column_headers):
         if column_headers == None:
             column_headers = 'Data'
-        ver_vpython.graph_canvas.ytitle = column_headers
         ver_vpython.plot_1.delete()
+        ver_vpython.plot_2.delete()
+        ver_vpython.plot_3.delete()
+        ver_vpython.graph_canvas.ytitle = column_headers
+        ver_vpython.graph_canvas.xmin = 0
+        ver_vpython.graph_canvas.xmax = 5
+        
     def graph_delete(self):
         ver_vpython.graph_canvas.delete()
+
+    def meter_init(self):
+        from vpython import canvas, wtext, scene
+        
+        mc = canvas(width=0, height=20)
+        ver_vpython.meter_canvas = mc
+        scene.append_to_title('\n')
+        woutput = wtext(text='', pos=mc.title_anchor)
+        ver_vpython.meter_text = woutput
+        #<b>mass <i>M</i></b>
+        #woutput.text = "<b>{ch_string}</b>\n".format(ch_string)
+        
+        woutput.text = f""
+        
+
+    def meter_data(self, column_headers, data):
+        if data == None:
+            meter_string = 'No data'
+        else:
+            meter_string = ' '
+            i = 0
+            for (ch, d) in zip(column_headers, data):
+                round_data = str(round(d, 2))
+                meter_string = meter_string + ch + ": " + round_data + '    '
+        
+        ver_vpython.meter_text.text = f"{meter_string}"
+
+    def meter_delete(self):
+        from vpython import canvas
+        
+        canvas.delete(ver_vpython.meter_text)
+        mc = ver_vpython.meter_canvas
+        # this worked
+        mc.delete()
+        # this worked too
+        #canvas.delete(mc)
+    
+        
+        
 
 
     def print_to_canvas(self):
@@ -160,22 +207,7 @@ def vp_closed():
 
     ver_vpython.closed = True
     ver_vpython.collect_button_state = False
-    # gdx = gdx_modules.gdx.gdx()
-    # #x = ver.readall() # clear things out
-    # ver.collect_button_state = False
-    #gdxvp.stop()
-    # n = 0
-    # while True: # shut down gracefully
-    #     rate(100)
-    #     n += 1
-    #     if n > 100: break
-    #gdxvp.close()
-    # current = canvas.get_selected()
-    # if current:
-    #     current.delete()
-    
-    #collectbutton.delete()
-    #closebutton.delete()
+  
     
 
 
