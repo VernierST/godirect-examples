@@ -8,6 +8,7 @@ from godirect import GoDirect
 import logging
 import time    
 
+# from gdx_modules import gdx_vpython (this continues to get auto-changed???)
 from gdx_modules import gdx_vpython
 vp = gdx_vpython.ver_vpython()
 
@@ -44,6 +45,8 @@ class gdx:
     vpython_graph = False
     # is there a vpython meters?
     vpython_meters = False
+    # is there a vpython slider for sample period?
+    vpython_slider = False
     # is this the first time calling start() in a vpython program?
     vp_first_start = True
     # store the period. may be used in vp_start_button()
@@ -55,20 +58,22 @@ class gdx:
 
         self.godirect = GoDirect(use_ble=False, use_usb=False) 
 
-    def vp_setup(self, buttons=True, graph=False, meters=False):
+    def vp_setup(self, buttons=True, slider=False, meters=False, graph=False):
 
         # if they are using vpython, then create the canvas and start/stop/close buttons
         gdx.vpython = True
     
-        if buttons:
-            gdx.vpython_buttons = True
-            vp.setup_canvas()
+        gdx.vpython_buttons = buttons
+        gdx.vpython_graph = graph
+        gdx.vpython_meters = meters
+        gdx.vpython_slider = slider
+
+        if buttons or slider:
+            vp.setup_canvas(buttons, slider)
         if graph:
-            gdx.vpython_graph = True
             column_headers= self.enabled_sensor_info()
             vp.graph_init(column_headers)
         if meters:
-            gdx.vpython_meters = True
             vp.meter_init()
 
     def vp_meter(self, measurement):
@@ -124,18 +129,24 @@ class gdx:
         #vp = gdx_modules.gdx_vpython.ver_vpython()
         is_closed = vp.closed_button()
         if is_closed == True:
-            print(" closing everything ")
             self.stop()
             self.close()
             if gdx.vpython_graph:
                 vp.graph_delete()
             if gdx.vpython_meters:
                 vp.meter_delete()
+            if gdx.vpython_slider:
+                vp.slider_delete()
+            if gdx.vpython_buttons:
+                vp.button_delete()
             vp.canvas_delete()
         else:
             if gdx.vpython_meters:
                 column_headers= self.enabled_sensor_info()
-                self.start(period=250)
+                for device in gdx.devices:
+                    print('start device')
+                    device.start(period=250)
+                #self.start(period=250)
                 for x in range(4):
                     data = self.read()
                     vp.meter_data(column_headers, data)
@@ -167,11 +178,9 @@ class gdx:
                     vp.graph_clear(column_headers)
                 gdx_vpython.ver_vpython.time = 0
                 self.start(gdx.period)
-                print("vp gdx start")
                 gdx.vp_start_button_flag = True
             else:
                 self.stop()
-                print("vp gdx stop")
                 gdx.vp_start_button_flag = False
 
         return start_button_state
@@ -486,16 +495,34 @@ class gdx:
             print("start() - no device connected")
             return 
 
-        # If the period argument is left blank provide an input prompt for the user to enter the period.
-        if period == None: 
-            print("select period (ms):", end=' ')
-            period = int(input())
-            sample_rate = 1/(period/1000)
-            print("sample rate = ", sample_rate, "samples/second")
-            
-        # Provide a warning message if the user is attempting fast data collection
-        if period < 10:
-            input("Be aware that sampling at a period less than 10ms may be problemeatic. Press Enter to continue ")
+        # if they are using vpython and the slider then the period is controlled there
+        if gdx.vpython_slider:
+        
+            # if this is the very first call, then set the slider appropriately
+            if gdx.vp_first_start == True:
+                if period == None:
+                    # if the period arg is left blank, but they are using the slider, just set a value
+                    vp.slider_set(sample_rate=10)
+                    period = 100
+                else:
+                    sample_rate = (1/period) * 1000
+                    vp.slider_set(sample_rate)
+            # if it is not the first start, then get the period from the slider
+            else:
+                period = vp.slider_get()
+                # print("slider period = ", period)
+
+        else:
+            # If the period argument is left blank provide an input prompt for the user to enter the period.
+            if period == None: 
+                print("select period (ms):", end=' ')
+                period = int(input())
+                sample_rate = 1/(period/1000)
+                print("sample rate = ", sample_rate, "samples/second")
+                
+            # Provide a warning message if the user is attempting fast data collection
+            if period < 10:
+                input("Be aware that sampling at a period less than 10ms may be problemeatic. Press Enter to continue ")
         
         
         # if this is a vpython program don't start here
@@ -503,7 +530,7 @@ class gdx:
         # unless there are no buttons configured
         if gdx.vpython == True and gdx.vpython_buttons == True and gdx.vp_first_start == True:
             # set the period variable in gdx_vpython
-            gdx_vpython.ver_vpython.period = period/1000
+            gdx_vpython.ver_vpython.period = period
             #vp.period = period
             
         # Start data collection (of the enabled sensors) for each active device.

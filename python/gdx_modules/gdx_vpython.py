@@ -16,26 +16,29 @@ class ver_vpython:
 
     closed = False
     collect_button_state = False
-    period = 0.01
+    period = 100   # period in ms
     time = 0
     plot_1 = None    # vpython gcurve for the graph canvas
     plot_2 = None
     plot_3 = None
     graph_canvas = None
     meter_canvas = None
+    slider_canvas = None
     meter_text = None
+    slider_text = None
     cb = None    # collect button
     clsb = None    # close button
+    sl = None    # slider
 
     def __init__(self):  
         """
         """
 
-    def setup_canvas(self):
+    def setup_canvas(self, vp_button=False, slider_control=False):
 
         # Can we install the vpython library, with godirect?
         #from vpython import canvas, button, box, wtext, checkbox, rate
-        from vpython import button, scene
+        from vpython import button, scene, slider, wtext
         #global collectbutton, closebutton
         # if they are using vpython, then create the canvas and collect/stop/close buttons
         
@@ -45,27 +48,59 @@ class ver_vpython:
         scene.height = 10
 
         scene.append_to_title('\n')
-        collectbutton = button(text='<b style="color:green; font-size:26px"> COLLECT </b>', 
-                            pos=scene.title_anchor, bind=vp_collect_stop)
-        ver_vpython.cb = collectbutton
-        scene.append_to_title('  ')
-        closebutton = button(text='<b style="color:red; font-size:26px">   CLOSE   </b>', 
-                            pos=scene.title_anchor, bind=vp_closed)
-        ver_vpython.clsb = closebutton
+        if vp_button:
+            collectbutton = button(text='<b style="color:green; font-size:26px"> COLLECT </b>', 
+                                pos=scene.title_anchor, bind=vp_collect_stop)
+            ver_vpython.cb = collectbutton
+            scene.append_to_title('  ')
+            closebutton = button(text='<b style="color:red; font-size:26px">   CLOSE   </b>', 
+                                pos=scene.title_anchor, bind=vp_closed)
+            ver_vpython.clsb = closebutton
+        
+        if slider_control:
+            scene.append_to_title('  ')
+            slider_control = slider(pos=scene.title_anchor, min=1, max=100, value=10, step=1, length=200, bind=vp_slider)
+            ver_vpython.sl = slider_control
+            #scene.append_to_caption('\n\n') 
+            #scene.append_to_title('\n')
+            slider_text = wtext(pos=scene.title_anchor, text='10 samples/second')
+            ver_vpython.period = 100
+            ver_vpython.slider_text = slider_text
+
+
         scene.append_to_title('\n')
+
+    def button_delete(self):
+        ver_vpython.cb.delete()
+        ver_vpython.clsb.delete()
+
+    def slider_delete(self):
+        from vpython import canvas
+        
+        canvas.delete(ver_vpython.slider_text)
+        ver_vpython.sl.delete()
 
     def canvas_delete(self):
         from vpython import canvas, scene
 
         # this also seems to work for deleting the button object
         #canvas.delete(ver_vpython.cb)
-        ver_vpython.cb.delete()
-        ver_vpython.clsb.delete()
+        # ver_vpython.cb.delete()
+        # ver_vpython.clsb.delete()
         scene.delete()
         current = canvas.get_selected()
         if current:
             current.delete()
 
+    def slider_set(self, sample_rate):
+        ver_vpython.sl.value = sample_rate
+        ver_vpython.period = (1/sample_rate) * 1000
+        ver_vpython.slider_text.text = f'{sample_rate} samples/second'
+
+    def slider_get(self):
+        period = ver_vpython.period
+        return period
+    
     def graph_init(self, column_headers):
         from vpython import graph, gcurve, color
         if column_headers == None:
@@ -84,7 +119,7 @@ class ver_vpython:
         ver_vpython.plot_3.plot(0,0)
 
     def graph_plot(self, data):
-        print('time = ', ver_vpython.time)
+        # print('plot time = ', ver_vpython.time)
         if data == None:
             return
         else:
@@ -99,7 +134,7 @@ class ver_vpython:
                 ver_vpython.plot_2.plot(ver_vpython.time, data[1])
                 ver_vpython.plot_3.plot(ver_vpython.time, data[2])
 
-        ver_vpython.time = ver_vpython.time + ver_vpython.period
+        ver_vpython.time = ver_vpython.time + (ver_vpython.period/1000)
         
 
     def graph_clear(self, column_headers):
@@ -151,9 +186,17 @@ class ver_vpython:
         # this worked too
         #canvas.delete(mc)
     
+    # def slider_init(self):
+    #     from vpython import canvas, slider, wtext, scene
         
-        
-
+    #     sc = canvas(width=0, height=20)
+    #     ver_vpython.slider_canvas = sc
+    #     # when the slider is changed, the function vp_slider is called
+    #     sl = slider(align='right', min=1, max=100, value=10, step=1, length=200, bind=vp_slider, left=20)
+    #     #scene.append_to_caption('\n\n') 
+    #     #scene.append_to_title('\n')
+    #     slider_text = wtext(text='')
+    #     ver_vpython.slider_text = slider_text
 
     def print_to_canvas(self):
         """ Feedback to the user on the vpython screen 
@@ -187,6 +230,8 @@ class ver_vpython:
             return False
 
     
+
+    
 def vp_collect_stop(f):
     """ This function gets called only when the button has been pressed. Return
     value = True if the button is in the Collect state.
@@ -203,10 +248,15 @@ def vp_collect_stop(f):
         ver_vpython.collect_button_state = False
 
 def vp_closed():
-    from vpython import rate, canvas
 
     ver_vpython.closed = True
     ver_vpython.collect_button_state = False
+
+def vp_slider(s):
+    print(s.value)
+    ver_vpython.period = (1/s.value) * 1000
+    ver_vpython.slider_text.text = f'{s.value} samples/second'
+
   
     
 

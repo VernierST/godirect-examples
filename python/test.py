@@ -26,25 +26,23 @@ gdx.open(connection='usb', device_to_open='GDX-FOR 071000U9')
 
 gdx.select_sensors([1,2])
 
-gdx.vp_setup(buttons=True, graph=True, meters=True)
+gdx.vp_setup(buttons=True, slider=True, meters=True, graph=True)
 
-# don't call start() until after vpython=True has been set
-gdx.start(period=250)    # Set the rate for data collection
+# don't call start() until after vp_setup() has been called
+gdx.start(period=100)    # Set the rate for data collection
 
 # rate(50) is now in gdx_vpython
 #g.plot(0,0)
 #g.delete()
 
 while gdx.vp_close_button() == False:  # Run the main loop until the user clicks the Close button
-    while gdx.vp_collect_button() == True:   # Run the inner loop only when user clicks Collect button
-        #gdx.read_ch()
-        print("start collecting")
+    while gdx.vp_collect_button() == True:   # Run the inner loop only when user clicks Collect button     
         measurements = gdx.read()
         if measurements == None:
             break 
         gdx.vp_graph(measurements)
         gdx.vp_meter(measurements)
-        print(measurements)
+        #print(measurements)
 
 # if there are no buttons, can still send data to the graph
 # for i in range(0,20):
