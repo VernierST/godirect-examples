@@ -24,19 +24,19 @@ gdx.open(connection='usb', device_to_open='GDX-FOR 071000U9')
 #         width=400, xmin=0, xmax=5, fast=False)
 # g = gcurve(color=color.red)
 
-gdx.select_sensors([1,2])
+gdx.select_sensors(1)
 
 gdx.vp_setup(buttons=True, slider=True, meters=True, graph=True)
 
 # don't call start() until after vp_setup() has been called
-gdx.start(period=100)    # Set the rate for data collection
+gdx.start(period=1000)    # Set the rate for data collection
 
 # rate(50) is now in gdx_vpython
 #g.plot(0,0)
 #g.delete()
 
-while gdx.vp_close_button() == False:  # Run the main loop until the user clicks the Close button
-    while gdx.vp_collect_button() == True:   # Run the inner loop only when user clicks Collect button     
+while gdx.vp_close_is_pressed() == False:  # Run the main loop until the user clicks the Close button
+    while gdx.vp_collect_is_pressed() == True:   # Run the inner loop only when user clicks Collect button     
         measurements = gdx.read()
         if measurements == None:
             break 

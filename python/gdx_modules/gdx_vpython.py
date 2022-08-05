@@ -119,10 +119,12 @@ class ver_vpython:
         ver_vpython.plot_3.plot(0,0)
 
     def graph_plot(self, data):
-        # print('plot time = ', ver_vpython.time)
         if data == None:
             return
         else:
+            if not isinstance(data, list):
+                # measurements needs to be a list, if it is not, change it to a list
+                data = [data]
             len_data = len(data)
             if len_data == 1:
                 ver_vpython.plot_1.plot(ver_vpython.time, data[0])
@@ -168,8 +170,14 @@ class ver_vpython:
         if data == None:
             meter_string = 'No data'
         else:
+            if not isinstance(data, list):
+                # data needs to be a list, if it is not, change it to a list
+                data = [data]
+            if not isinstance(column_headers, list):
+                # column_headers needs to be a list, if it is not, change it to a list
+                column_headers = [column_headers]
+
             meter_string = ' '
-            i = 0
             for (ch, d) in zip(column_headers, data):
                 round_data = str(round(d, 2))
                 meter_string = meter_string + ch + ": " + round_data + '    '
@@ -253,7 +261,6 @@ def vp_closed():
     ver_vpython.collect_button_state = False
 
 def vp_slider(s):
-    print(s.value)
     ver_vpython.period = (1/s.value) * 1000
     ver_vpython.slider_text.text = f'{s.value} samples/second'
 

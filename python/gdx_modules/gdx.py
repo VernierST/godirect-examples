@@ -58,7 +58,7 @@ class gdx:
 
         self.godirect = GoDirect(use_ble=False, use_usb=False) 
 
-    def vp_setup(self, buttons=True, slider=False, meters=False, graph=False):
+    def vp_setup(self, buttons=True, slider=True, meters=True, graph=False):
 
         # if they are using vpython, then create the canvas and start/stop/close buttons
         gdx.vpython = True
@@ -93,6 +93,7 @@ class gdx:
                 gdx_vpython.ver_vpython.period = gdx.period/1000
                 gdx.vp_start_button_flag = True
             column_headers= self.enabled_sensor_info()
+            
             vp.meter_data(column_headers, measurement)
         
     
@@ -119,7 +120,7 @@ class gdx:
 
             vp.graph_plot(measurements)
     
-    def vp_close_button(self):
+    def vp_close_is_pressed(self):
 
         # First check to make sure there are devices connected.      
         if not gdx.devices:
@@ -154,7 +155,7 @@ class gdx:
                 
         return is_closed
 
-    def vp_collect_button(self):
+    def vp_collect_is_pressed(self):
         """ The flag allows us to determines if the state of the button has 
         changed since the last time it was checked. If it has just been pressed 
         into the Start (True) or Stop (False) state then the Go Direct hardware 
@@ -214,7 +215,11 @@ class gdx:
                 if device_to_open != None: 
                     self.select_dev_using_sn(found_devices, device_to_open)
                 else:
-                    self.user_chooses_device(found_devices) 
+                    # if just one device is connected, then automatically connect that device (no prompt)
+                    if open_usb_devices == 1:
+                        gdx.devices = found_devices
+                    else:
+                        self.user_chooses_device(found_devices) 
             else:
                 print("USB device found but error trying to open")
                 print("Open Graphical Analysis to verify a connection") 
@@ -259,7 +264,11 @@ class gdx:
             elif device_to_open != None: 
                 self.select_dev_using_sn(found_devices, device_to_open)
             else:
-                self.user_chooses_device(found_devices) 
+                # if it is just 1 device, then connect without the popup
+                if number_found_devices == 1:
+                    gdx.devices = found_devices
+                else:
+                    self.user_chooses_device(found_devices) 
 
             open_success = self.open_selected_device()  
             if open_success == False:
@@ -423,6 +432,7 @@ class gdx:
         if not gdx.devices:
             print("select_sensors() - no device connected")
             return
+        print("select sensors # gdx devices = ", len(gdx.devices))
         
         # If the sensors argument is left blank provide an input prompt for the user to select sensors
         if sensors == None: 
@@ -440,28 +450,59 @@ class gdx:
                 gdx.device_sensors.append(selected_sensors)
                 i += 1   
 
-        # If the user has input a sensor argument it could be a list (1D) or a list of lists (2D). 
+        # If there is a sensor argument, it could be an integer, a list (1D), or a list of lists (2D). 
         else:
-            # If it is a 1D list then len(sensors[0]) will throw an error. If no error then it is 2D.
-            try:
-                # If this does not throw an error then it is a 2D list
-                if len(sensors[0]):
+            # Checks if the variable is a list
+            if type(sensors) == list:
+                # It is a list. Checks if it is a 2D list
+                if isinstance(sensors[0], list):
                     # Does this 2D sensor list have a list of sensors for each device? 
                     if len(sensors)!= len(gdx.devices):
-                        print("the sensor parameter in select_sensors() does not match number of devices")
+                        #print("the sensor parameter in select_sensors() does not match number of devices")
                         self.close()
                     else:
                         # Save the 2D list of sensors in device_sensors, such as [[1],[1,2,3]]
+                        #print("2d list of sensors = ", sensors)
                         gdx.device_sensors = sensors
-            # The try threw an error. Therefore it is a 1D list of sensors
-            except:
-                # A 1D list is appropriate if one device is connected. Make sure just one device is connected
-                if len(gdx.devices)!= 1:
-                        print("the sensor parameter in select_sensors() does not match number of devices")
-                        self.close()                   
+                # it is a 1D list
                 else:
+                     # A 1D list is appropriate if one device is connected. Make sure just one device is connected
+                    if len(gdx.devices)!= 1:
+                            print("the sensor parameter in select_sensors() does not match number of devices")
+                            self.close()                   
+                    else:
+                        # Save the 1D list as a 2D list in device_sensors - [[1,2]]
+                        gdx.device_sensors.append(sensors)
+            # It's not a list. Check if it is an integer
+            else:
+                if isinstance(sensors, int):
+                    # sensors are stored as a list, so change the int to a list
+                    sensors = [sensors]
                     # Save the 1D list as a 2D list in device_sensors - [[1,2]]
                     gdx.device_sensors.append(sensors)
+
+
+            # # If it is a 1D list then len(sensors[0]) will throw an error. If no error then it is 2D.
+            # try:
+            #     # If this does not throw an error then it is a 2D list
+            #     if len(sensors[0]):
+            #         # Does this 2D sensor list have a list of sensors for each device? 
+            #         if len(sensors)!= len(gdx.devices):
+            #             print("the sensor parameter in select_sensors() does not match number of devices")
+            #             self.close()
+            #         else:
+            #             # Save the 2D list of sensors in device_sensors, such as [[1],[1,2,3]]
+            #             print("2d list of sensors = ", sensors)
+            #             gdx.device_sensors = sensors
+            # # The try threw an error. Therefore it is a 1D list of sensors
+            # except:
+            #     # A 1D list is appropriate if one device is connected. Make sure just one device is connected
+            #     if len(gdx.devices)!= 1:
+            #             print("the sensor parameter in select_sensors() does not match number of devices")
+            #             self.close()                   
+            #     else:
+            #         # Save the 1D list as a 2D list in device_sensors - [[1,2]]
+            #         gdx.device_sensors.append(sensors)
 
         #print("sensors for data collection = ", gdx.device_sensors)
 
@@ -550,10 +591,12 @@ class gdx:
 
     
     def read(self):             
-        """ Take single point readings from the enabled sensors and return the readings as a 1D list.
+        """ Take single point readings from the enabled sensors.
 
         Returns:
-		    retvalues[]: a 1D list of sensor readings. A single data point for each enabled sensor.
+		    retvalues: A single data point for each enabled sensor. If
+			a single sensor is connected, just the data point is returned. Otherwise a list
+			containing each configured sensor's data point.
 		"""
         
         retvalues = []  
@@ -599,7 +642,15 @@ class gdx:
                             values = []
                 i +=1  
             
-            return retvalues
+            if not retvalues:
+                return None
+            # if it is just a single value, don't send it as a list
+            elif len(retvalues) == 1:
+                return retvalues[0]
+            else:
+                return retvalues
+            
+            #return retvalues
         
 
     def readValues(self):             
@@ -748,8 +799,9 @@ class gdx:
         """ Returns each enabled sensors' description and units (good for column headers).
 
 		Returns:
-		    sensor_info[]: a 1D list that includes each enabled sensors' description 
-            with units, e.g. ['Force (N)', 'X-axis acceleration (m/s²)']             
+		    sensor_info: if there are multiple sensors, sensor_info is a 1D list that includes each
+            enabled sensors' description with units, e.g. ['Force (N)', 'X-axis acceleration (m/s²)'].
+            If this is just a single sensor, returns a string, e.g., 'Force (N)'             
 		"""                
 
         if not gdx.devices:
@@ -766,9 +818,14 @@ class gdx:
                 info = sensor.sensor_description + " (" + sensor.sensor_units + ")"
                 sensor_info.append(info)
             i+=1
-        return sensor_info
 
-
+        if not sensor_info:
+            return None
+        # if it is just a single value, don't send it as a list
+        elif len(sensor_info) == 1:
+            return sensor_info[0]
+        else:
+            return sensor_info
 
     def sensor_info(self):
         """ Information about all of the available sensors on a connected Go Direct device.
