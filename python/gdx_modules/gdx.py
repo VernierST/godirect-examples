@@ -224,12 +224,12 @@ class gdx:
                 print("USB device found but error trying to open")
                 print("Open Graphical Analysis to verify a connection") 
         else:
-            str1 = "No Go Direct device found \n\n"
-            str2 = "Troubleshooting tips... \n"
-            str3 = "Reconnect the USB cable \n"
-            str4 = "Try a different USB port \n"
-            str5 = "Try a different USB cable \n"
-            str6 = "Open GA (Graphical Analysis) to verify a good connection \n" 
+            str1 = "\nNo Go Direct device found \n"
+            str2 = "Troubleshooting tips... \n\n"
+            str3 = " - Reconnect the USB cable \n"
+            str4 = " - Try a different USB port \n"
+            str5 = " - Try a different USB cable \n"
+            str6 = " - Open GA (Graphical Analysis) to verify a good connection \n" 
             print(str1 + str2 + str3 +str4 +str5 +str6)     
 
     def open_ble(self, device_to_open=None):
@@ -432,7 +432,6 @@ class gdx:
         if not gdx.devices:
             print("select_sensors() - no device connected")
             return
-        print("select sensors # gdx devices = ", len(gdx.devices))
         
         # If the sensors argument is left blank provide an input prompt for the user to select sensors
         if sensors == None: 
@@ -481,47 +480,68 @@ class gdx:
                     # Save the 1D list as a 2D list in device_sensors - [[1,2]]
                     gdx.device_sensors.append(sensors)
 
-
-            # # If it is a 1D list then len(sensors[0]) will throw an error. If no error then it is 2D.
-            # try:
-            #     # If this does not throw an error then it is a 2D list
-            #     if len(sensors[0]):
-            #         # Does this 2D sensor list have a list of sensors for each device? 
-            #         if len(sensors)!= len(gdx.devices):
-            #             print("the sensor parameter in select_sensors() does not match number of devices")
-            #             self.close()
-            #         else:
-            #             # Save the 2D list of sensors in device_sensors, such as [[1],[1,2,3]]
-            #             print("2d list of sensors = ", sensors)
-            #             gdx.device_sensors = sensors
-            # # The try threw an error. Therefore it is a 1D list of sensors
-            # except:
-            #     # A 1D list is appropriate if one device is connected. Make sure just one device is connected
-            #     if len(gdx.devices)!= 1:
-            #             print("the sensor parameter in select_sensors() does not match number of devices")
-            #             self.close()                   
-            #     else:
-            #         # Save the 1D list as a 2D list in device_sensors - [[1,2]]
-            #         gdx.device_sensors.append(sensors)
-
         #print("sensors for data collection = ", gdx.device_sensors)
 
-        # Enable the sensors that were selected for data collection.
-        i = 0
-        while i < len(gdx.devices):
-            #print("device ",i, " enabled sensors = ", gdx.device_sensors[i], sep="")
-            gdx.devices[i].enable_sensors(sensors = gdx.device_sensors[i])
-            i +=1
+        # check to make sure the user setup the device with a valid sensor number
+        valid_sensor_num = self.check_sensor_number()
+        if valid_sensor_num:
+            # Enable the sensors that were selected for data collection.
+            i = 0
+            while i < len(gdx.devices):
+                #print("device ",i, " enabled sensors = ", gdx.device_sensors[i], sep="")
+                gdx.devices[i].enable_sensors(sensors = gdx.device_sensors[i])
+                i +=1
 
-        # The enabled sensor objects are stored in a variable, to be used in the read() function. 
-        i = 0
-        while i < len(gdx.devices):
-            # The variable "enabled_sensors" is a 2D list that stores each device's enabled sensor objects [[obj],[obj,obj]].
-            gdx.enabled_sensors.append(gdx.devices[i].get_enabled_sensors())
-            i +=1
+            # The enabled sensor objects are stored in a variable, to be used in the read() function. 
+            i = 0
+            while i < len(gdx.devices):
+                # The variable "enabled_sensors" is a 2D list that stores each device's enabled sensor objects [[obj],[obj,obj]].
+                gdx.enabled_sensors.append(gdx.devices[i].get_enabled_sensors())
+                i +=1
+        # if it's not a valid number then empty the gdx.devices array so that no other functions are called
+        else:
+            gdx.devices = []
 
-        
-    
+
+    def check_sensor_number(self):
+        """
+        """
+            
+        i = 0
+        # Get the sensors from each device, one device at a time 
+        while i < len(gdx.devices):
+            all_sensor_numbers = []
+            sensors = gdx.devices[i].list_sensors()
+            
+            # the all_sensor_numbers list will be used in the code below to determine incompatible sensors
+            for x in sensors:
+                c = sensors[x]
+                number = c.sensor_number
+                all_sensor_numbers.append(number)
+
+            sensors_selected_by_user = gdx.device_sensors[i]
+            for sensor_selected in sensors_selected_by_user:
+                print(f"sensor selected = {sensor_selected}, available sensors = {all_sensor_numbers}")
+                if sensor_selected in all_sensor_numbers:
+                    valid_sensor_num = True
+                else:
+                    valid_sensor_num = False
+                    print('select_sensors() setup error')
+                    print("The value ", sensor_selected, " in select_sensors() is not valid")
+                    print(f"Valid sensor values for device{i}:", '\n')
+                    for x in sensors:
+                        c = sensors[x]
+                        number = c.sensor_number
+                        description = c.sensor_description
+                        units = c.sensor_units
+                        all_sensor_numbers.append(number)
+                        print(f'{number} - {description} ({units})')
+                    print('\n')
+            i += 1
+
+        return valid_sensor_num
+
+
     def start(self, period=None):
         """ Start collecting data from the sensors that were selected in the select_sensors() function. 
         
