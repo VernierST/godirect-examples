@@ -9,7 +9,7 @@ import logging
 import time    
 
 # from gdx_modules import gdx_vpython (this continues to get auto-changed???)
-from gdx_modules import gdx_vpython
+from gdx import gdx_vpython
 vp = gdx_vpython.ver_vpython()
 
 
@@ -18,10 +18,6 @@ logging.basicConfig()
 #logging.getLogger('bleak').setLevel(logging.DEBUG)
 #logging.getLogger('pygatt').setLevel(logging.DEBUG)
 
-# used in vpython. is this required here?
-# woutput = wtext(text='')
-# startbutton = None
-# closebutton = None
 
 class gdx:
     
@@ -58,7 +54,7 @@ class gdx:
 
         self.godirect = GoDirect(use_ble=False, use_usb=False) 
 
-    def vp_setup(self, buttons=True, slider=True, meters=True, graph=False):
+    def vp_vernier_canvas(self, buttons=True, slider=False, meters=False, graph=False):
 
         # if they are using vpython, then create the canvas and start/stop/close buttons
         gdx.vpython = True
@@ -79,12 +75,14 @@ class gdx:
     def vp_meter(self, measurement):
         
         if not gdx.devices:
+            logging.info("Version " + self.VERSION)
             print("vp_meter() - no device connected")
             return
         
-        # first, check to make sure the user has set meter=True in vp_setup()
+        # first, check to make sure the user has set meter=True in vernier_canva()
         if gdx.vpython_meters != True:
-            print("Set meters=True in gdx.vp_setup(meters=True)")
+            pass
+            #print("You are calling vp_meter(), but the meter was not configured in vp_vernier_canvas()")
         else:
             # Usually the code in the Collect button sets the period,
             # but if there are no buttons, then need to set the period here, 
@@ -103,9 +101,10 @@ class gdx:
             print("vp_graph() - no device connected")
             return
         
-        # first, check to make sure the user has set graph=True in vp_setup()
+        # first, check to make sure the user has set graph=True in vp_vernier_canvas()
         if gdx.vpython_graph != True:
-            print("Set graph=True in gdx.vp_setup(graph=True)")
+            pass
+            #print("You are calling vp_graph(), but the graph was not configured in vp_vernier_canvas()")
         else:
             # Usually the code in the Collect button resets the graph
             # but if there are no buttons, then need to reset the graph, 
@@ -222,7 +221,11 @@ class gdx:
                         self.user_chooses_device(found_devices) 
             else:
                 print("USB device found but error trying to open")
-                print("Open Graphical Analysis to verify a connection") 
+                print(f"The number of USB devices found is {number_found_devices}")
+                print("If this is more than connected Go Direct devices, there might")
+                print("be another USB device (like a hub) that is being detected")
+                print("Try moving the hub to a different port.")
+                print("Otherwise, open Graphical Analysis to verify a connection") 
         else:
             str1 = "\nNo Go Direct device found \n"
             str2 = "Troubleshooting tips... \n\n"
@@ -272,7 +275,7 @@ class gdx:
 
             open_success = self.open_selected_device()  
             if open_success == False:
-                print("Go Direct device found but not able to be opened")
+                print("Error while trying to open device. ")
                 print("Troubleshoot by opening Graphical Analysis to test")               
                       
         else:
@@ -309,11 +312,15 @@ class gdx:
         i = 0
         open_usb_devices = 0
         while i < len(found_devices): 
-            open_device_success = found_devices[i].open()
-            if open_device_success:
-                open_usb_devices += 1
-            #print("open device ",i, " = ", open_device_success, sep="")
-            i += 1 
+            try:
+                open_device_success = found_devices[i].open()
+                if open_device_success:
+                    open_usb_devices += 1
+                #print("open device ",i, " = ", open_device_success, sep="")
+                i += 1 
+            except:
+                open_usb_devices = 0
+                break
 
         return open_usb_devices
     
@@ -636,7 +643,10 @@ class gdx:
             # if this was the last value in the buffer, clear the list so that it is not a list of empty lists
             if not gdx.buffer[0]:
                 gdx.buffer = []
-            return retvalues             
+            if len(retvalues) == 1:
+                return retvalues[0]
+            else:
+                return retvalues          
 
         # The buffer is empty, so take readings from the sensor
         else:
@@ -662,6 +672,9 @@ class gdx:
                             values = []
                 i +=1  
             
+            print("retvalues = ", retvalues)
+            print("len of revalues = ", len(retvalues))
+            
             if not retvalues:
                 return None
             # if it is just a single value, don't send it as a list
@@ -669,8 +682,6 @@ class gdx:
                 return retvalues[0]
             else:
                 return retvalues
-            
-            #return retvalues
         
 
     def readValues(self):             

@@ -103,10 +103,11 @@ class ver_vpython:
     
     def graph_init(self, column_headers):
         from vpython import graph, gcurve, color
+        
         if column_headers == None:
             column_headers = 'Data'
         gd = graph(xtitle='Time', ytitle=column_headers, scroll=True,
-        width=400, xmin=0, xmax=5, fast=False)
+        width=500, height=300, xmin=0, xmax=5, fast=False)
         ver_vpython.graph_canvas = gd
         plot_1 = gcurve(color=color.red)
         ver_vpython.plot_1 = plot_1
@@ -163,8 +164,7 @@ class ver_vpython:
         #<b>mass <i>M</i></b>
         #woutput.text = "<b>{ch_string}</b>\n".format(ch_string)
         
-        woutput.text = f""
-        
+        woutput.text = f""  
 
     def meter_data(self, column_headers, data):
         if data == None:
