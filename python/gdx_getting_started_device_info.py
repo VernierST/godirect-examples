@@ -19,7 +19,7 @@ gdx.enabled_sensor_info()
 Note: This example assumes one Go Direct device
 '''
 
-from gdx_modules import gdx
+from gdx import gdx
 gdx = gdx.gdx()
 
 gdx.open_usb() #uncomment this function and comment out the ble function if you wish to connect via USB

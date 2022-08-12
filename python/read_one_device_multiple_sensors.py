@@ -2,11 +2,11 @@ from gdx import gdx
 gdx = gdx.gdx()
 
 
-# Set the connection = 'usb' or 'ble'.
-# MODIFY device_to_open with your device's serial number (e.g., device_to_open='GDX-FOR 071000U9')
+# MODIFY THIS! Set the connection = 'usb' or 'ble'. 
+# Set device_to_open with your device's serial number (e.g., device_to_open='GDX-FOR 071000U9')
 gdx.open(connection='usb', device_to_open='GDX-FOR 071000U9')
 
-# Multiple sensors for one device are entered as a list (e.g., [1,3,4,5])
+# MODFIFY THIS! Multiple sensors for one device are entered as a list (e.g., [1,3,4,5])
 gdx.select_sensors([1,2]) 
 
 # Set the rate for data collection. This is the period in milliseconds.

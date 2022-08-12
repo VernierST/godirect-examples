@@ -2,11 +2,11 @@ from gdx import gdx
 gdx = gdx.gdx()
 
 
-# Set the connection = 'usb' or 'ble'.
-# MODIFY device_to_open with your device's serial number (e.g., device_to_open='GDX-FOR 071000U9')
+# MODIFY THIS! Set the connection = 'usb' or 'ble'. 
+# Set device_to_open with your device's serial number (e.g., device_to_open='GDX-FOR 071000U9')
 gdx.open(connection='usb', device_to_open='GDX-FOR 071000U9')
 
-# Put your sensor number here. Note that when you are reading from just one
+# MODIFY THIS! Put your sensor number here. Note that when you are reading from just one
 # sensor you can just enter the sensor number. If you are reading from multiple 
 # sensors they would need to be input as a list (e.g., [1,2,3]).
 gdx.select_sensors(1) 

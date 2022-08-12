@@ -54,7 +54,7 @@ class gdx:
 
         self.godirect = GoDirect(use_ble=False, use_usb=False) 
 
-    def vp_vernier_canvas(self, buttons=True, slider=False, meters=False, graph=False):
+    def vp_vernier_canvas(self, buttons=True, slider=True, meters=True, graph=False):
 
         # if they are using vpython, then create the canvas and start/stop/close buttons
         gdx.vpython = True
@@ -120,14 +120,16 @@ class gdx:
             vp.graph_plot(measurements)
     
     def vp_close_is_pressed(self):
+        # Note that there is no vpython rate() call here, but there is in the
+        # gdx_vpython module in the collect_button() function
 
         # First check to make sure there are devices connected.      
         if not gdx.devices:
             print("vp_close_button() - no device connected")
-            return
+            is_closed = True
+        else:
+            is_closed = vp.closed_button()
         
-        #vp = gdx_modules.gdx_vpython.ver_vpython()
-        is_closed = vp.closed_button()
         if is_closed == True:
             self.stop()
             self.close()
@@ -144,9 +146,7 @@ class gdx:
             if gdx.vpython_meters:
                 column_headers= self.enabled_sensor_info()
                 for device in gdx.devices:
-                    print('start device')
                     device.start(period=250)
-                #self.start(period=250)
                 for x in range(4):
                     data = self.read()
                     vp.meter_data(column_headers, data)
@@ -292,7 +292,7 @@ class gdx:
         try:
             found_devices = self.godirect.list_devices()
             number_found_devices = len(found_devices)
-            print("number of devices found = " +str(number_found_devices))
+            #print("number of devices found = " +str(number_found_devices))
         except:
             #print("No Go Direct devices found")
             found_devices = 0
@@ -331,16 +331,28 @@ class gdx:
             found_devices. If the names match, then we store the device as a device to open.
         """
 
+        device_name_list = []
+        for device in found_devices: 
+            #print("name of available device: ", str(device.name))
+            device_name_list.append(str(device.name))
+
         device_to_open_list = device_to_open.split(", ")
         for x in device_to_open_list:
-            print("name of device wanting to open: ", x)
+            #print("name of device wanting to open: ", x)
             for device in found_devices: 
-                print("name of available device: ", str(device.name))
                 if x == str(device.name):
-                    print("device names match = True")
+                    #print("device names match = True")
                     gdx.devices.append(device) 
                 else:
-                    print("device names match = False") 
+                    #print("device names match = False") 
+                    pass
+
+        if len(device_to_open_list) == len(gdx.devices):
+            pass
+        else:
+            print("serial number matching error. Check for typos in device_to_open")
+            print("device_to_open = ", device_to_open_list)
+            print("found devices = ", device_name_list)
 
 
     def user_chooses_device(self, found_devices):
@@ -435,7 +447,7 @@ class gdx:
             sensors 1 and 2 for a second device. 
 		""" 
 
-        # First check to make sure there are devices connected.      
+        # First check to make sure there are devices connected.     
         if not gdx.devices:
             print("select_sensors() - no device connected")
             return
@@ -464,8 +476,9 @@ class gdx:
                 if isinstance(sensors[0], list):
                     # Does this 2D sensor list have a list of sensors for each device? 
                     if len(sensors)!= len(gdx.devices):
-                        #print("the sensor parameter in select_sensors() does not match number of devices")
-                        self.close()
+                        print("the sensor parameter in select_sensors() does not match number of devices")
+                        gdx.devices = []
+                        return
                     else:
                         # Save the 2D list of sensors in device_sensors, such as [[1],[1,2,3]]
                         #print("2d list of sensors = ", sensors)
@@ -475,7 +488,8 @@ class gdx:
                      # A 1D list is appropriate if one device is connected. Make sure just one device is connected
                     if len(gdx.devices)!= 1:
                             print("the sensor parameter in select_sensors() does not match number of devices")
-                            self.close()                   
+                            gdx.devices = [] 
+                            return                 
                     else:
                         # Save the 1D list as a 2D list in device_sensors - [[1,2]]
                         gdx.device_sensors.append(sensors)
@@ -528,7 +542,7 @@ class gdx:
 
             sensors_selected_by_user = gdx.device_sensors[i]
             for sensor_selected in sensors_selected_by_user:
-                print(f"sensor selected = {sensor_selected}, available sensors = {all_sensor_numbers}")
+                #print(f"sensor selected = {sensor_selected}, available sensors = {all_sensor_numbers}")
                 if sensor_selected in all_sensor_numbers:
                     valid_sensor_num = True
                 else:
@@ -605,7 +619,7 @@ class gdx:
         else:
             i = 0
             while i < len(gdx.devices):
-                print("start device ", i, sep="")
+                #print("start device ", i, sep="")
                 gdx.devices[i].start(period=period)
                 i +=1 
         
@@ -671,9 +685,6 @@ class gdx:
                             sensor.clear()
                             values = []
                 i +=1  
-            
-            print("retvalues = ", retvalues)
-            print("len of revalues = ", len(retvalues))
             
             if not retvalues:
                 return None
@@ -755,7 +766,7 @@ class gdx:
         
         i = 0
         while i < len(gdx.devices):
-            print("stop device ",i, sep="")
+           # print("stop device ",i, sep="")
             gdx.devices[i].stop()
             i+=1
 
@@ -772,14 +783,14 @@ class gdx:
 
         i = 0
         while i < len(gdx.devices):
-            print("close device ", i, sep="")
+            #print("close device ", i, sep="")
             gdx.devices[i].close()
             i+=1
         gdx.devices = []
 
         gdx.ble_open = False
         self.godirect.quit()  
-        print("quit godirect")
+        #print("quit godirect")
 
 
 

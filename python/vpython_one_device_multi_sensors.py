@@ -1,29 +1,33 @@
+# Note: If meters are configured, they will monitor sensor
+# readings during data collection and when data collection has been stopped.
+# Note: A vpython rate(50) call is coded inside the gdx.vp_collect_is_pressed()
+# and therefore a rate() call should not be needed in this code.
+# Note: do not call the gdx.start() function until after vp_vernier_canvas() 
+
 from vpython import *   
 
 from gdx import gdx
 gdx = gdx.gdx()
 
-# MODIFY device_to_open with your device's serial number (e.g., device_to_open='GDX-FOR 071000U9')
+# MODIFY THIS! Set the connection = 'usb' or 'ble'. 
+# Set device_to_open with your device's serial number (e.g., device_to_open='GDX-FOR 071000U9')
 gdx.open(connection='usb', device_to_open='GDX-FOR 071000U9')
 
-# Multiple sensors for one device are entered as a list (e.g., [1,3,4,5])
+# MODIFY THIS! Multiple sensors for one device are entered as a list (e.g., [1,3,4,5])
 gdx.select_sensors([1,2,3])
 
 # setup a vernier vpython canvas to control data collection (Collect/Stop button, 
 # Close button, sampling speed control, and live meter readout). 
-gdx.vp_vernier_canvas(buttons=True, slider=True, meters=True, graph=False)
+gdx.vp_vernier_canvas()
 
 # setup a vpython canvas with an object
 c = canvas(width=500, height=500)
-c.caption = 'click COLLECT button to control the object with the sensor readings'
+c.caption = 'click COLLECT button to control length, height, and width with the sensor readings'
 el = ellipsoid(size=0.1*vec(1,1,1), color=color.red)
 
-# don't call start() until after vp_vernier_canvas() has been called
 gdx.start(period=1000) 
 
 # The main loop runs until the user clicks the Close button.
-# Note that if meters are configured, they will continue to monitor sensor
-# readings, even when data collection is stopped.
 while gdx.vp_close_is_pressed() == False:  
     # The inner loop runs when the user clicks the Collect button, and continues
     # to run until the user clicks the Stop button.

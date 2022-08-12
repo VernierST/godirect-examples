@@ -25,7 +25,7 @@ gdx.open_ble("GDX-MD 0B1010H3"), gdx.select_sensors([5]), gdx.start(50)
 
 '''
 
-from gdx_modules import gdx
+from gdx import gdx
 gdx = gdx.gdx()
 
 #gdx.open_ble('GDX-FOR 071000U9')
