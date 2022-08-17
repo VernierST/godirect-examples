@@ -22,9 +22,8 @@ time_between_readings_in_seconds = 0.5
 number_of_readings = 20
 digits_of_precision = 2
 
-
-#gdx.open_usb() # Comment out if you are not using a USB connection.
-gdx.open_ble() # Uncomment if you wish to connect via Bluetooth.
+gdx.open(connection='usb')   # Use connection='ble' for a Bluetooth connection
+#gdx.open(connection='usb', device_to_open='GDX-FOR 071000U9')  # You can also use an argument to specify the device
 
 gdx.select_sensors() # You will be asked to select the sensors to be used. You can select up to three.
 #gdx.select_sensors([1]) # You can also use an argument to select sensors. Separate multiple sensors with a comma, ([1,3])

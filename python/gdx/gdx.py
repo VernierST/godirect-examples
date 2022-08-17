@@ -54,139 +54,8 @@ class gdx:
 
         self.godirect = GoDirect(use_ble=False, use_usb=False) 
 
-    def vp_vernier_canvas(self, buttons=True, slider=True, meters=True, graph=False):
-
-        # if they are using vpython, then create the canvas and start/stop/close buttons
-        gdx.vpython = True
     
-        gdx.vpython_buttons = buttons
-        gdx.vpython_graph = graph
-        gdx.vpython_meters = meters
-        gdx.vpython_slider = slider
-
-        if buttons or slider:
-            vp.setup_canvas(buttons, slider)
-        if graph:
-            column_headers= self.enabled_sensor_info()
-            vp.graph_init(column_headers)
-        if meters:
-            vp.meter_init()
-
-    def vp_meter(self, measurement):
-        
-        if not gdx.devices:
-            logging.info("Version " + self.VERSION)
-            print("vp_meter() - no device connected")
-            return
-        
-        # first, check to make sure the user has set meter=True in vernier_canva()
-        if gdx.vpython_meters != True:
-            pass
-            #print("You are calling vp_meter(), but the meter was not configured in vp_vernier_canvas()")
-        else:
-            # Usually the code in the Collect button sets the period,
-            # but if there are no buttons, then need to set the period here, 
-            # but only on the first call (when the start button flag == False)
-            if gdx.vpython_buttons == False and gdx.vp_start_button_flag == False:
-                gdx_vpython.ver_vpython.period = gdx.period/1000
-                gdx.vp_start_button_flag = True
-            column_headers= self.enabled_sensor_info()
-            
-            vp.meter_data(column_headers, measurement)
-        
-    
-    def vp_graph(self, measurements):
-        
-        if not gdx.devices:
-            print("vp_graph() - no device connected")
-            return
-        
-        # first, check to make sure the user has set graph=True in vp_vernier_canvas()
-        if gdx.vpython_graph != True:
-            pass
-            #print("You are calling vp_graph(), but the graph was not configured in vp_vernier_canvas()")
-        else:
-            # Usually the code in the Collect button resets the graph
-            # but if there are no buttons, then need to reset the graph, 
-            # but only on the first call (when the start button flag == False)
-            if gdx.vpython_buttons == False and gdx.vp_start_button_flag == False:
-                print("came to graph first start state")
-                column_headers= self.enabled_sensor_info()
-                vp.graph_clear(column_headers)
-                gdx_vpython.ver_vpython.period = gdx.period/1000
-                gdx_vpython.ver_vpython.time = 0
-                gdx.vp_start_button_flag = True
-
-            vp.graph_plot(measurements)
-    
-    def vp_close_is_pressed(self):
-        # Note that there is no vpython rate() call here, but there is in the
-        # gdx_vpython module in the collect_button() function
-
-        # First check to make sure there are devices connected.      
-        if not gdx.devices:
-            print("vp_close_button() - no device connected")
-            is_closed = True
-        else:
-            is_closed = vp.closed_button()
-        
-        if is_closed == True:
-            self.stop()
-            self.close()
-            if gdx.vpython_graph:
-                vp.graph_delete()
-            if gdx.vpython_meters:
-                vp.meter_delete()
-            if gdx.vpython_slider:
-                vp.slider_delete()
-            if gdx.vpython_buttons:
-                vp.button_delete()
-            vp.canvas_delete()
-        else:
-            if gdx.vpython_meters:
-                column_headers= self.enabled_sensor_info()
-                for device in gdx.devices:
-                    device.start(period=250)
-                for x in range(4):
-                    data = self.read()
-                    vp.meter_data(column_headers, data)
-                self.stop()
-                
-        return is_closed
-
-    def vp_collect_is_pressed(self):
-        """ The flag allows us to determines if the state of the button has 
-        changed since the last time it was checked. If it has just been pressed 
-        into the Start (True) or Stop (False) state then the Go Direct hardware 
-        needs to be started or stopped and the flag needs to be updated.
-        """
-
-        # First check to make sure there are devices connected.      
-        if not gdx.devices:
-            print("vp_collect_button() - no device connected")
-            return
-        
-        # the 'start_button_state' = True when it is in the Start position
-        # and = False when in the Stop position. 
-        start_button_state = vp.collect_button()
-
-        # Check to see if the state of the button has changed (just been pressed)
-        if gdx.vp_start_button_flag != start_button_state:
-            if start_button_state == True:
-                if gdx.vpython_graph:
-                    column_headers= self.enabled_sensor_info()
-                    vp.graph_clear(column_headers)
-                gdx_vpython.ver_vpython.time = 0
-                self.start(gdx.period)
-                gdx.vp_start_button_flag = True
-            else:
-                self.stop()
-                gdx.vp_start_button_flag = False
-
-        return start_button_state
-    
-    # new, updated 'open' function to combine ble and usb and also 
-    # setup the vpython canvas
+    # 'open' function to combine ble and usb 
     def open(self, connection='usb', device_to_open=None, vpython=False):
         """
         """
@@ -375,11 +244,11 @@ class gdx:
             gdx.devices.append(found_devices[0])
         else:
             print('\n')
-            print("In the list above, find the serial number of the device")
-            print("you wish to connect. To the left of the serial number is")
-            print("a number. To select this device, type in this number")
-            print("and then press 'enter'. To select multiple devices, separate")
-            print("the numbers with commas with no spaces(e.g., 1,2):", end=' ')
+            print("- If connecting a single device, type the number (e.g., 1) that")
+            print("corresponds with the device, and then press 'enter'.")
+            print("- If connnecting multiple devices, type in each number")
+            print("separated with commas with no spaces(e.g., 1,2), and then ")
+            print("press 'enter':", end=' ')
         
             user_selected_device = []
             for s in input().split(','):
@@ -423,16 +292,20 @@ class gdx:
         i = 0
         print("attempting to open", len(gdx.devices), "device(s)...")
         while i < len(gdx.devices): 
-            open_device_success = gdx.devices[i].open()
-            print("open device ",i, " = ", open_device_success, sep="")
-            if open_device_success:
-                open_success = True
-                gdx.ble_open = True
-            else:
+            try:
+                open_device_success = gdx.devices[i].open()
+                print("open device ",i, " = ", open_device_success, sep="")
+                if open_device_success:
+                    open_success = True
+                    gdx.ble_open = True
+                else:
+                    open_success = False
+                    return open_success
+                time.sleep(1)
+                i +=1     
+            except:
                 open_success = False
-                return open_success
-            time.sleep(1)
-            i +=1   
+                break
 
         return open_success 
 
@@ -457,12 +330,20 @@ class gdx:
             i = 0
             while i < len(gdx.devices):
                 selected_sensors = []
-                print("select sensors for", gdx.devices[i])
+                print('\n')
+                print("List of sensors for", gdx.devices[i])
                 sensors = gdx.devices[i].list_sensors()
                 for s in sensors:
                     c = sensors[s]
                     print(str(c))  
-                print("Enter sensor number. To select multiple sensors, separate with commas (no spaces):", end=' ')
+                
+                print('\n')
+                print("- If connecting a single sensor, type the number (e.g., 1) that")
+                print("corresponds with the sensor, and then press 'enter'.")
+                print("- If connecting multiple sensors, type in each number")
+                print("separated with commas with no spaces(e.g., 1,2), and then ")
+                print("click 'enter':", end=' ')
+                
                 for x in input().split(','):
                     selected_sensors.append(int(x))                    
                 gdx.device_sensors.append(selected_sensors)
@@ -597,10 +478,12 @@ class gdx:
         else:
             # If the period argument is left blank provide an input prompt for the user to enter the period.
             if period == None: 
-                print("select period (ms):", end=' ')
+                print('\n')
+                print("Enter the sampling period (milliseconds):", end=' ')
                 period = int(input())
+                print('\n')
                 sample_rate = 1/(period/1000)
-                print("sample rate = ", sample_rate, "samples/second")
+                #print("sample rate = ", sample_rate, "samples/second")
                 
             # Provide a warning message if the user is attempting fast data collection
             if period < 10:
@@ -635,9 +518,8 @@ class gdx:
         """ Take single point readings from the enabled sensors.
 
         Returns:
-		    retvalues: A single data point for each enabled sensor. If
-			a single sensor is connected, just the data point is returned. Otherwise a list
-			containing each configured sensor's data point.
+		    retvalues[]: a 1D list of sensor readings. A single data point 
+            for each enabled sensor.
 		"""
         
         retvalues = []  
@@ -657,10 +539,11 @@ class gdx:
             # if this was the last value in the buffer, clear the list so that it is not a list of empty lists
             if not gdx.buffer[0]:
                 gdx.buffer = []
-            if len(retvalues) == 1:
-                return retvalues[0]
-            else:
-                return retvalues          
+            # if len(retvalues) == 1:
+            #     return retvalues[0]
+            # else:
+            #     return retvalues   
+            return retvalues       
 
         # The buffer is empty, so take readings from the sensor
         else:
@@ -689,10 +572,11 @@ class gdx:
             if not retvalues:
                 return None
             # if it is just a single value, don't send it as a list
-            elif len(retvalues) == 1:
-                return retvalues[0]
+            # elif len(retvalues) == 1:
+            #     return retvalues[0]
             else:
                 return retvalues
+            
         
 
     def readValues(self):             
@@ -841,9 +725,8 @@ class gdx:
         """ Returns each enabled sensors' description and units (good for column headers).
 
 		Returns:
-		    sensor_info: if there are multiple sensors, sensor_info is a 1D list that includes each
-            enabled sensors' description with units, e.g. ['Force (N)', 'X-axis acceleration (m/s²)'].
-            If this is just a single sensor, returns a string, e.g., 'Force (N)'             
+		    sensor_info[]: a 1D list that includes each enabled sensors' description 
+            with units, e.g. ['Force (N)', 'X-axis acceleration (m/s²)']                 
 		"""                
 
         if not gdx.devices:
@@ -859,15 +742,14 @@ class gdx:
             for sensor in sensors:
                 info = sensor.sensor_description + " (" + sensor.sensor_units + ")"
                 sensor_info.append(info)
-            i+=1
+            i += 1
 
-        if not sensor_info:
-            return None
+        return sensor_info
         # if it is just a single value, don't send it as a list
-        elif len(sensor_info) == 1:
-            return sensor_info[0]
-        else:
-            return sensor_info
+        # if len(sensor_info) == 1:
+        #     return sensor_info[0]
+        # else:
+        #     return sensor_info
 
     def sensor_info(self):
         """ Information about all of the available sensors on a connected Go Direct device.
@@ -964,4 +846,136 @@ class gdx:
             
         return discovered_ble_devices
 
+#### VPYTHON FUNCTIONS ####
+
+    def vp_vernier_canvas(self, buttons=True, slider=True, meters=True, graph=False):
+
+        # if they are using vpython, then create the canvas and start/stop/close buttons
+        gdx.vpython = True
+
+        gdx.vpython_buttons = buttons
+        gdx.vpython_graph = graph
+        gdx.vpython_meters = meters
+        gdx.vpython_slider = slider
+
+        if buttons or slider:
+            vp.setup_canvas(buttons, slider)
+        if graph:
+            column_headers= self.enabled_sensor_info()
+            vp.graph_init(column_headers)
+        if meters:
+            vp.meter_init()
+
+    def vp_meter(self, measurement):
+        
+        if not gdx.devices:
+            logging.info("Version " + self.VERSION)
+            print("vp_meter() - no device connected")
+            return
+        
+        # first, check to make sure the user has set meter=True in vernier_canva()
+        if gdx.vpython_meters != True:
+            pass
+            #print("You are calling vp_meter(), but the meter was not configured in vp_vernier_canvas()")
+        else:
+            # Usually the code in the Collect button sets the period,
+            # but if there are no buttons, then need to set the period here, 
+            # but only on the first call (when the start button flag == False)
+            if gdx.vpython_buttons == False and gdx.vp_start_button_flag == False:
+                gdx_vpython.ver_vpython.period = gdx.period/1000
+                gdx.vp_start_button_flag = True
+            column_headers= self.enabled_sensor_info()
+            
+            vp.meter_data(column_headers, measurement)
+        
+
+    def vp_graph(self, measurements):
+        
+        if not gdx.devices:
+            print("vp_graph() - no device connected")
+            return
+        
+        # first, check to make sure the user has set graph=True in vp_vernier_canvas()
+        if gdx.vpython_graph != True:
+            pass
+            #print("You are calling vp_graph(), but the graph was not configured in vp_vernier_canvas()")
+        else:
+            # Usually the code in the Collect button resets the graph
+            # but if there are no buttons, then need to reset the graph, 
+            # but only on the first call (when the start button flag == False)
+            if gdx.vpython_buttons == False and gdx.vp_start_button_flag == False:
+                print("came to graph first start state")
+                column_headers= self.enabled_sensor_info()
+                vp.graph_clear(column_headers)
+                gdx_vpython.ver_vpython.period = gdx.period/1000
+                gdx_vpython.ver_vpython.time = 0
+                gdx.vp_start_button_flag = True
+
+            vp.graph_plot(measurements)
+
+    def vp_close_is_pressed(self):
+        # Note that there is no vpython rate() call here, but there is in the
+        # gdx_vpython module in the collect_button() function
+
+        # First check to make sure there are devices connected.      
+        if not gdx.devices:
+            print("vp_close_button() - no device connected")
+            is_closed = True
+        else:
+            is_closed = vp.closed_button()
+        
+        if is_closed == True:
+            self.stop()
+            self.close()
+            if gdx.vpython_graph:
+                vp.graph_delete()
+            if gdx.vpython_meters:
+                vp.meter_delete()
+            if gdx.vpython_slider:
+                vp.slider_delete()
+            if gdx.vpython_buttons:
+                vp.button_delete()
+            vp.canvas_delete()
+        else:
+            if gdx.vpython_meters:
+                column_headers= self.enabled_sensor_info()
+                for device in gdx.devices:
+                    device.start(period=250)
+                for x in range(4):
+                    data = self.read()
+                    vp.meter_data(column_headers, data)
+                self.stop()
+                
+        return is_closed
+
+    def vp_collect_is_pressed(self):
+        """ The flag allows us to determines if the state of the button has 
+        changed since the last time it was checked. If it has just been pressed 
+        into the Start (True) or Stop (False) state then the Go Direct hardware 
+        needs to be started or stopped and the flag needs to be updated.
+        """
+
+        # First check to make sure there are devices connected.      
+        if not gdx.devices:
+            print("vp_collect_button() - no device connected")
+            return
+        
+        # the 'start_button_state' = True when it is in the Start position
+        # and = False when in the Stop position. 
+        start_button_state = vp.collect_button()
+
+        # Check to see if the state of the button has changed (just been pressed)
+        if gdx.vp_start_button_flag != start_button_state:
+            if start_button_state == True:
+                if gdx.vpython_graph:
+                    column_headers= self.enabled_sensor_info()
+                    vp.graph_clear(column_headers)
+                gdx_vpython.ver_vpython.time = 0
+                self.start(gdx.period)
+                gdx.vp_start_button_flag = True
+            else:
+                self.stop()
+                gdx.vp_start_button_flag = False
+
+        return start_button_state
 
