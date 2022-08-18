@@ -39,7 +39,7 @@ canvas(title='<b>Live Freebody Diagram<b>')
 
 hanging_mass=float(input("Enter the mass (in kg) of the hanging mass:"))    # prompts user for mass of hanging mass
 
-gdx.open_ble('GDX-FOR 07200362') # change GDX-FOR ID to match your device
+gdx.open(connection='ble', connection='GDX-FOR 07200362')   # change GDX-FOR ID to match your device
 gdx.select_sensors([1,2,3,4])   # GDX-FOR sensors: 1 - force sensor, 2 - x axis accel, 3 - y axis accel, 4 - z axis accel
 gdx.start(period=200)   # data collection period of 200 ms, means a sampling rate of 5 samples/second
 

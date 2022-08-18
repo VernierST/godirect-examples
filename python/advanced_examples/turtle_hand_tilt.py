@@ -31,8 +31,7 @@ gdx = gdx.gdx()
 import math
 
 
-gdx.open_usb()
-#gdx.open_ble()
+gdx.open(connection='usb')   # change to 'ble' for Bluetooth connection
 
 gdx.select_sensors([1,3,4])   # Hand Dynamometer sensors to use: 3 - y axis accel, 4 - z axis accel
 gdx.start(period=200) 

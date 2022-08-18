@@ -1,6 +1,6 @@
 # Getting Started with Vernier Go Direct® Sensors and Python
 
-This guide shows you how to get started writing Python programs for your Vernier Go Direct<sup>1</sup> sensors. The guide contains the following topics:
+This guide shows you how to get started writing Python programs to communicate with the sensors on-board your Vernier Go Direct<sup>1</sup> device. The guide contains the following topics:
 
 - [Getting Started Requirements](#getting-started-requirements)
 - [Install Python 3](#install-python-3)
@@ -18,9 +18,9 @@ If you are new to Python you should look over all of the steps. If you are famil
 
 ## Getting Started Requirements
 
-We have developed a Python module called `godirect` that allows you to communicate with Vernier Go Direct sensors via USB or Bluetooth Low Energy (BLE). This requires the following: 
+We have developed a Python module called `godirect` that allows you to communicate with the sensors of a Vernier Go Direct device via USB or Bluetooth Low Energy (BLE). This requires the following: 
 
-- A Vernier Go Direct Sensor
+- A Vernier Go Direct Device
 - A Windows® 10, macOS®, Linux, or Raspberry Pi computer
 - An installation of Python 3
 - An installation of the Vernier godirect module for Python 3
@@ -128,17 +128,17 @@ With the godirect module installed, it is time to run an example.
 - From your IDE’s menu, choose File>Open
 - Browse to the download and open the folder called “python”.
 - Open one of the getting started examples (gdx_getting_started_usb.py, for example) 
-- Turn on your Go Direct sensor.
-  - If running an example with a USB connection, then connect the sensor via USB.
+- Turn on your Go Direct device.
+  - If running an example with a USB connection, then connect the device via USB.
 - Run the Python example. (If you are using IDLE, click on “Run Module” from the Run menu.)
 
 ## About the Getting Started Examples
 
-The getting started examples demonstrate how to collect data from Go Direct sensors. Under the hood, these examples all use the godirect module to communicate with the Go Direct devices. However, to make things a bit simpler, we created a layer to abstract some of the details away and provide some simple functions. That layer is named gdx and can be found in the /gdx/ folder (note that this folder must be located in the same directory as the examples or programs that you write that use the gdx functions). All of the getting started examples make use of this layer for a cleaner, simpler entry point into coding with Go Direct devices.
+The getting started examples demonstrate how to collect data from the sensors of a Go Direct device. Under the hood, these examples all use the godirect module to communicate with the Go Direct devices. However, to make things a bit simpler, we created a layer to abstract some of the details away and provide some simple functions. That layer is named gdx and can be found in the /gdx/ folder (note that this folder must be located in the same directory as the examples or programs that you write that use the gdx functions). All of the getting started examples make use of this layer for a cleaner, simpler entry point into coding with Go Direct devices.
 
 The gdx functions used in a typical program to collect data include:
 
-- `gdx.open_usb()` or `gdx.open_ble()`
+- `gdx.open()`
 - `gdx.select_sensors()`
 - `gdx.start()`
 - `gdx.read()`
@@ -151,7 +151,7 @@ A simple program using the gdx module looks like this:
 from gdx import gdx
 gdx = gdx.gdx()
  
-gdx.open_usb()
+gdx.open(connection='usb')
 gdx.select_sensors()
 gdx.start() 
  
@@ -174,19 +174,18 @@ gdx = gdx.gdx()
 ```
 - The gdx functions are located in a file named “gdx.py”, located inside a folder named "gdx". In order for the import command to find the gdx file (so that your program can access the functions), the gdx folder needs to be in the same directory as the python program.
 
-### `gdx.open_usb()`
-- `gdx.open_usb()` will connect to all Go Direct devices connected via USB. 
-- There are no arguments for this function.
-
-### `gdx.open_ble()`
-- `gdx.open_ble()` is used in place of `gdx.open_usb()` if the program will connect the Go Direct device(s) via Bluetooth instead of USB. 
-- Multiple Go Direct devices can be connected via Bluetooth. 
-- If this function’s argument is left blank the function finds all available Go Direct ble devices, prints the list to the terminal, and prompts the user to select the devices to connect.
-- There are two ways to use arguments in this function that allow automatic connection to your device without being prompted in the terminal to make the selection.
-  - `gdx.open_ble(“GDX-FOR 071000U9, GDX-HD 151000C1”)`
-    - If the device name or names is used as the argument in the `gdx.open_ble()` function it will search and connect to those specific Go Direct devices. In the above code snippet a Go Direct Force and Acceleration sensor with a serial number of 071000U9 and a Go Direct Hand Dynamometer with serial number 151000C1 will be opened via Bluetooth.
-  - `gdx.open_ble(“proximity_pairing”)`
-    - Use “proximity pairing” as the argument in the `gdx.open_ble()` function if you want your program to open the Go Direct device with the strongest rssi signal strength.
+### `gdx.open()`
+- There are two parameters that can be used, `connection=` and `device_to_open=`
+- The `connection=` parameter can be set to connect Go Direct devices to either USB `'usb'` or Bluetooth `'ble'`
+  - `gdx.open(connection='usb')` 
+  - `gdx.open(connection='ble')`
+- If the `device_to_open=` argument is left blank the function finds all available Go Direct devices, prints the list to the terminal, and prompts the user to select the devices to connect.
+- To automaticcally connect to your devices without being prompted in the terminal to make the selection, set `device_to_open=` with your device name or names.
+  - `gdx.open(connection='usb', device_to_open=“GDX-FOR 071000U9, GDX-HD 151000C1”)`
+  - `gdx.open(connection='ble', device_to_open=“GDX-FOR 071000U9, GDX-HD 151000C1”)`
+    - If the device name or names is used as the argument in the `gdx.open()` function it will search and connect to those specific Go Direct devices. In the above code snippet a Go Direct Force and Acceleration device with a serial number of 071000U9 and a Go Direct Hand Dynamometer with serial number 151000C1 will be opened.
+- To automatically connect to the Go Direct device with the strongest rssi signal strength, use "proximity pairing" as the argument.
+  - `gdx.open(connection='ble', device_to_open=“proximity_pairing”)`
 
 ### `gdx.select_sensors()`
 - Most Go Direct devices have multiple sensors on-board. Use this function to select the sensors you wish to enable for data collection.
@@ -209,7 +208,7 @@ gdx = gdx.gdx()
 
 ### `gdx.stop()`
 - Stop data collection on the selected sensors.
-- Calling the `gdx.stop()` function stops data collection but does not disconnect the sensor, so it is possible to start a new round of data collection.
+- Calling the `gdx.stop()` function stops data collection but does not disconnect the device, so it is possible to start a new round of data collection.
 
 ### `gdx.close()`
 - Disconnect the Go Direct device from the USB or Bluetooth connection and quit godirect.
@@ -234,8 +233,8 @@ As stated earlier, these gdx functions are available in the gdx.py file, in the 
  
 ### Bluetooth
 - If you are using Windows, it must be Windows 10.
-- The godirect module will pair your Go Direct sensor to your computer. You do not need to manually pair the device in Settings. In fact, this will probably cause issues. 
-- If possible, as a first step in troubleshooting, try using your Go Direct sensor with our free [Graphical Analysis™ 4](https://www.vernier.com/product/graphical-analysis-4/) app. Do you have success connecting via Bluetooth with the app?
+- The godirect module will pair your Go Direct device to your computer. You do not need to manually pair the device in Settings. In fact, this will probably cause issues. 
+- If possible, as a first step in troubleshooting, try using your Go Direct device with our free [Graphical Analysis™ 4](https://www.vernier.com/product/graphical-analysis-4/) app. Do you have success connecting via Bluetooth with the app?
 - If you are using your computer’s on-board Bluetooth and you are getting an error, make sure that you have the latest Bleak module installed:  ```pip3 install bleak```
 - Version 1.1.0 of godirect added native BLE support on Windows, Mac and Linux (Including RPi). Version 1.0.6 only supported native BLE on Windows and Linux. Older versions only support Bluetooth with the Bluegiga bluetooth dongle.
 - If your computer does not have on-board bluetooth, you can use the Bluegiga bluetooth dongle, as mentioned in the [Bluegiga Dongle](#bluegiga-dongle) section of this document.

@@ -94,8 +94,7 @@ actual_data.delete()
 scene.autoscale = False
 
 
-gdx.open_usb()
-#gdx.open_ble()
+gdx.open(connection='usb')   # change to 'ble' for Bluetooth connection
 
 gdx.select_sensors([5]) #use the motion detector distance channel only. This is channel 5
 
