@@ -932,7 +932,9 @@ class gdx:
             vp.graph_plot(measurements)
 
     def vp_close_is_pressed(self):
-        """ Monitor the state of the vpython canvas Close button
+        """ Monitor the state of the vpython canvas Close button. When true, 
+        a gdx.stop() and gdx.close() are called to stop data collection and 
+        disconnect the device. 
 
         Returns:
             close_button_state (bool): True if Close button has been pressed
@@ -976,11 +978,14 @@ class gdx:
         return close_button_state
 
     def vp_collect_is_pressed(self):
-        """ Monitor the state of the vpython canvas Collect/Stop button
+        """ Monitor the state of the vpython canvas Collect/Stop button. When Collect
+        is clicked, a gdx.start() is called. When Stop is clicked, a gdx.stop() is
+        called.
+
 
         Returns:
             collect_button_state (bool): True if Collect button has been pressed
-            to begin data collection
+            to begin data collection.
         """
 
         # First check to make sure there are devices connected.      
@@ -991,7 +996,7 @@ class gdx:
         # get the state of the collect button
         collect_button_state = vp.collect_button()
 
-        # It is not enough to know the state of the button, it is just as 
+        # It is not enough to know the state of the button, it is also 
         # important to know if the button was just clicked (just been pressed)
         if gdx.vp_start_button_flag != collect_button_state:
             # if it was just clicked into the True state, start data collection
