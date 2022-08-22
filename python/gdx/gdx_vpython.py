@@ -1,5 +1,4 @@
 import logging
-from turtle import pos
   
 # from gdx_modules.gdx import gdx_class
 # gdx = gdx_class()
@@ -206,14 +205,14 @@ class ver_vpython:
     #     slider_text = wtext(text='')
     #     ver_vpython.slider_text = slider_text
 
-    def print_to_canvas(self):
-        """ Feedback to the user on the vpython screen 
-		"""  
-        from vpython import canvas
+    # def print_to_canvas(self):
+    #     """ Feedback to the user on the vpython screen 
+	# 	"""  
+    #     from vpython import canvas
 
-        canvas.get_selected().append_to_caption('Must specify device channels.')
-        canvas.get_selected().caption = 'test caption'
-        raise AttributeError('Must specify device channels.')     
+    #     canvas.get_selected().append_to_caption('Must specify device sensors.')
+    #     canvas.get_selected().caption = 'test caption'
+    #     raise AttributeError('Must specify device sensors.')     
 
     def collect_button(self):
         """ Return value = True if the button is in the Collect state. Return

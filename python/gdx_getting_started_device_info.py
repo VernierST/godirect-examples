@@ -1,9 +1,9 @@
 ''' 
 This example lists information about a single Go Direct device and all 
-of its sensor channels.
+of its sensors.
 
-"Incompatible sensors" refers to sensor channels that cannot operate at the
-same time. Most devices allow all sensor channels to collect data at 
+"Incompatible sensors" refers to sensors that cannot operate at the
+same time. Most devices allow all sensors to collect data at 
 the same time. However, devices like Sound and EKG have some sensors that do not work
 when the other on-board sensors are collecting data.
 
