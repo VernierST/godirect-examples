@@ -843,7 +843,7 @@ class gdx:
 
 #### VPYTHON FUNCTIONS ####
 
-    def vp_vernier_canvas(self, buttons=True, slider=True, meters=True, graph=False):
+    def vp_vernier_canvas(self, buttons=True, slider=True, meters=True, graph=False, cvs=True):
         """ Create vptyhon objects that are used for controlling data collection. 
         
         Args: 
@@ -851,6 +851,7 @@ class gdx:
             slider (bool): Create a slider to control sampling rate
             meters (bool): Create meters to display live sensor data
             graph (bool): Create a graph to plot live sensor data
+            cvs (bool): Create a default canvas, ready for vpython objects
         
         """
         # keep track of what objects have been selected
@@ -868,6 +869,8 @@ class gdx:
             vp.graph_init(column_headers)
         if meters:
             vp.meter_init()
+        if cvs:
+            vp.create_default_canvas()
 
     def vp_meter(self, measurement):
         """ Display all sensor data in the vernier canvas meter

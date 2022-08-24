@@ -22,7 +22,7 @@ class ver_vpython:
     plot_3 = None
     graph_canvas = None
     meter_canvas = None
-    slider_canvas = None
+    button_canvas = None
     meter_text = None
     slider_text = None
     cb = None    # collect button
@@ -37,38 +37,50 @@ class ver_vpython:
 
         # Can we install the vpython library, with godirect?
         #from vpython import canvas, button, box, wtext, checkbox, rate
-        from vpython import button, scene, slider, wtext
+        from vpython import button, scene, slider, wtext, canvas, color
         #global collectbutton, closebutton
         # if they are using vpython, then create the canvas and collect/stop/close buttons
         
-        #global collectbutton, closebutton
-        
-        scene.width = 0
-        scene.height = 10
+    
+        ver_button_scene = canvas()
+        ver_vpython.button_canvas = ver_button_scene
+        ver_button_scene.width = 0
+        ver_button_scene.height = 10
 
-        scene.append_to_title('\n')
+        ver_button_scene.append_to_title('\n')
         if vp_button:
             collectbutton = button(text='<b style="color:green; font-size:26px"> COLLECT </b>', 
-                                pos=scene.title_anchor, bind=vp_collect_stop)
+                                pos=ver_button_scene.title_anchor, bind=vp_collect_stop)
             ver_vpython.cb = collectbutton
-            scene.append_to_title('  ')
+            ver_button_scene.append_to_title('  ')
             closebutton = button(text='<b style="color:red; font-size:26px">   CLOSE   </b>', 
-                                pos=scene.title_anchor, bind=vp_closed)
+                                pos=ver_button_scene.title_anchor, bind=vp_closed)
             ver_vpython.clsb = closebutton
         
         if slider_control:
-            scene.append_to_title('  ')
-            slider_control = slider(pos=scene.title_anchor, min=1, max=100, value=10, step=1, length=200, bind=vp_slider)
+            ver_button_scene.append_to_title('  ')
+            slider_control = slider(pos=ver_button_scene.title_anchor, min=1, max=100, value=10, step=1, length=200, bind=vp_slider)
             ver_vpython.sl = slider_control
             #scene.append_to_caption('\n\n') 
             #scene.append_to_title('\n')
-            slider_text = wtext(pos=scene.title_anchor, text='10 samples/second')
+            slider_text = wtext(pos=ver_button_scene.title_anchor, text='10 samples/second')
             ver_vpython.period = 100
             ver_vpython.slider_text = slider_text
 
 
-        scene.append_to_title('\n')
+        ver_button_scene.append_to_title('\n')
 
+    def create_default_canvas(self):
+        """ Add a small canvas below the button canvas and the meter canvas. This should allow
+        the user to create vpython objects without having to create a scene. If they do create
+        a scene it should simply overwrite this canvas.        
+        """
+
+        from vpython import canvas, scene, color
+
+        scene = canvas(width=800, height=150)
+        scene.background = color.black
+    
     def button_delete(self):
         ver_vpython.cb.delete()
         ver_vpython.clsb.delete()
@@ -86,6 +98,8 @@ class ver_vpython:
         #canvas.delete(ver_vpython.cb)
         # ver_vpython.cb.delete()
         # ver_vpython.clsb.delete()
+        ver_vpython.button_canvas.delete()
+        
         scene.delete()
         current = canvas.get_selected()
         if current:
@@ -153,12 +167,12 @@ class ver_vpython:
         ver_vpython.graph_canvas.delete()
 
     def meter_init(self):
-        from vpython import canvas, wtext, scene
+        from vpython import canvas, wtext, scene, color
         
-        mc = canvas(width=0, height=20)
-        ver_vpython.meter_canvas = mc
-        scene.append_to_title('\n')
-        woutput = wtext(text='', pos=mc.title_anchor)
+        ver_meter_canvas = canvas(width=0, height=20)
+        ver_vpython.meter_canvas = ver_meter_canvas
+        ver_meter_canvas.append_to_title('\n')
+        woutput = wtext(text='', pos=ver_meter_canvas.title_anchor)
         ver_vpython.meter_text = woutput
         #<b>mass <i>M</i></b>
         #woutput.text = "<b>{ch_string}</b>\n".format(ch_string)
@@ -187,11 +201,11 @@ class ver_vpython:
         from vpython import canvas
         
         canvas.delete(ver_vpython.meter_text)
-        mc = ver_vpython.meter_canvas
+        ver_meter_canvas = ver_vpython.meter_canvas
         # this worked
-        mc.delete()
+        ver_meter_canvas.delete()
         # this worked too
-        #canvas.delete(mc)
+        #canvas.delete(ver_meter_canvas)
     
     # def slider_init(self):
     #     from vpython import canvas, slider, wtext, scene

@@ -13,9 +13,7 @@ gdx.select_sensors()
 # setup a vernier vpython canvas with buttons to control data collection  
 gdx.vp_vernier_canvas()
 
-# setup a vpython canvas with a box object
-c = canvas(width=800, height=150)
-c.caption = 'click COLLECT button to control the box length with the sensor reading'
+# Create a vpython box object.
 b = box(size=0.1*vec(1,1,1), color=color.red)
 
 gdx.start(period=250) 
