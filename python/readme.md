@@ -224,7 +224,7 @@ As stated earlier, these gdx functions are available in the gdx.py file, in the 
 
 ### Support
 - Contact us at:  support@vernier.com
-- If you are familiar with github, you could post a question at: https://github.com/VernierST/godirect-examples/issues
+- If you are familiar with github, you could search the issues or post a question at: https://github.com/VernierST/godirect-examples/issues
  
 ### Python
 - If you are new to Python, here are some generally helpful links for getting started with Python.

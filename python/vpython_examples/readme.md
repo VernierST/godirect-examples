@@ -2,7 +2,7 @@
 
 This guide describes the use of Go Direct sensor data with the VPython module. The VPython module makes it possible, and easy, for a Python program to generate navigable real-time 3D animations. This is a great tool to illustrate physics concepts.
 
-Note that this guide is for using VPython with the installed Python language on one's computer. There is a separate guide for "Web VPython", which runs in the browser and allows the user to write and run a VPython program without actually installing Python itself. This provides a great adavantage in the classroom - you do not need to install anything on your computer to immediately run. Another advantage is that the Web VPython version will work on Chromebooks as well as Mac, Windows, and Linux computers. See: XXXXXXXXXXXXXXX
+Note that this guide is for using VPython with the installed Python language on one's computer. There is a separate guide for using Go Direct sensors with "Web VPython", which runs in the browser and allows the user to write and run a VPython program without actually installing Python itself. This provides a great advantage in the classroom - you do not need to install anything on your computer to immediately run. Another advantage is that the Web VPython version will work on Chromebooks as well as Mac, Windows, and Linux computers. See: XXXXXXXXXXXXXXX
 
 ## Getting Started Requirements
 
@@ -14,9 +14,11 @@ The VPython module must be installed to run the examples. Run the following comm
 
 ## Coding Go Direct Sensors with VPython
 
+![VPython with box](./images/vpython_box.png)
+
 We have added functions to our gdx.py file to make it easy to collect and display data from Go Direct sensors in a VPython canvas. 
 
-In a typical program you will first import vpython and import gdx. After the import, a typical program will look similar to this:
+In a typical program you will first import vpython and import gdx. After the import, a typical program will look similar to the snippet below. In this example, the length of the VPython box object is controlled by the sensor data:
 
 ```python
 gdx.open(connection='usb')
@@ -33,6 +35,8 @@ while gdx.vp_close_is_pressed() == False:
         b.length = 0.1 * sensor0_data 
 ```
 
+
+
 ## Notes Regarding the gdx VPython Functions 
 
 The code snippet above uses functions available in the gdx module that provide some convenient features for your VPython program. Here is some more information about the functions:
@@ -40,6 +44,9 @@ The code snippet above uses functions available in the gdx module that provide s
 ### `gdx.vp_vernier_canvas()` 
 - Use this function to add VPython objects that are useful for data collection to the VPython canvas.
 - If this function’s argument is left blank, the following objects will be placed onto the VPython canvas:
+
+![VPython canvas](./images/vpython_buttons_slider_meter.png)
+
   - COLLECT/STOP button
     - Click this button to start and stop data collection
   - CLOSE button
@@ -51,11 +58,15 @@ The code snippet above uses functions available in the gdx module that provide s
     - If you would like the meter to also be active during data collection you will place the `gdx.vp_meter(measurements)` function in the data collection loop.
 - The default settings for the arguments are as follows:
 `vp_vernier_canvas(buttons=True, slider=True, meters=True, graph=False, cvs=True)`
-  - The buttons, slider, and live meter were discussed above. You can disable these VPython objects by setting `buttons=False`, `slider=False`, or `meters=False`
-  - Set `graph=True` to include a VPython graph object on the canvas.
-    - To make the graph active during data collection you will place the 
+- The buttons, slider, and live meter were discussed above. You can disable these VPython objects by setting `buttons=False`, `slider=False`, or `meters=False`
+- Set `graph=True` to include a VPython graph object on the canvas.
+
+![VPython with graph](./images/vpython_graph.png)
+
+  - To make the graph active during data collection you will place the 
     `gdx.vp_graph(measurements)` function in the data collection loop.
-  - The argument `cvs=True` creates a blank canvas for any VPython objects (such as an arrow, box, sphere, etc..) you would like to include in your program. If this blank canvas is not needed or causes issues, simply change this to `cvs=False`.
+- The argument `cvs=True` creates a blank canvas for any VPython objects (such as an arrow, box, sphere, etc..) you would like to include in your program. 
+  - If this blank canvas is not needed or causes issues, simply change this to `cvs=False`.
 
 ### `while gdx.vp_close_is_pressed() == False`
 - The function `gdx.vp_close_is_pressed()` monitors the state of the vpython canvas CLOSE button. 
@@ -79,6 +90,7 @@ gdx.stop() is called.
 - Note that the graph will show up to 3 plots.
  
 ## Troubleshooting
+- If you are familiar with github, you could search the issues or post a question at: https://github.com/VernierST/godirect-examples/issues
 - Try a different browser. In most cases using Chrome is suggested.
 - Place the `gdx.vp_canvas()` function before `gdx.start()` in your code. This is because there is code in the `gdx.start()` function that checks to see if the data collection rate might be coming from the VPython slider that is configured in `gdx.vp_canvas()`. 
 - Write a simple VPython starter program that does not use GO Direct sensors and does not use the functions described above. This can be a good troubleshooting step if you are not sure why VPython is not opening a canvas. Here is an easy example to try:
@@ -88,6 +100,7 @@ from vpython import *
 sphere()
 ```
 
+- After running a program the terminal may become unresponsive. If so, delete the terminal and open a new terminal before running the program a second time.
 - If any of the vpython functions described here are providing confusion in your program, always recall that you do not need to use them in order to use VPython. 
 
 ## License
