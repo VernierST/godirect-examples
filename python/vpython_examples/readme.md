@@ -61,7 +61,7 @@ The code snippet above uses functions available in the gdx module that provide s
 - The buttons, slider, and live meter were discussed above. You can disable these VPython objects by setting `buttons=False`, `slider=False`, or `meters=False`
 - Set `graph=True` to include a VPython graph object on the canvas.
 
-![VPython with graph](../images/vpython_graph.png =400x500)
+<img src="../images/vpython_graph.png" alt="VPython with graph" width="300" height="400"/>
 
   - To make the graph active during data collection you will place the 
     `gdx.vp_graph(measurements)` function in the data collection loop.
