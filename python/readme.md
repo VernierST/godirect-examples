@@ -134,6 +134,10 @@ With the godirect module installed, it is time to run an example.
 
 ## About the Getting Started Examples
 
+The getting started examples, as noted above, are found in the "python" folder of the download. Note that there are other folders that contain more examples that should be looked over. The folder containing the VPython examples are of special note. There is a 
+
+Look over those examples after becoming familiar with the getting started examples
+
 The getting started examples demonstrate how to collect data from the sensors of a Go Direct device. Under the hood, these examples all use the godirect module to communicate with the Go Direct devices. However, to make things a bit simpler, we created a layer to abstract some of the details away and provide some simple functions. That layer is named gdx and can be found in the /gdx/ folder (note that this folder must be located in the same directory as the examples or programs that you write that use the gdx functions). All of the getting started examples make use of this layer for a cleaner, simpler entry point into coding with Go Direct devices.
 
 The gdx functions used in a typical program to collect data include:
