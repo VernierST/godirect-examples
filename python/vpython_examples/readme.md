@@ -14,7 +14,7 @@ The VPython module must be installed to run the examples. Run the following comm
 
 ## Coding Go Direct Sensors with VPython
 
-![VPython with box](./images/vpython_box.png)
+![VPython with box](../images/vpython_box.png)
 
 We have added functions to our gdx.py file to make it easy to collect and display data from Go Direct sensors in a VPython canvas. 
 
@@ -45,7 +45,7 @@ The code snippet above uses functions available in the gdx module that provide s
 - Use this function to add VPython objects that are useful for data collection to the VPython canvas.
 - If this function’s argument is left blank, the following objects will be placed onto the VPython canvas:
 
-![VPython canvas](./images/vpython_buttons_slider_meter.png)
+![VPython canvas](../images/vpython_buttons_slider_meter.png)
 
   - COLLECT/STOP button
     - Click this button to start and stop data collection
@@ -61,7 +61,7 @@ The code snippet above uses functions available in the gdx module that provide s
 - The buttons, slider, and live meter were discussed above. You can disable these VPython objects by setting `buttons=False`, `slider=False`, or `meters=False`
 - Set `graph=True` to include a VPython graph object on the canvas.
 
-![VPython with graph](./images/vpython_graph.png)
+![VPython with graph](../images/vpython_graph.png)
 
   - To make the graph active during data collection you will place the 
     `gdx.vp_graph(measurements)` function in the data collection loop.
