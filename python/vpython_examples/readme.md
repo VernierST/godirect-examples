@@ -18,7 +18,23 @@ The VPython module must be installed to run the examples. Run the following comm
 
 We have added functions to our gdx.py file to make it easy to collect and display data from Go Direct sensors in a VPython canvas. 
 
-In a typical program you will first import vpython and import gdx. After the import, a typical program will look similar to the snippet below. In this example, the length of the VPython box object is controlled by the sensor data:
+In a typical program you will first import vpython and import gdx. The gdx import is a python file that can be found in the /gdx/ folder from the godirect-examples download. When running the `import gdx` code, Python must be able to locate the gdx folder. If the gdx folder is in the same directory as the example, Python will find it. If the gdx folder is up one directory, for example, then your code must point Python to that directory. This is why, in the examples in the /vpython_examples/ folder the code to locate /gdx/ points Python up one directory
+
+```python
+import os
+import sys
+
+# This tells Python that the gdx module is up one directory
+gdx_module_path = os.path.abspath(os.path.join('.'))
+if gdx_module_path not in sys.path:
+    sys.path.append(gdx_module_path)
+
+from gdx import gdx
+from vpython import *
+gdx = gdx.gdx()
+```
+
+After the import, a typical program will look similar to the snippet below. In this example, the length of the VPython box object is controlled by the sensor data:
 
 ```python
 gdx.open(connection='usb')
@@ -102,6 +118,14 @@ sphere()
 
 - After running a program the terminal may become unresponsive. If so, delete the terminal and open a new terminal before running the program a second time.
 - If any of the vpython functions described here are providing confusion in your program, always recall that you do not need to use them in order to use VPython. 
+- To check your version of VPython run the following command in your terminal:
+
+'pip show vpython'
+
+- If you receive the error "can't find '__main__' module", it might be that you have not saved your file.
+- If you receive an error that the VPython module cannot be found, it might not have been installed. Run the following command in your terminal:
+
+'pip install vpython'
 
 ## License
 
