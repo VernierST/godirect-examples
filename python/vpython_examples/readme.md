@@ -18,7 +18,7 @@ The VPython module must be installed to run the examples. Run the following comm
 
 We have added functions to our gdx.py file to make it easy to collect and display data from Go Direct sensors in a VPython canvas. 
 
-In a typical program you will first import vpython and import gdx. The gdx import is a python file that can be found in the /gdx/ folder from the godirect-examples download. When running the `import gdx` code, Python must be able to locate the gdx folder. If the gdx folder is in the same directory as the example, Python will find it. If the gdx folder is up one directory, for example, then your code must point Python to that directory. This is why, in the examples in the /vpython_examples/ folder the code to locate /gdx/ points Python up one directory
+In a typical program you will first import vpython and import gdx. The gdx import is a python file that can be found in the /gdx/ folder from the godirect-examples download. When running the `import gdx` code, Python must be able to locate the gdx folder. If the gdx folder is in the same directory as the example, Python will find it. If the gdx folder is up one directory, for example, then your code must point Python to that directory. This is why, in the examples in the /vpython_examples/ folder, the code to locate /gdx/ points Python up one directory.
 
 ```python
 import os

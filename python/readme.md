@@ -121,7 +121,7 @@ Should you need to update to a newer version in the future, run the following co
 With the godirect module installed, it is time to run an example. 
 - Go to the [github godirect examples page](https://github.com/VernierST/godirect-examples) and download the files by clicking on the “Clone or download” green button and then clicking on the “Download ZIP” button.
 
-![Clone godirect-examples](./images/github_project_clone.png)
+<img src="./images/github_project_clone.png" alt="Clone godirect-examples" width="500" height="300"/>
 
 - Locate the zip file in your download folder and extract/unzip the downloaded folder.
 - Open your IDE (Visual Studio Code or IDLE, for example).
@@ -131,6 +131,12 @@ With the godirect module installed, it is time to run an example.
 - Turn on your Go Direct device.
   - If running an example with a USB connection, then connect the device via USB.
 - Run the Python example. (If you are using IDLE, click on “Run Module” from the Run menu.)
+
+## VPython and Web VPython Examples
+
+Before diving in to the getting started examples, note that there are folders with other examples. Specifically, we have created support for combining Go Direct sensors with VPython.
+Talk about Web VPython
+Link to the VPython getting started readme doc.
 
 ## About the Getting Started Examples
 
