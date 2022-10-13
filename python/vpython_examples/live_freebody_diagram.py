@@ -27,8 +27,10 @@ if gdx_module_path not in sys.path:
 
 # If there is an error trying to find the gdx module, uncomment this to see where
 # the program is looking to find the gdx folder
-#print(sys.path)
-
+print("sys path:  ", sys.path)
+print("test")
+print("test")
+print()
 from gdx import gdx
 from vpython import *
 gdx = gdx.gdx()

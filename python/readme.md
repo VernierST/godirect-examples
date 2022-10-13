@@ -138,13 +138,41 @@ Before diving in to the getting started examples, note that there are folders wi
 Talk about Web VPython
 Link to the VPython getting started readme doc.
 
-## About the Getting Started Examples
+## About the gdx Module
 
-The getting started examples, as noted above, are found in the "python" folder of the download. Note that there are other folders that contain more examples that should be looked over. The folder containing the VPython examples are of special note. There is a 
+The getting started examples demonstrate how to collect data from the sensors of a Go Direct device. Notice at the very top of the getting started examples that we do not `import godirect`.
+Instead, the import is for a module named `gdx`. 
 
-Look over those examples after becoming familiar with the getting started examples
+```python
+from gdx import gdx
+gdx = gdx.gdx()
+```
+The gdx module was created for a cleaner, simpler entry point into coding with Go Direct devices. If you go to the /gdx/ folder and open gdx.py, you will see that it imports godirect and provides simplified functionality of the godirect methods. 
 
-The getting started examples demonstrate how to collect data from the sensors of a Go Direct device. Under the hood, these examples all use the godirect module to communicate with the Go Direct devices. However, to make things a bit simpler, we created a layer to abstract some of the details away and provide some simple functions. That layer is named gdx and can be found in the /gdx/ folder (note that this folder must be located in the same directory as the examples or programs that you write that use the gdx functions). All of the getting started examples make use of this layer for a cleaner, simpler entry point into coding with Go Direct devices.
+Here are some key points to keep in mind:
+
+- The gdx module is meant to provide simple functions that make coding Go Direct sensors easier, but if you want to work directly with the godirect library without the use of the gdx module, take a look at the example in the /example_without_gdx/ folder.
+- The gdx module is not installed when you run `pip install godirect`. Instead, it is part of the download of the godirect-examples repository. Look for it in the download, in the same directory as the getting started examples.
+- In order to  `import gdx`, Python must be able to find the /gdx/ folder. Here are two ways that make it easy for Python to find the /gdx/ folder:
+  - Keep the /gdx/ folder in the same directory as the example that you are running.
+  - Manually move the /gdx/ folder into your Python site-packages directory. This is the same directory that all Python libraries are placed.
+- If you are running an example that imports gdx, but the gdx folder is one directory up, then you must add code to tell Python to look for gdx one directory up. Here is some code that looks for gdx one directory up:
+
+```python
+import os
+import sys
+
+# This tells Python that the path to the gdx module is up one directory
+gdx_module_path = os.path.abspath(os.path.join('.'))
+if gdx_module_path not in sys.path:
+    sys.path.append(gdx_module_path)
+
+from gdx import gdx
+from vpython import *
+gdx = gdx.gdx()
+```
+
+## The gdx Functions
 
 The gdx functions used in a typical program to collect data include:
 
@@ -155,7 +183,7 @@ The gdx functions used in a typical program to collect data include:
 - `gdx.stop()`
 - `gdx.close()`
 
-A simple program using the gdx module looks like this:
+A simple program using the gdx module looks like this (note that in this example the gdx folder is assumed to be in the same directory as the example, or in site-packages where Python can find it):
 
 ```python
 from gdx import gdx
@@ -178,11 +206,6 @@ gdx.close()
 ## Notes Regarding the gdx Functions 
 
 Here is some more information about the gdx functions, including how you might add arguments to a few of the functions:
-```python
-from gdx import gdx
-gdx = gdx.gdx()
-```
-- The gdx functions are located in a file named “gdx.py”, located inside a folder named "gdx". In order for the import command to find the gdx file (so that your program can access the functions), the gdx folder needs to be in the same directory as the python program.
 
 ### `gdx.open()`
 - There are two parameters that can be used, `connection=` and `device_to_open=`
