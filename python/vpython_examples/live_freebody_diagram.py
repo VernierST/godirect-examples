@@ -10,27 +10,23 @@ The freebody diagram will update itself to reflect the GDX-FOR's current orienta
 exerted by its load cell.
 
 This program is written to connect to GDX-FOR via Bluetooth. 
-You can run the program connected to GDX-FOR via USB; just change line 25 to "gdx.open_usb".
+You can run the program connected to GDX-FOR via USB; just modify gdx.open().
 
-This program requires the godirect-py, vpython, and math packages.
+This program requires the godirect, vpython, and math packages are installed.
 '''
 
 import os
 import sys
 
-# This allows us to import the local gdx module that is up one directory
+# This tells Python that the /gdx/ folder is up one directory
 gdx_module_path = os.path.abspath(os.path.join('.'))
-# If the module is not found, uncomment and try two dots. Also, uncomment the print(sys.path)
-#gdx_module_path = os.path.abspath(os.path.join('..'))
 if gdx_module_path not in sys.path:
     sys.path.append(gdx_module_path)
 
-# If there is an error trying to find the gdx module, uncomment this to see where
-# the program is looking to find the gdx folder
-print("sys path:  ", sys.path)
-print("test")
-print("test")
-print()
+# If the /gdx/ folder is not found, uncomment the print() to see where Python is looking. 
+# and move the /gdx/ folder into one of these paths.
+# print("path:  ", sys.path)
+
 from gdx import gdx
 from vpython import *
 gdx = gdx.gdx()
@@ -41,7 +37,8 @@ canvas(title='<b>Live Freebody Diagram<b>')
 
 hanging_mass=float(input("Enter the mass (in kg) of the hanging mass:"))    # prompts user for mass of hanging mass
 
-gdx.open(connection='ble', connection='GDX-FOR 07200362')   # change GDX-FOR ID to match your device
+# Configure Go Direct sensors
+gdx.open(connection='ble', connection='GDX-FOR 071000U9')   # change GDX-FOR ID to match your device
 gdx.select_sensors([1,2,3,4])   # GDX-FOR sensors: 1 - force sensor, 2 - x axis accel, 3 - y axis accel, 4 - z axis accel
 gdx.start(period=200)   # data collection period of 200 ms, means a sampling rate of 5 samples/second
 

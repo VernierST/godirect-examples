@@ -1,6 +1,16 @@
 # Getting Started with Vernier Go Direct® Sensors and Python
 
-This guide shows you how to get started writing Python programs to communicate with the sensors on-board your Vernier Go Direct<sup>1</sup> device. The guide contains the following topics:
+This guide shows you how to get started writing Python and VPython programs to communicate with the sensors on-board most Vernier Go Direct<sup>1</sup> devices. 
+
+There is a separate guide for [Getting Started with Vernier Go Direct Sensors and Web VPython](https://github.com/VernierST/godirect-examples). This is an exciting option for the following reasons:
+
+- Web VPython runs in a browser.
+- Web VPython allows coding in Python with no installation required!
+- Includes support for Chromebooks, Windows® 10, macOS®, and Linux (including Raspberry Pi)
+
+Note that we also have a [Getting Started with Vernier LabQuest® and Python](https://github.com/VernierST/labquest-examples) guide for using Vernier LabQuest sensors with Python. 
+
+This guide contains the following topics:
 
 - [Getting Started Requirements](#getting-started-requirements)
 - [Install Python 3](#install-python-3)
@@ -8,22 +18,24 @@ This guide shows you how to get started writing Python programs to communicate w
 - [Install the Vernier godirect Module](#install-the-vernier-godirect-module)
 - [Confirm Installation of the godirect Module](#confirm-installation-of-the-godirect-module)
 - [Download and Run an Example](#download-and-run-an-example)
-- [About the Getting Started Examples](#about-the-getting-started-examples)
+- [VPython Examples](#vpython-examples)
+- [About the gdx Module](#about-the-gdx-module)
+- [The gdx Functions](#the-gdx-functions)
 - [Notes Regarding the gdx Functions](#notes-regarding-the-gdx-functions)
 - [Troubleshooting and Notes](#troubleshooting-and-notes)
 
-If you are new to Python you should look over all of the steps. If you are familiar with Python you might just focus on installing the godirect module and downloading the examples.
+If you are new to Python you should look over all of the steps. If you are familiar with Python, focusing on installing the godirect module and downloading the examples may be sufficient.
 
-<sup>1</sup> Go Direct spectrometers are not supported.
+<sup>1</sup> Go Direct spectrometers and Mini GC are not supported.
 
 ## Getting Started Requirements
 
 We have developed a Python module called `godirect` that allows you to communicate with the sensors of a Vernier Go Direct device via USB or Bluetooth Low Energy (BLE). This requires the following: 
 
 - A Vernier Go Direct Device
-- A Windows® 10, macOS®, Linux, or Raspberry Pi computer
+- A Windows® 10, macOS®, or Linux (including Raspberry Pi) computer
 - An installation of Python 3
-- An installation of the Vernier godirect module for Python 3
+- An installation of the Vernier godirect module
 
 ## Install Python 3
 
@@ -50,7 +62,7 @@ Later, you may want to research the various IDEs, learn about the different feat
 
 Once you have Python 3 installed, you will use a tool called `pip` (a Python 3 package manager) to install the godirect module and other Python modules that you may need. Python automatically includes `pip`, so this tool is ready to use. Note that we will be using the **`pip3`** command, rather than just `pip`, to ensure that the Vernier files will be associated with Python 3, and not Python 2.
 
-The `pip3` commands are executed by running them in your operating systems’ tool for executing commands (Powershell, Command Prompt, or Terminal window). There are slight differences in the required steps to install the godirect module for Windows, macOs, and Linux (including Linux running on Raspberry Pi). Follow the steps outlined below for your platform.
+The `pip3` commands are executed by running them in your operating systems’ tool for executing commands (Powershell, Command Prompt, or Terminal window, for example). There are slight differences in the required steps to install the godirect module for Windows, macOs, and Linux (including Linux running on Raspberry Pi). Follow the steps outlined below for your platform.
 
 ### Windows
 Run the following command in Powershell or Command Prompt to install the godirect module for USB and BLE:
@@ -61,7 +73,7 @@ If you received an error during the installation of godirect, part of which look
 
 ![C++ error message](./images/win_msvc_build_tools_error.png)
 
-In order to install without this failure, you will need to follow the instructions to download and install the [command line Build Tools for Visual Studio](https://visualstudio.microsoft.com/downloads/). The latest version of the tools download can be found by scrolling down to the All Downloads section and expanding Tools for Visual Studio (as shown in the figure below). After completing the installation of this tool repeat the `pip3` installation steps for godirect and Bleak.
+In order to install without this failure, you will need to follow the instructions to download and install the [command line Build Tools for Visual Studio](https://visualstudio.microsoft.com/downloads/). The latest version of the tools download can be found by scrolling down to the All Downloads section and expanding Tools for Visual Studio (as shown in the figure below). After completing the installation of this tool repeat the `pip3` installation steps for godirect.
 
 ![MSVC Tools Download](./images/win_msvc_build_tools_download.png)
  
@@ -97,14 +109,6 @@ In order to communicate with Go Direct devices over USB on Linux systems, you wi
       - `sudo cp vstlibusb.rules /etc/udev/rules.d/.`
   - The rule will not take effect until you plug in a Go Direct device by USB. If a Go Direct device is already connected to the Linux computer, disconnect it and plug it in again. You may need to reboot your device.
 
-## Bluegiga Dongle
-
-If you wish to connect to Go Direct device using a [Bluegiga BLED112 Bluetooth® Low Energy Dongle](https://www.silabs.com/products/wireless/bluetooth/bluetooth-low-energy-modules/bled112-bluetooth-smart-dongle), rather than the native BLuetooth radio, you will need to install the vernierpygatt module with this command:
-
-`pip3 install vernierpygatt`
-
-You will also need to pass `use_ble_bg=True` into the godirect module. There is a comment regarding this in the `gdx.ble_open` function in the gdx.py file.
-
 ## Confirm Installation of the godirect Module
 
 At this point, you should have Python 3 installed and have the godirect module installed. Before moving to examples, confirm the installation of the godirect module by showing the version information. Run the following command in the terminal:
@@ -119,7 +123,7 @@ Should you need to update to a newer version in the future, run the following co
 ## Download and Run an Example
 
 With the godirect module installed, it is time to run an example. 
-- Go to the [github godirect examples page](https://github.com/VernierST/godirect-examples) and download the files by clicking on the “Clone or download” green button and then clicking on the “Download ZIP” button.
+- Go to the [github godirect examples page](https://github.com/VernierST/godirect-examples) and download the files by clicking on the “Download ZIP” button.
 
 <img src="./images/github_project_clone.png" alt="Clone godirect-examples" width="500" height="300"/>
 
@@ -132,16 +136,13 @@ With the godirect module installed, it is time to run an example.
   - If running an example with a USB connection, then connect the device via USB.
 - Run the Python example. (If you are using IDLE, click on “Run Module” from the Run menu.)
 
-## VPython and Web VPython Examples
+## VPython Examples
 
-Before diving in to the getting started examples, note that there are folders with other examples. Specifically, we have created support for combining Go Direct sensors with VPython.
-Talk about Web VPython
-Link to the VPython getting started readme doc.
+Before diving in to the "getting_started.." examples, go back to the downloaded files and note that there are folders with other examples. Specifically, we have created support for combining Go Direct sensors with VPython. The VPython examples, as well as the [Getting Started with Vernier Go Direct® Sensors and VPython](https://github.com/VernierST/godirect-examples/tree/main/python/vpython_examples) manual are located in the /vpython_examples/ folder. 
 
 ## About the gdx Module
 
-The getting started examples demonstrate how to collect data from the sensors of a Go Direct device. Notice at the very top of the getting started examples that we do not `import godirect`.
-Instead, the import is for a module named `gdx`. 
+The getting started examples demonstrate how to collect data from the sensors of a Go Direct device. Notice at the very top of the getting started examples the import is for a module named `gdx`. 
 
 ```python
 from gdx import gdx
@@ -153,23 +154,18 @@ Here are some key points to keep in mind:
 
 - The gdx module is meant to provide simple functions that make coding Go Direct sensors easier, but if you want to work directly with the godirect library without the use of the gdx module, take a look at the example in the /example_without_gdx/ folder.
 - The gdx module is not installed when you run `pip install godirect`. Instead, it is part of the download of the godirect-examples repository. Look for it in the download, in the same directory as the getting started examples.
-- In order to  `import gdx`, Python must be able to find the /gdx/ folder. Here are two ways that make it easy for Python to find the /gdx/ folder:
+- In order to  `import gdx` in your program, Python must be able to find the /gdx/ folder. Here are two ways that make it easy for Python to find the /gdx/ folder:
   - Keep the /gdx/ folder in the same directory as the example that you are running.
-  - Manually move the /gdx/ folder into your Python site-packages directory. This is the same directory that all Python libraries are placed.
-- If you are running an example that imports gdx, but the gdx folder is one directory up, then you must add code to tell Python to look for gdx one directory up. Here is some code that looks for gdx one directory up:
+  - Manually move the /gdx/ folder into your Python /site-packages/ directory. This is the same directory that all Python libraries are placed, and it is a "Path" that Python looks for modules.
+- If /gdx/ is not in the same directory as the example, and is not in /site-packages/, you must add code to add it to the Python 'Path'. A common example is having /gdx/ one directory up. Here is the code used to add a 'Path' one directory up:
 
 ```python
 import os
 import sys
 
-# This tells Python that the path to the gdx module is up one directory
 gdx_module_path = os.path.abspath(os.path.join('.'))
 if gdx_module_path not in sys.path:
     sys.path.append(gdx_module_path)
-
-from gdx import gdx
-from vpython import *
-gdx = gdx.gdx()
 ```
 
 ## The gdx Functions
@@ -182,6 +178,8 @@ The gdx functions used in a typical program to collect data include:
 - `gdx.read()`
 - `gdx.stop()`
 - `gdx.close()`
+
+The gdx functions used in a typical VPython program are described in the [Getting Started with Vernier Go Direct® Sensors and VPython](https://github.com/VernierST/godirect-examples/tree/main/python/vpython_examples) manual.
 
 A simple program using the gdx module looks like this (note that in this example the gdx folder is assumed to be in the same directory as the example, or in site-packages where Python can find it):
 
@@ -291,6 +289,14 @@ As stated earlier, these gdx functions are available in the gdx.py file, in the 
 `error: option --single-version-externally-managed not recognized`
 
 This is a known incompatibility and the options to work around it are described here: https://github.com/hbldh/bleak/issues/147
+
+### Bluegiga Dongle
+
+If you wish to connect to Go Direct device using a [Bluegiga BLED112 Bluetooth® Low Energy Dongle](https://www.silabs.com/products/wireless/bluetooth/bluetooth-low-energy-modules/bled112-bluetooth-smart-dongle), rather than the native BLuetooth radio, you will need to install the vernierpygatt module with this command:
+
+`pip3 install vernierpygatt`
+
+You will also need to pass `use_ble_bg=True` into the godirect module. There is a comment regarding this in the `gdx.ble_open` function in the gdx.py file.
 
 ## License
 

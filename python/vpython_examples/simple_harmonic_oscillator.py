@@ -13,16 +13,14 @@ Look closely at the Experimental Setup Variables section below to modify variabl
 import os
 import sys
 
-# This allows us to import the local gdx module that is up one directory
+# This tells Python that the /gdx/ folder is up one directory
 gdx_module_path = os.path.abspath(os.path.join('.'))
-# If the module is not found, uncomment and try two dots. Also, uncomment the print(sys.path)
-#gdx_module_path = os.path.abspath(os.path.join('..'))
 if gdx_module_path not in sys.path:
     sys.path.append(gdx_module_path)
 
-# If there is an error trying to find the gdx module, uncomment this to see where
-# the program is looking to find the gdx folder
-#print(sys.path)
+# If the /gdx/ folder is not found, uncomment the print() to see where Python is looking. 
+# and move the /gdx/ folder into one of these paths.
+# print("path:  ", sys.path)
 
 from gdx import gdx 
 gdx = gdx.gdx()

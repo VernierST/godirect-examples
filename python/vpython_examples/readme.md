@@ -2,41 +2,54 @@
 
 This guide describes the use of Go Direct sensor data with the VPython module. The VPython module makes it possible, and easy, for a Python program to generate navigable real-time 3D animations. This is a great tool to illustrate physics concepts.
 
-Note that this guide is for using VPython with the installed Python language on one's computer. There is a separate guide for using Go Direct sensors with "Web VPython", which runs in the browser and allows the user to write and run a VPython program without actually installing Python itself. This provides a great advantage in the classroom - you do not need to install anything on your computer to immediately run. Another advantage is that the Web VPython version will work on Chromebooks as well as Mac, Windows, and Linux computers. See: XXXXXXXXXXXXXXX
+# Go Direct support in Web VPython
+
+Note that this guide is for using VPython with the installed Python language on one's computer. There is a separate guide for using Go Direct devices with "Web VPython", which runs in the browser and allows the user to write and run a VPython program without actually installing Python itself. This provides a great advantage in the classroom - you do not need to install anything on your computer! Another advantage is that the Web VPython version will work on Chromebooks as well as Mac, Windows, and Linux computers. See: XXXXXXXXXXXXXXX
 
 ## Getting Started Requirements
 
-The VPython examples in this folder use the local module named `gdx` that can be found in the [../gdx/](../gdx) folder. The examples assume the `gdx` folder is located one directory up. If you move the `gdx` folder to a different location, make sure to modify the example accordingly.
+The VPython examples are located in the /vpython_examples/ folder. Just like the 'getting_started' examples, they use the godirect package and the local module named `gdx`.  
 
 The VPython module must be installed to run the examples. Run the following command in Powershell or Command Prompt to install the VPython module:
 
 `pip install vpython`
 
-## Coding Go Direct Sensors with VPython
+## About the gdx Module
 
-<img src="../images/vpython_box.png" alt="VPython box" width="600" height="240"/>
+For more details on the `gdx` module, refer to the readme.md in the directory with the 'getting_started' examples. Of special note for the VPython examples:
 
-We have added functions to our gdx.py file to make it easy to collect and display data from Go Direct sensors in a VPython canvas. 
-
-In a typical program you will first import vpython and import gdx. The gdx import is a python file that can be found in the /gdx/ folder from the godirect-examples download. When running the `import gdx` code, Python must be able to locate the gdx folder. If the gdx folder is in the same directory as the example, Python will find it. If the gdx folder is up one directory, for example, then your code must point Python to that directory. This is why, in the examples in the /vpython_examples/ folder, the code to locate /gdx/ points Python up one directory.
+- The /gdx/ folder is not located in the same directory as the VPython examples - that folder is located one directory up. Therefore, these examples have code to add a 'Path' to Python that is one directory up (you could also move the /gdx/ folder into site-packages, or move the /gdx/ folder into this directory). Here is the code used to add the 'Path':
 
 ```python
 import os
 import sys
 
-# This tells Python that the gdx module is up one directory
 gdx_module_path = os.path.abspath(os.path.join('.'))
 if gdx_module_path not in sys.path:
     sys.path.append(gdx_module_path)
+```
+
+## The gdx Functions for VPython
+
+The gdx functions for VPython that make it easy to collect and display Go Direct sensor data include:
+
+- `gdx.vp_vernier_canvas()`
+- `gdx.vp_close_is_pressed()`
+- `gdx.vp_collect_is_pressed()`
+- `gdx.vp_meter()`
+- `gdx.vp_graph()`
+
+In simple example that uses these functions is shown below. In this example, the length of the VPython box object is controlled by the sensor data. 
+
+<img src="../images/vpython_box.png" alt="VPython box" width="600" height="240"/>
+
+```python
+# Code to add a 'Path' one directory up would go here
 
 from gdx import gdx
 from vpython import *
 gdx = gdx.gdx()
-```
 
-After the import, a typical program will look similar to the snippet below. In this example, the length of the VPython box object is controlled by the sensor data:
-
-```python
 gdx.open(connection='usb')
 gdx.select_sensors()
 gdx.vp_vernier_canvas()    
@@ -50,8 +63,6 @@ while gdx.vp_close_is_pressed() == False:
         sensor0_data =  measurements[0]  
         b.length = 0.1 * sensor0_data 
 ```
-
-
 
 ## Notes Regarding the gdx VPython Functions 
 
@@ -70,7 +81,7 @@ The code snippet above uses functions available in the gdx module that provide s
   - Slider
     - Modify the data collection sampling rate with this slider.  
   - Live meter readout
-    - This VPython object provides a live display of the Go Direct sensor reading, when you are not collecting data. This can be useful for configuring your experiment prior to starting data collection.  
+    - This VPython object provides a live display of the Go Direct sensor reading when you are not collecting data. This can be useful for configuring your experiment prior to starting data collection.  
     - If you would like the meter to also be active during data collection you will place the `gdx.vp_meter(measurements)` function in the data collection loop.
 - The default settings for the arguments are as follows:
 `vp_vernier_canvas(buttons=True, slider=True, meters=True, graph=False, cvs=True)`
@@ -109,15 +120,14 @@ gdx.stop() is called.
 - If you are familiar with github, you could search the issues or post a question at: https://github.com/VernierST/godirect-examples/issues
 - Try a different browser. In most cases using Chrome is suggested.
 - Place the `gdx.vp_canvas()` function before `gdx.start()` in your code. This is because there is code in the `gdx.start()` function that checks to see if the data collection rate might be coming from the VPython slider that is configured in `gdx.vp_canvas()`. 
-- Write a simple VPython starter program that does not use GO Direct sensors and does not use the functions described above. This can be a good troubleshooting step if you are not sure why VPython is not opening a canvas. Here is an easy example to try:
+- Write a simple VPython starter program that does not use GO Direct sensors and does not use the functions described above. This can be a good troubleshooting step if you are not sure why VPython is not launching. Here is an easy example to try:
 
 ```python
 from vpython import *
 sphere()
 ```
 
-- After running a program the terminal may become unresponsive. If so, delete the terminal and open a new terminal before running the program a second time.
-- If any of the vpython functions described here are providing confusion in your program, always recall that you do not need to use them in order to use VPython. 
+- After running a program using VPython, the terminal may become unresponsive. If so, delete the terminal and open a new terminal before running the program a second time.
 - To check your version of VPython run the following command in your terminal:
 
 'pip show vpython'
