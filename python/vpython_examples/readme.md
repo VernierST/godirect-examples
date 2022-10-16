@@ -2,9 +2,9 @@
 
 This guide describes the use of Go Direct sensor data with the VPython module. The VPython module makes it possible, and easy, for a Python program to generate navigable real-time 3D animations. This is a great tool to illustrate physics concepts.
 
-# Go Direct support in Web VPython
+## Go Direct support in Web VPython
 
-Note that this guide is for using VPython with the installed Python language on one's computer. There is a separate guide for using Go Direct devices with "Web VPython", which runs in the browser and allows the user to write and run a VPython program without actually installing Python itself. This provides a great advantage in the classroom - you do not need to install anything on your computer! Another advantage is that the Web VPython version will work on Chromebooks as well as Mac, Windows, and Linux computers. See: XXXXXXXXXXXXXXX
+Note that this guide is for using VPython with the installed Python language on one's computer. There is a separate guide for using Go Direct devices with "Web VPython", which runs in the browser and allows the user to write and run a VPython program without actually installing Python itself. This provides a great advantage in the classroom - you do not need to install anything on your computer! Another advantage is that the Web VPython version will work on Chromebooks as well as Mac, Windows, and Linux computers. See [Getting Started with Vernier Go Direct Sensors and Web VPython](https://github.com/VernierST/godirect-examples).
 
 ## Getting Started Requirements
 
@@ -16,9 +16,9 @@ The VPython module must be installed to run the examples. Run the following comm
 
 ## About the gdx Module
 
-For more details on the `gdx` module, refer to the readme.md in the directory with the 'getting_started' examples. Of special note for the VPython examples:
+The `gdx` module contains functions that will be used in the VPython examples. This is the same module used for data collection and discussed in the [Getting Started with Vernier Go Direct® Sensors and Python](https://github.com/VernierST/godirect-examples/tree/main/python) manual.
 
-- The /gdx/ folder is not located in the same directory as the VPython examples - that folder is located one directory up. Therefore, these examples have code to add a 'Path' to Python that is one directory up (you could also move the /gdx/ folder into site-packages, or move the /gdx/ folder into this directory). Here is the code used to add the 'Path':
+Of special note for the VPython examples is that the /gdx/ folder is located one directory up from these examples. This means that Python will not be able to find the /gdx/ folder without some help. Therefore, in these examples, there is code to add a 'Path' to Python that is one directory up.  
 
 ```python
 import os
@@ -28,6 +28,10 @@ gdx_module_path = os.path.abspath(os.path.join('.'))
 if gdx_module_path not in sys.path:
     sys.path.append(gdx_module_path)
 ```
+
+Adding the code snippet above is a good option when the /gdx/ folder is up one directory. Two other options are:
+  - Keep the /gdx/ folder in the same directory as the example that you are running.
+  - Manually move the /gdx/ folder into your Python /site-packages/ directory. This is the same directory that all Python libraries are placed, and it is a "Path" that Python looks for modules.
 
 ## The gdx Functions for VPython
 

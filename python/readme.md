@@ -125,7 +125,7 @@ Should you need to update to a newer version in the future, run the following co
 With the godirect module installed, it is time to run an example. 
 - Go to the [github godirect examples page](https://github.com/VernierST/godirect-examples) and download the files by clicking on the “Download ZIP” button.
 
-<img src="./images/github_project_clone.png" alt="Clone godirect-examples" width="500" height="300"/>
+<img src="./images/github_project_clone.png" alt="Clone godirect-examples" width="400" height="300"/>
 
 - Locate the zip file in your download folder and extract/unzip the downloaded folder.
 - Open your IDE (Visual Studio Code or IDLE, for example).
@@ -226,6 +226,7 @@ Here is some more information about the gdx functions, including how you might a
     - Set the argument as a 1D list to enable sensors for a single device, such as [1] to enable sensor 1 or [1,2] to enable sensors 1 and 2.
   - `gdx.select_sensors([[1,2,3],[1]])`
     - Set the argument as a 2D list of lists of the sensors you wish to enable for multiple Go Direct devices. For example, set the argument as [[1,2,3],[1]] to enable sensors 1,2 and 3 for the first device and sensor 1 for the second device.
+- How do you know what sensors are on your device and what the sensor numbers are? Simply run an example leaving the `gdx.select_sensors()` argument blank and you will see the list in the terminal. You can also run the example called 'gdx_getting_started_device_info.py' to find this information.
 
 ### `gdx.start()`
 - Start collecting data at a specified period (time between samples) from the sensors that were selected in the `select_sensors()` function.
