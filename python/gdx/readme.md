@@ -1,10 +1,34 @@
 # The gdx Module
 
-The `gdx` module in this folder is used to abstract and simplify interaction with Go Direct® devices. While the implementation of the communication is actually done through the lower level [godirect module](https://pypi.org/project/godirect/), the `gdx` module exposes the features that are most commonly used when writing code that deals with Go Direct devices.
+The `gdx` module in this folder is used to simplify interaction with Go Direct® devices. While the implementation of the communication is actually done through the lower level [godirect module](https://pypi.org/project/godirect/), the `gdx` module exposes the features that are most commonly used when writing code that deals with Go Direct devices. In other words, the `gdx` module provides a small set of simple functions to write Python and VPython code. Of course you can always modify the `gdx` module as needed for your own custom Go Direct sensor functions.
 
-The godirect-examples for python use the `gdx` module. Therefore, the `gdx` module must be placed in a directory that can be found when running the examples. Placing the gdx folder in the same directory as the examples usually insures that the python script will find the `gdx` module.
+When writing Python code using the `gdx` module you must first import it.
 
-Modify the `gdx` module as needed for your own custom Go Direct sensor examples.
+```python
+from gdx import gdx
+gdx = gdx.gdx()
+```
+
+An important factor is that Python must be able to find the `gdx` module in order to import it. Here are three ways to do that:
+
+- Locate the /gdx/ folder in the same directory as the example that you are running.
+- Manually move the /gdx/ folder into your Python /site-packages/ directory. This is the same directory that all Python libraries are placed, and it is a "Path" that Python looks for modules.
+- Add code to provide the 'Path' to the /gdx/ folder. A common example is having /gdx/ one directory up. Here is the code used to add a 'Path' one directory up:
+
+```python
+import os
+import sys
+
+gdx_module_path = os.path.abspath(os.path.join('.'))
+if gdx_module_path not in sys.path:
+    sys.path.append(gdx_module_path)
+```
+
+For information on using the gdx module for data collection refer to [Getting Started with Vernier Go Direct® Sensors and Python](https://github.com/VernierST/godirect-examples/tree/main/python) manual.
+
+For information on using the gdx module for VPython refer to the [Getting Started with Vernier Go Direct® Sensors and VPython](https://github.com/VernierST/godirect-examples/tree/main/python/vpython_examples) manual.
+
+All of the examples in the godirect-examples repository use the `gdx` module, except for the example located in the /example_without_gdx/ folder. Run this example if you want to communicate directly to your Go Direct device with the `godirect` module, or you want to do some troubleshooting.
 
 ## License
 

@@ -43,7 +43,7 @@ The gdx functions for VPython that make it easy to collect and display Go Direct
 - `gdx.vp_meter()`
 - `gdx.vp_graph()`
 
-In simple example that uses these functions is shown below. In this example, the length of the VPython box object is controlled by the sensor data. 
+A simple example that uses these functions is shown below. In this example, the length of the VPython box object is controlled by the sensor data. 
 
 <img src="../images/vpython_box.png" alt="VPython box" width="600" height="240"/>
 
@@ -78,24 +78,23 @@ The code snippet above uses functions available in the gdx module that provide s
 
 <img src="../images/vpython_buttons_slider_meter.png" alt="VPython canvas" width="600" height="100"/>
 
-  - COLLECT/STOP button
-    - Click this button to start and stop data collection
-  - CLOSE button
-    - Click this button to end your VPython session, disconnect the Go Direct device from the USB or Bluetooth connection, and quit godirect.
-  - Slider
-    - Modify the data collection sampling rate with this slider.  
-  - Live meter readout
-    - This VPython object provides a live display of the Go Direct sensor reading when you are not collecting data. This can be useful for configuring your experiment prior to starting data collection.  
-    - If you would like the meter to also be active during data collection you will place the `gdx.vp_meter(measurements)` function in the data collection loop.
+    - COLLECT/STOP button
+      - Click this button to start and stop data collection
+    - CLOSE button
+      - Click this button to end your VPython session, disconnect the Go Direct device from the USB or Bluetooth connection, and quit godirect.
+    - Slider
+      - Modify the data collection sampling rate with this slider.  
+    - Live meter readout
+      - This VPython object provides a live display of the Go Direct sensor reading when you are not collecting data. This can be useful for configuring your experiment prior to starting data collection.  
+      - If you would like the meter to also be active during data collection you will place the `gdx.vp_meter(measurements)` function in the data collection loop.
 - The default settings for the arguments are as follows:
 `vp_vernier_canvas(buttons=True, slider=True, meters=True, graph=False, cvs=True)`
 - The buttons, slider, and live meter were discussed above. You can disable these VPython objects by setting `buttons=False`, `slider=False`, or `meters=False`
-- Set `graph=True` to include a VPython graph object on the canvas.
+- If the graph parameter is set to `graph=True`, a VPython graph object will be added to the scene as shown below.
 
 <img src="../images/vpython_graph.png" alt="VPython with graph" width="600" height="350"/>
 
-  - To make the graph active during data collection you will place the 
-    `gdx.vp_graph(measurements)` function in the data collection loop.
+    - To add plots of sensor data to this graph, the `gdx.vp_graph(measurements)` function must be placed in the data collection loop.
 - The argument `cvs=True` creates a blank canvas for any VPython objects (such as an arrow, box, sphere, etc..) you would like to include in your program. 
   - If this blank canvas is not needed or causes issues, simply change this to `cvs=False`.
 
@@ -118,7 +117,6 @@ gdx.stop() is called.
 `gdx.vp_graph()` function within your data collection loop.
 - The argument for this function is measurements[]: A 1D list of sensor readings. Simply use the 1D list of data that is returned from `measurements = gdx.read()`.
 - Make sure that graph=True in the vernier_canvas() function.
-- Note that the graph will show up to 3 plots.
  
 ## Troubleshooting
 - If you are familiar with github, you could search the issues or post a question at: https://github.com/VernierST/godirect-examples/issues
@@ -134,12 +132,14 @@ sphere()
 - After running a program using VPython, the terminal may become unresponsive. If so, delete the terminal and open a new terminal before running the program a second time.
 - To check your version of VPython run the following command in your terminal:
 
-'pip show vpython'
+`pip show vpython`
 
 - If you receive the error "can't find '__main__' module", it might be that you have not saved your file.
 - If you receive an error that the VPython module cannot be found, it might not have been installed. Run the following command in your terminal:
 
-'pip install vpython'
+`pip install vpython`
+
+- We have created a [FAQ for Python Troubleshooting](https://www.vernier.com/)
 
 ## License
 
