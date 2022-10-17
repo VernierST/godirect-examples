@@ -142,7 +142,7 @@ Before diving in to the "getting_started.." examples, go back to the downloaded 
 
 ## About the gdx Module
 
-The getting started examples demonstrate how to collect data from the sensors of a Go Direct device. Notice at the very top of the getting started examples the import is for a module named `gdx`. 
+The getting started examples demonstrate how to collect data from the sensors of a Go Direct device. Notice at the very top of the getting started examples the import is for a local module named `gdx` that can be found in the [./gdx/](./gdx) folder.
 
 ```python
 from gdx import gdx

@@ -8,7 +8,7 @@ Note that this guide is for using VPython with the installed Python language on 
 
 ## Getting Started Requirements
 
-The VPython examples are located in the /vpython_examples/ folder. Just like the 'getting_started' examples, they use the godirect package and the local module named `gdx`.  
+The VPython examples are located in the /vpython_examples/ folder. Just like the 'getting_started' examples, they use the local module named `gdx` that can be found in the [../gdx/](../gdx) folder 
 
 The VPython module must be installed to run the examples. Run the following command in Powershell or Command Prompt to install the VPython module:
 

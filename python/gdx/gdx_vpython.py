@@ -20,6 +20,8 @@ class ver_vpython:
     plot_1 = None    # vpython gcurve for the graph canvas
     plot_2 = None
     plot_3 = None
+    plot_4 = None
+    plot_5 = None
     graph_canvas = None
     meter_canvas = None
     button_canvas = None
@@ -115,22 +117,28 @@ class ver_vpython:
         return period
     
     def graph_init(self, column_headers):
-        from vpython import graph, gcurve, color
+        from vpython import graph, gcurve, color, vector
         
         if column_headers == None:
             column_headers = 'Data'
         gd = graph(xtitle='Time', ytitle=column_headers, scroll=True,
         width=500, height=300, xmin=0, xmax=5, fast=False)
         ver_vpython.graph_canvas = gd
-        plot_1 = gcurve(color=color.red)
+        plot_1 = gcurve(color=vector(0.37, 0.57, 0.74))
         ver_vpython.plot_1 = plot_1
         ver_vpython.plot_1.plot(0,0)
-        plot_2 = gcurve(color=color.blue)
+        plot_2 = gcurve(color=vector(0.75, 0.75, 0.3))
         ver_vpython.plot_2 = plot_2
         ver_vpython.plot_2.plot(0,0)
-        plot_3 = gcurve(color=color.black)
+        plot_3 = gcurve(color=vector(0, 0, 0.57))
         ver_vpython.plot_3 = plot_3
         ver_vpython.plot_3.plot(0,0)
+        plot_4 = gcurve(color=vector(0.8, 0.38, 0.44))
+        ver_vpython.plot_4 = plot_4
+        ver_vpython.plot_4.plot(0,0)
+        plot_5 = gcurve(color=vector(0.35, 0.2, 0.49))
+        ver_vpython.plot_5 = plot_5
+        ver_vpython.plot_5.plot(0,0)
 
     def graph_plot(self, data):
         if data == None:
@@ -145,10 +153,21 @@ class ver_vpython:
             elif len_data == 2:
                 ver_vpython.plot_1.plot(ver_vpython.time, data[0])
                 ver_vpython.plot_2.plot(ver_vpython.time, data[1])
+            elif len_data == 3:
+                ver_vpython.plot_1.plot(ver_vpython.time, data[0])
+                ver_vpython.plot_2.plot(ver_vpython.time, data[1])
+                ver_vpython.plot_3.plot(ver_vpython.time, data[2])
+            elif len_data == 4:
+                ver_vpython.plot_1.plot(ver_vpython.time, data[0])
+                ver_vpython.plot_2.plot(ver_vpython.time, data[1])
+                ver_vpython.plot_3.plot(ver_vpython.time, data[2])
+                ver_vpython.plot_4.plot(ver_vpython.time, data[3])
             else:
                 ver_vpython.plot_1.plot(ver_vpython.time, data[0])
                 ver_vpython.plot_2.plot(ver_vpython.time, data[1])
                 ver_vpython.plot_3.plot(ver_vpython.time, data[2])
+                ver_vpython.plot_4.plot(ver_vpython.time, data[3])
+                ver_vpython.plot_5.plot(ver_vpython.time, data[4])
 
         ver_vpython.time = ver_vpython.time + (ver_vpython.period/1000)
         
@@ -159,6 +178,8 @@ class ver_vpython:
         ver_vpython.plot_1.delete()
         ver_vpython.plot_2.delete()
         ver_vpython.plot_3.delete()
+        ver_vpython.plot_4.delete()
+        ver_vpython.plot_5.delete()
         ver_vpython.graph_canvas.ytitle = column_headers
         ver_vpython.graph_canvas.xmin = 0
         ver_vpython.graph_canvas.xmax = 5

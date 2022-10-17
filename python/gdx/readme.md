@@ -28,7 +28,7 @@ For information on using the gdx module for data collection refer to [Getting St
 
 For information on using the gdx module for VPython refer to the [Getting Started with Vernier Go Direct® Sensors and VPython](https://github.com/VernierST/godirect-examples/tree/main/python/vpython_examples) manual.
 
-All of the examples in the godirect-examples repository use the `gdx` module, except for the example located in the /example_without_gdx/ folder. Run this example if you want to communicate directly to your Go Direct device with the `godirect` module, or you want to do some troubleshooting.
+All of the examples in the godirect-examples repository use the `gdx` module, except for the example located in the ../example_without_gdx/ folder. Run this example if you want to communicate directly to your Go Direct device with the `godirect` module, or you want to do some troubleshooting.
 
 ## License
 

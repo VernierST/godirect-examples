@@ -14,21 +14,20 @@ The example will continue to run until the user squeezes hard (force goes above 
 import os
 import sys
 
-# This allows us to import the local gdx module that is up one directory
+# This tells Python that the /gdx/ folder is up one directory
 gdx_module_path = os.path.abspath(os.path.join('.'))
-# If the module is not found, uncomment and try two dots. Also, uncomment the print(sys.path)
-#gdx_module_path = os.path.abspath(os.path.join('..'))
 if gdx_module_path not in sys.path:
     sys.path.append(gdx_module_path)
 
-# If there is an error trying to find the gdx module, uncomment this to see where
-# the program is looking to find the gdx folder
-# print(sys.path)
+# If the /gdx/ folder is not found, uncomment the print() to see where Python is looking. 
+# and move the /gdx/ folder into one of these paths.
+# print("path:  ", sys.path)
 
 from gdx import gdx
 gdx = gdx.gdx()
 
 import math
+import turtle
 
 
 gdx.open(connection='usb')   # change to 'ble' for Bluetooth connection
@@ -36,8 +35,6 @@ gdx.open(connection='usb')   # change to 'ble' for Bluetooth connection
 gdx.select_sensors([1,3,4])   # Hand Dynamometer sensors to use: 3 - y axis accel, 4 - z axis accel
 gdx.start(period=200) 
 
-
-import turtle
 square = turtle.Turtle()
 square.shape("square")
 square.shapesize(5,20)
