@@ -78,15 +78,15 @@ The code snippet above uses functions available in the gdx module that provide s
 
 <img src="../images/vpython_buttons_slider_meter.png" alt="VPython canvas" width="600" height="100"/>
 
-    - COLLECT/STOP button
-      - Click this button to start and stop data collection
-    - CLOSE button
-      - Click this button to end your VPython session, disconnect the Go Direct device from the USB or Bluetooth connection, and quit godirect.
-    - Slider
-      - Modify the data collection sampling rate with this slider.  
-    - Live meter readout
-      - This VPython object provides a live display of the Go Direct sensor reading when you are not collecting data. This can be useful for configuring your experiment prior to starting data collection.  
-      - If you would like the meter to also be active during data collection you will place the `gdx.vp_meter(measurements)` function in the data collection loop.
+- COLLECT/STOP button
+  - Click this button to start and stop data collection
+- CLOSE button
+  - Click this button to end your VPython session, disconnect the Go Direct device from the USB or Bluetooth connection, and quit godirect.
+- Slider
+  - Modify the data collection sampling rate with this slider.  
+- Live meter readout
+  - This VPython object provides a live display of the Go Direct sensor reading when you are not collecting data. This can be useful for configuring your experiment prior to starting data collection.  
+  - If you would like the meter to also be active during data collection you will place the `gdx.vp_meter(measurements)` function in the data collection loop.
 - The default settings for the arguments are as follows:
 `vp_vernier_canvas(buttons=True, slider=True, meters=True, graph=False, cvs=True)`
 - The buttons, slider, and live meter were discussed above. You can disable these VPython objects by setting `buttons=False`, `slider=False`, or `meters=False`
@@ -94,7 +94,7 @@ The code snippet above uses functions available in the gdx module that provide s
 
 <img src="../images/vpython_graph.png" alt="VPython with graph" width="600" height="350"/>
 
-    - To add plots of sensor data to this graph, the `gdx.vp_graph(measurements)` function must be placed in the data collection loop.
+- To add plots of sensor data to this graph, the `gdx.vp_graph(measurements)` function must be placed in the data collection loop.
 - The argument `cvs=True` creates a blank canvas for any VPython objects (such as an arrow, box, sphere, etc..) you would like to include in your program. 
   - If this blank canvas is not needed or causes issues, simply change this to `cvs=False`.
 

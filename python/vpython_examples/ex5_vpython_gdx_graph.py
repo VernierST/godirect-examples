@@ -1,7 +1,8 @@
 """
 Use gdx.vp_vernier_canvas() to add a graph to the scene.
 
-Need to add this function to the data collection loop:
+When you add a graph, you need to input the data to the graph
+in the collection loop using this function:
 gdx.vp_graph() 
 """
 
