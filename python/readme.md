@@ -8,7 +8,7 @@ There is a separate guide for [Getting Started with Vernier Go Direct Sensors an
 - Web VPython allows coding in Python with no installation required!
 - Includes support for Chromebooks, Windows® 10, macOS®, and Linux (including Raspberry Pi)
 
-Note that we also have a [Getting Started with Vernier LabQuest® and Python](https://github.com/VernierST/labquest-examples) guide for using Vernier LabQuest sensors with Python. 
+Note that we also have a [Getting Started with Vernier LabQuest® and Python](https://github.com/VernierST/labquest-examples) guide for using Python with Vernier LabQuest connecting our wired, BTA and BTD LabQuest sensors, with our Digital Control Unit (DCU-BTD) for controlling motors and other output devices, and with off-the-shelf or custom-built sensors. 
 
 This guide contains the following topics:
 

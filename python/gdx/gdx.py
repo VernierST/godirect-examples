@@ -18,6 +18,9 @@ logging.basicConfig()
 
 
 class gdx:
+
+    # 1.0.0 is the first time a version was created. This was when the VPython functions were added
+    VERSION = "1.0.0"    
     
     # Variables passed between the gdx functions.
 
@@ -52,6 +55,12 @@ class gdx:
 
         self.godirect = GoDirect(use_ble=False, use_usb=False) 
 
+    def get_version(self):
+        """ get the version of the gdx module
+        """
+        version = self.VERSION
+        
+        return version
     
     # this open() function combines the original open_ble() and open_usb() 
     def open(self, connection='usb', device_to_open=None):
@@ -1017,3 +1026,9 @@ class gdx:
 
         return collect_button_state
 
+    def vp_get_slider_period(self):
+        """ Get the value of the slider as the period (time between samples)
+            Returns the value in milliseconds.
+        """
+        period = vp.slider_get()
+        return period
