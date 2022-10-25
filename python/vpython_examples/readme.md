@@ -40,8 +40,7 @@ The gdx functions for VPython that make it easy to collect and display Go Direct
 - `gdx.vp_vernier_canvas()`
 - `gdx.vp_close_is_pressed()`
 - `gdx.vp_collect_is_pressed()`
-- `gdx.vp_meter()`
-- `gdx.vp_graph()`
+- `gdx.vp_get_slider_period()`
 
 A simple example that uses these functions is shown below. In this example, the length of the VPython box object is controlled by the sensor data. 
 
@@ -62,8 +61,7 @@ gdx.start(period=250)
  
 while gdx.vp_close_is_pressed() == False:
     while gdx.vp_collect_is_pressed() == True:       
-        measurements = gdx.read()   
-        gdx.vp_meter(measurements)   
+        measurements = gdx.read()     
         sensor0_data =  measurements[0]  
         b.length = 0.1 * sensor0_data 
 ```
@@ -85,16 +83,15 @@ The code snippet above uses functions available in the gdx module that provide s
 - Slider
   - Modify the data collection sampling rate with this slider.  
 - Live meter readout
-  - This VPython object provides a live display of the Go Direct sensor reading when you are not collecting data. This can be useful for configuring your experiment prior to starting data collection.  
-  - If you would like the meter to also be active during data collection you will place the `gdx.vp_meter(measurements)` function in the data collection loop.
+  - This VPython object provides a live display of the Go Direct sensor reading. This reading is active at all times (even when data collection has been stopped). This can be useful for configuring your experiment prior to starting data collection.  
 - The default settings for the arguments are as follows:
-`vp_vernier_canvas(buttons=True, slider=True, meters=True, graph=False, cvs=True)`
+`vp_vernier_canvas(buttons=True, slider=True, meters=True, chart=False, cvs=True)`
 - The buttons, slider, and live meter were discussed above. You can disable these VPython objects by setting `buttons=False`, `slider=False`, or `meters=False`
-- If the graph parameter is set to `graph=True`, a VPython graph object will be added to the scene as shown below.
+- If the chart parameter is set to `chart=True`, a VPython chart object will be added to the scene as shown below.
 
 <img src="../images/vpython_graph.png" alt="VPython with graph" width="600" height="350"/>
 
-- To add plots of sensor data to this graph, the `gdx.vp_graph(measurements)` function must be placed in the data collection loop.
+- The chart will automatically update during the data collection loop. The active sensor measurements will be plotted against time.
 - The argument `cvs=True` creates a blank canvas for any VPython objects (such as an arrow, box, sphere, etc..) you would like to include in your program. 
   - If this blank canvas is not needed or causes issues, simply change this to `cvs=False`.
 
@@ -107,16 +104,8 @@ The code snippet above uses functions available in the gdx module that provide s
 - When COLLECT is clicked, the function will call gdx.start(). When STOP is clicked, a 
 gdx.stop() is called.
 
-### `gdx.vp_meter(measurements)`
-- The live meter will automatically update with sensor readings when you are not performing data collection. If you would like to display data on the meter during data collection, then use the `gdx.vp_meter()` function within your data collection loop.
-- The argument for this function is measurement[]: A 1D list of sensor readings. Simply use the 1D list of data that is returned from `measurements = gdx.read()`.
-- Make sure that meter=True in the vernier_canvas() function.
-
-### `gdx.vp_graph(measurements)`
-- If you would like to display data on the graph during data collection, then use the 
-`gdx.vp_graph()` function within your data collection loop.
-- The argument for this function is measurements[]: A 1D list of sensor readings. Simply use the 1D list of data that is returned from `measurements = gdx.read()`.
-- Make sure that graph=True in the vernier_canvas() function.
+### `gdx.vp_get_slider_period()`
+- The slider is used to modify the data collection sampling rate. This function returns the value of the slider. The value is returned as the period (dt) in milliseconds.
  
 ## Troubleshooting
 - If you are familiar with github, you could search the issues or post a question at: https://github.com/VernierST/godirect-examples/issues

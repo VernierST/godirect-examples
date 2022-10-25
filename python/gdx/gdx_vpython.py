@@ -116,7 +116,7 @@ class ver_vpython:
         period = ver_vpython.period
         return period
     
-    def graph_init(self, column_headers):
+    def chart_init(self, column_headers):
         from vpython import graph, gcurve, color, vector
         
         if column_headers == None:
@@ -140,7 +140,7 @@ class ver_vpython:
         ver_vpython.plot_5 = plot_5
         ver_vpython.plot_5.plot(0,0)
 
-    def graph_plot(self, data):
+    def chart_plot(self, data):
         if data == None:
             return
         else:
@@ -172,7 +172,7 @@ class ver_vpython:
         ver_vpython.time = ver_vpython.time + (ver_vpython.period/1000)
         
 
-    def graph_clear(self, column_headers):
+    def chart_clear(self, column_headers):
         if column_headers == None:
             column_headers = 'Data'
         ver_vpython.plot_1.delete()
@@ -184,7 +184,7 @@ class ver_vpython:
         ver_vpython.graph_canvas.xmin = 0
         ver_vpython.graph_canvas.xmax = 5
         
-    def graph_delete(self):
+    def chart_delete(self):
         ver_vpython.graph_canvas.delete()
 
     def meter_init(self):

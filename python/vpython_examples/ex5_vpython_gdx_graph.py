@@ -1,9 +1,8 @@
 """
-Use gdx.vp_vernier_canvas() to add a graph to the scene.
+Use gdx.vp_vernier_canvas() to add a chart to the scene.
 
-When you add a graph, you need to input the data to the graph
-in the collection loop using this function:
-gdx.vp_graph() 
+The chart updates automatically during the data collection
+loop. It plots the active sensors versus time. 
 """
 
 import os
@@ -26,8 +25,8 @@ gdx.open(connection='usb')   # Use connection='ble' for a Bluetooth connection
 gdx.select_sensors()
 
 # By default, buttons, slider, and live meters are all True. But the default for
-# graph is False. Change the graph to True to add a graph to the scene. 
-gdx.vp_vernier_canvas(graph=True)
+# chart is False. Change the chart to True to add a chart to the scene. 
+gdx.vp_vernier_canvas(chart=True)
 
 gdx.start(period=250) 
 

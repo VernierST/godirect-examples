@@ -38,8 +38,8 @@ class gdx:
     vpython = False
     # is there a vpython buttons?
     vpython_buttons = False
-    # is there a vpython graph?
-    vpython_graph = False
+    # is there a vpython chart?
+    vpython_chart = False
     # is there a vpython meters?
     vpython_meters = False
     # is there a vpython slider for sample period?
@@ -519,9 +519,9 @@ class gdx:
         # Start data collection (of the enabled sensors) for each active device.
         else:
             # if this is a vpython program, then clear the chart, if there is a chart
-            if gdx.vpython_graph:
+            if gdx.vpython_chart:
                 column_headers= self.enabled_sensor_info()
-                vp.graph_clear(column_headers)
+                vp.chart_clear(column_headers)
             gdx_vpython.ver_vpython.time = 0
 
             i = 0
@@ -605,10 +605,10 @@ class gdx:
                     column_headers= self.enabled_sensor_info()
                     # update the meter with the latest data
                     vp.meter_data(column_headers, retvalues)
-            # if this is vpython and there are graphs, AND the start button has been clicked
-                if gdx.vpython_graph == True and gdx.vp_start_button_flag == True:
-                    vp.graph_plot(retvalues)
-                    #self.vp_graph(retvalues)
+            # if this is vpython and there are chartss, AND the start button has been clicked
+                if gdx.vpython_chart == True and gdx.vp_start_button_flag == True:
+                    vp.chart_plot(retvalues)
+                    #self.vp_chart(retvalues)
 
             return retvalues
             
@@ -871,78 +871,34 @@ class gdx:
 
 #### VPYTHON FUNCTIONS ####
 
-    def vp_vernier_canvas(self, buttons=True, slider=True, meters=True, graph=False, cvs=True):
+    def vp_vernier_canvas(self, buttons=True, slider=True, meters=True, chart=False, cvs=True):
         """ Create vptyhon objects that are used for controlling data collection. 
         
         Args: 
             buttons (bool): Create a Collect/Stop and Close button
             slider (bool): Create a slider to control sampling rate
             meters (bool): Create meters to display live sensor data
-            graph (bool): Create a graph to plot live sensor data
+            chart (bool): Create a chart to plot live sensor data
             cvs (bool): Create a default canvas, ready for vpython objects
         
         """
         # keep track of what objects have been selected
         gdx.vpython = True
         gdx.vpython_buttons = buttons
-        gdx.vpython_graph = graph
+        gdx.vpython_chart = chart
         gdx.vpython_meters = meters
         gdx.vpython_slider = slider
 
         # setup the canvas based on what was selected
         if buttons or slider:
             vp.setup_canvas(buttons, slider)
-        if graph:
+        if chart:
             column_headers= self.enabled_sensor_info()
-            vp.graph_init(column_headers)
+            vp.chart_init(column_headers)
         if meters:
             vp.meter_init()
         if cvs:
             vp.create_default_canvas()
-
-    def vp_meter(self, measurement):
-        """ Display all sensor data in the vernier canvas meter
-
-        Args: 
-            measurement[]: A 1D list of sensor readings
-        """
-
-        print("vp meter")
-        # Usually the user will configure the canvas to have the Collect/Stop 
-        # buttons. When they click the Start button it will update ver_vpython
-        # with the period. But, if there are no buttons, then need to set the 
-        # period here, but only on the first call (when the start button flag == False)
-        # if gdx.vpython_buttons == False and gdx.vp_start_button_flag == False:
-        #     gdx_vpython.ver_vpython.period = gdx.period/1000
-        #     gdx.vp_start_button_flag = True
-        # column_headers= self.enabled_sensor_info()
-        
-        # update the meter with the latest data
-        #vp.meter_data(column_headers, measurement)
-        
-    def vp_graph(self, measurements):
-        """ Display up to five plots of sensor data in the vernier canvas graph
-
-        Args: 
-            measurement[]: A 1D list of sensor readings
-        """
-        print("vp graph")
-        
-        # Usually the user will configure the canvas to have the Collect/Stop 
-        # buttons. When they click the Start button it will update ver_vpython
-        # with the period and clear the graph. But, if there are no buttons, 
-        # then need to set the period here, and reset the graph - but only on 
-        # the first call (when the start button flag == False)
-        # if gdx.vpython_buttons == False and gdx.vp_start_button_flag == False:
-        #     #print("came to graph first start state")
-        #     column_headers= self.enabled_sensor_info()
-        #     vp.graph_clear(column_headers)
-        #     gdx_vpython.ver_vpython.period = gdx.period/1000
-        #     gdx_vpython.ver_vpython.time = 0
-        #     gdx.vp_start_button_flag = True
-
-        # update the graph with the latest data
-        #vp.graph_plot(measurements)
 
     def vp_close_is_pressed(self):
         """ Monitor the state of the vpython canvas Close button. When true, 
@@ -966,8 +922,8 @@ class gdx:
         if close_button_state == True:
             self.stop()
             self.close()
-            if gdx.vpython_graph:
-                vp.graph_delete()
+            if gdx.vpython_chart:
+                vp.chart_delete()
             if gdx.vpython_meters:
                 vp.meter_delete()
             if gdx.vpython_slider:
@@ -1014,10 +970,6 @@ class gdx:
         if gdx.vp_start_button_flag != collect_button_state:
             # if it was just clicked into the True state, start data collection
             if collect_button_state == True:
-                # if gdx.vpython_graph:
-                #     column_headers= self.enabled_sensor_info()
-                #     vp.graph_clear(column_headers)
-                # gdx_vpython.ver_vpython.time = 0
                 self.start(gdx.period)
                 gdx.vp_start_button_flag = True
             # if it was just clicked into the False state, stop data collection
