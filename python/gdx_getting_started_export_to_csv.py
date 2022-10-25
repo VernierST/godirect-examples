@@ -3,11 +3,11 @@ In this example we are saving the data to a csv file to be opened with Excel.
 
 '''
 
-from gdx import gdx 
-gdx = gdx.gdx()
-
 import csv
 import os
+
+from gdx import gdx 
+gdx = gdx.gdx()
 
 
 gdx.open(connection='usb')   # Use connection='ble' for a Bluetooth connection

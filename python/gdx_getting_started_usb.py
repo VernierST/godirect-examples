@@ -31,8 +31,8 @@ gdx.start(100)
 
 from gdx import gdx
 gdx = gdx.gdx()
-
  
+
 gdx.open(connection='USB')
 gdx.select_sensors()
 gdx.start() 

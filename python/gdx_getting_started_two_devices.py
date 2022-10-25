@@ -30,6 +30,7 @@ and sensors are configured, here are some examples:
 from gdx import gdx
 gdx = gdx.gdx()
 
+
 # ENTER YOUR DEVICE NAMES HERE
 gdx.open(connection='ble', device_to_open='enter 1st device name here, 2nd device name here')
 #gdx.open(connection='usb', device_to_open='GDX-FOR 071000U9, GDX-MD 0B1008M1')

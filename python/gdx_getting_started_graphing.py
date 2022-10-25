@@ -11,9 +11,10 @@ for information.
 '''
 import time
 import matplotlib.pyplot as plt
-from gdx import gdx #The gdx function calls are from a gdx.py file inside the gdx folder, which must be with this program.
 
+from gdx import gdx #The gdx function calls are from a gdx.py file inside the gdx folder, which must be with this program.
 gdx = gdx.gdx()
+
 
 fig, ax = plt.subplots()
 

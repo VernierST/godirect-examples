@@ -34,9 +34,6 @@ gdx.start(period=250)
 while gdx.vp_close_is_pressed() == False:  
     while gdx.vp_collect_is_pressed() == True:       
         measurements = gdx.read()    # 'measurements' is a list - one data point per sensor
-        print(measurements)
         if measurements == None:
             break 
-        gdx.vp_graph(measurements)    # display all data in the vernier graph
-        gdx.vp_meter(measurements)    # also update the live meters during data collection
-        
+        print(measurements)
