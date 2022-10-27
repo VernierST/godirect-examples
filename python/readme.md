@@ -26,7 +26,7 @@ This guide contains the following topics:
 
 If you are new to Python you should look over all of the steps. If you are familiar with Python, focusing on installing the godirect module and downloading the examples may be sufficient.
 
-<sup>1</sup> Go Direct spectrometers and Mini GC are not supported.
+<sup>1</sup> Go Direct spectrometers, Mini GC, Polarimeter, Go Wireless Heart Rate, and Cyclic Voltammetry System do not work with the godirect library. Go Direct sensors that are not supported, or that may require advanced programming, calibration, or analysis, include Blood Pressure, Sound, Ion-Selective Electrode, Optical Dissolved Oxygen, Conductivity, and timing/event devices like Photogates, Drop Counters, Projectile Launcher, Radiation, and Rotary Motion.
 
 ## Getting Started Requirements
 

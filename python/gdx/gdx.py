@@ -6,7 +6,7 @@ from godirect import GoDirect
 import logging
 import time    
 
-# gdx_vpython contains functions for a canvas with data collection buttons
+# gdx_vpython.py contains functions for a canvas with data collection buttons
 from gdx import gdx_vpython
 vp = gdx_vpython.ver_vpython()
 
@@ -477,21 +477,21 @@ class gdx:
 
         # if they are using vpython and the slider then the period is controlled there
         if gdx.vpython_slider:
-        
-            # if this is the very first call, then set the slider appropriately
+            # if this is the very first call, then configure the slider with a starting value
             if gdx.vp_first_start == True:
+                # if the period arg is left blank, just set a default starting value for the slider
                 if period == None:
-                    # if the period arg is left blank, but they are using the slider, just set a value
                     vp.slider_set(sample_rate=10)
                     period = 100
+                # otherwise, use the period to set the slider with an initial value
                 else:
                     sample_rate = (1/period) * 1000
                     vp.slider_set(sample_rate)
-            # if it is not the first start, then get the period from the slider
+            # if it is not the first start(), then just get the period value from the slider
             else:
                 period = vp.slider_get()
-                # print("slider period = ", period)
 
+        # This is not a vpython program.
         else:
             # If the period argument is left blank provide an input prompt for the user to enter the period.
             if period == None: 
@@ -506,37 +506,36 @@ class gdx:
             if period < 10:
                 input("Be aware that sampling at a period less than 10ms may be problemeatic. Press Enter to continue ")
         
-        
-        # if this is a vpython program don't want to call gdx.devices.start() the very first time
-        # that start() is called. Why? Because the user's vpython code will have a start() call in 
-        # their code, but they don't want to actually 'start' data collection at that point. Instead
-        # they will want to 'start' data collection when they click the 'collect' button. 
+        # if this is a vpython program, and this is the very first time that start() has
+        # been called, do not start data collection yet. Why? Because the user's vpython 
+        # code will have a start() call in their code, but they don't want to actually 'start' 
+        # data collection at that point. Instead they will want to 'start' data collection 
+        # when they click the 'collect' button. 
         if gdx.vpython == True and gdx.vpython_buttons == True and gdx.vp_first_start == True:
-            # set the period variable in gdx_vpython
+            # set the period variable in gdx_vpython.py, but do not start the devices
             gdx_vpython.ver_vpython.period = period
-            #vp.period = period
             
-        # Start data collection (of the enabled sensors) for each active device.
+        # Start the devices collecting data.
         else:
-            # if this is a vpython program, then clear the chart, if there is a chart
-            if gdx.vpython_chart:
-                column_headers= self.enabled_sensor_info()
-                vp.chart_clear(column_headers)
-            gdx_vpython.ver_vpython.time = 0
+            if gdx.vpython:
+                # if this is a vpython program, then clear the chart, if there is a chart
+                if gdx.vpython_chart:
+                    column_headers= self.enabled_sensor_info()
+                    vp.chart_clear(column_headers)
+                gdx_vpython.ver_vpython.time = 0
+                # store the period in case it is needed in vp_start_button()
+                gdx.period = period
+                # if this is the first call to start() change this flag 
+                if gdx.vp_first_start == True:
+                    gdx.vp_first_start = False
 
+            # Start all devices
             i = 0
             while i < len(gdx.devices):
                 #print("start device ", i, sep="")
                 gdx.devices[i].start(period=period)
                 i +=1 
         
-        # store the period in case it is needed in vp_start_button()
-        gdx.period = period
-            
-        # if this is the first call to start() change this flag 
-        if gdx.vp_first_start == True:
-            gdx.vp_first_start = False        
-
     def read(self):             
         """ Take single point readings from the enabled sensors.
 
@@ -553,7 +552,7 @@ class gdx:
             print("read() - no device connected")
             return 
         
-        # Are there data in the buffer? If so, read the buffer, not the sensor
+        # Are there data in the buffer? If so, pull data from the buffer to get the retvalues
         if gdx.buffer:
             i = 0
             for i in range(len(gdx.buffer)):
@@ -561,14 +560,9 @@ class gdx:
                 retvalues.append(pop_values)
             # if this was the last value in the buffer, clear the list so that it is not a list of empty lists
             if not gdx.buffer[0]:
-                gdx.buffer = []
-            # if len(retvalues) == 1:
-            #     return retvalues[0]
-            # else:
-            #     return retvalues   
-            #return retvalues       
+                gdx.buffer = []     
 
-        # The buffer is empty, so take readings from the sensor
+        # The buffer is empty, so take readings from the sensor to get retvalues
         else:
             gdx.buffer = [] 
             i = 0
@@ -594,21 +588,17 @@ class gdx:
             
         if not retvalues:
             return None
-        # if it is just a single value, don't send it as a list
-        # elif len(retvalues) == 1:
-        #     return retvalues[0]
         else:
-            # if this is vpython and there are meters, update them
+            # if this is vpython and there are meters, update them with the retvalues. Note that we do
+            # not need to know if the start button has been clicked (like the chart, below) because we 
+            # update the meters, even when data collection is not occuring.
             if gdx.vpython: 
-            #if gdx.vp_start_button_flag == True:
                 if gdx.vpython_meters:
                     column_headers= self.enabled_sensor_info()
-                    # update the meter with the latest data
                     vp.meter_data(column_headers, retvalues)
-            # if this is vpython and there are chartss, AND the start button has been clicked
+            # if there is a chart AND the start button has been clicked
                 if gdx.vpython_chart == True and gdx.vp_start_button_flag == True:
                     vp.chart_plot(retvalues)
-                    #self.vp_chart(retvalues)
 
             return retvalues
             
@@ -903,13 +893,14 @@ class gdx:
     def vp_close_is_pressed(self):
         """ Monitor the state of the vpython canvas Close button. When true, 
         a gdx.stop() and gdx.close() are called to stop data collection and 
-        disconnect the device. 
+        disconnect the device. When false, and if there are meters, they are 
+        updated with live readings.
 
         Returns:
             close_button_state (bool): True if Close button has been pressed
         """
         # Note that there is no vpython rate() call here, but there is in the
-        # gdx_vpython module in the collect_button() function
+        # gdx_vpython.py module in the collect_button() function
 
         # First check to make sure there are devices connected.      
         if not gdx.devices:
@@ -919,6 +910,7 @@ class gdx:
             # get the state of the vpython Close button
             close_button_state = vp.closed_button()
         
+        # If the user has clicked the Close button
         if close_button_state == True:
             self.stop()
             self.close()
@@ -933,15 +925,13 @@ class gdx:
             vp.canvas_delete()
         # the Close button has not been pressed
         else:
-            # if there are meters we will update them here - this provides
-            # live sensor readings in between data collection. 
+            # if there are meters, update their values using a short data collection loop
             if gdx.vpython_meters:
-                #column_headers= self.enabled_sensor_info()
                 for device in gdx.devices:
                     device.start(period=250)
                 for x in range(4):
-                    data = self.read()
-                    #vp.meter_data(column_headers, data)
+                    # The read() function has code to send the value to the meter
+                    self.read()
                 self.stop()
                 
         return close_button_state
@@ -951,10 +941,9 @@ class gdx:
         is clicked, a gdx.start() is called. When Stop is clicked, a gdx.stop() is
         called.
 
-
         Returns:
-            collect_button_state (bool): True if Collect button has been pressed
-            to begin data collection.
+            collect_button_state (bool): True if button is in the 'COLLECT' state. False
+            if the button is in the 'STOP' state.
         """
 
         # First check to make sure there are devices connected.      
@@ -980,7 +969,7 @@ class gdx:
         return collect_button_state
 
     def vp_get_slider_period(self):
-        """ Get the value of the slider as the period (time between samples)
+        """ Get the value of the slider as the period (time between samples).
             Returns the value in milliseconds.
         """
         period = vp.slider_get()

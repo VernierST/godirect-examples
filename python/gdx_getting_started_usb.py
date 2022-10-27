@@ -33,7 +33,7 @@ from gdx import gdx
 gdx = gdx.gdx()
  
 
-gdx.open(connection='USB')
+gdx.open(connection='usb')
 gdx.select_sensors()
 gdx.start() 
 column_headers= gdx.enabled_sensor_info()   # returns a string with sensor description and units
