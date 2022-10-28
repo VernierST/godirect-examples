@@ -10,17 +10,26 @@ Start data collection and then tilt the hand-dynamometer left and right, always 
 the label facing you. Do not tilt back and forward. Do not rotate the label away from
 you.  
 '''
+
+# Code to tell Python to look for the gdx module up one directory
 import os
 import sys
-
-# This tells Python that the /gdx/ folder is up one directory
-gdx_module_path = os.path.abspath(os.path.join('.'))
+# get the path (note that sys.argv[0] gives the name of this file)
+file_path = os.path.abspath(os.path.dirname(sys.argv[0]))
+# make 'file_path' the current working directory (cwd)
+os.chdir(file_path)
+# move the cwd path up one directory
+os.chdir("..")
+gdx_module_path = os.getcwd()
+# add the cwd path to the system path, so Python will look there for the gdx folder
 if gdx_module_path not in sys.path:
     sys.path.append(gdx_module_path)
+# Here are the paths where Python is looking for the gdx module. If the gdx module is 
+# not found, move the /gdx/ folder into one of the paths.
+print('\n', "System Paths:")
+for path in sys.path:
+    print(path)
 
-# If the /gdx/ folder is not found, uncomment the print() to see where Python is looking. 
-# and move the /gdx/ folder into one of these paths.
-# print("path:  ", sys.path)
 
 from vpython import *   
 from gdx import gdx
@@ -49,10 +58,9 @@ gdx.start(period=250) #period in milliseconds
 while gdx.vp_close_is_pressed() == False:  
     while gdx.vp_collect_is_pressed() == True:   
         measurements = gdx.read()    # 'measurements' is a list - one data point per sensor
-        print(measurements)
         if measurements == None:
             break 
-        gdx.vp_meter(measurements)    # display all data in the vernier canvas meter
+        print(measurements)
         force =  measurements[0]    # index out the first sensor's data point
         box_size=force*.05+4 # make the box always have some length and scale it to be controlled by the grip strength
         x =  measurements[1] 

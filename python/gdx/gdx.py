@@ -514,6 +514,7 @@ class gdx:
         if gdx.vpython == True and gdx.vpython_buttons == True and gdx.vp_first_start == True:
             # set the period variable in gdx_vpython.py, but do not start the devices
             gdx_vpython.ver_vpython.period = period
+            gdx.vp_first_start = False
             
         # Start the devices collecting data.
         else:
@@ -585,7 +586,7 @@ class gdx:
                             sensor.clear()
                             values = []
                 i +=1  
-            
+  
         if not retvalues:
             return None
         else:

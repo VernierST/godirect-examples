@@ -163,7 +163,10 @@ Here are some key points to keep in mind:
 import os
 import sys
 
-gdx_module_path = os.path.abspath(os.path.join('.'))
+file_path = os.path.abspath(os.path.dirname(sys.argv[0]))
+os.chdir(file_path)
+os.chdir("..")
+gdx_module_path = os.getcwd()
 if gdx_module_path not in sys.path:
     sys.path.append(gdx_module_path)
 ```
