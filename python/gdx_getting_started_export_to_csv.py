@@ -1,6 +1,5 @@
 '''
 In this example we are saving the data to a csv file to be opened with Excel.
-
 '''
 
 import csv

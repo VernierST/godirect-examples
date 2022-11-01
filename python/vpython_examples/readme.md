@@ -8,7 +8,7 @@ Note that this guide is for using VPython with the installed Python language on 
 
 ## Getting Started Requirements
 
-The VPython examples are located in the /vpython_examples/ folder. Just like the 'getting_started' examples, they use the local module named `gdx` that can be found in the [../gdx/](../gdx) folder 
+The VPython examples are located in the /vpython_examples/ folder. Just like the 'getting_started' examples, these examples use the local module named `gdx`. A copy of `gdx` is included with the vpython examples so that Python can easily find this module.
 
 The VPython module must be installed to run the examples. Run the following command in Powershell or Command Prompt to install the VPython module:
 
@@ -16,9 +16,13 @@ The VPython module must be installed to run the examples. Run the following comm
 
 ## About the gdx Module
 
-The `gdx` module contains functions that will be used in the VPython examples. This is the same module used for data collection and discussed in the [Getting Started with Vernier Go Direct® Sensors and Python](https://github.com/VernierST/godirect-examples/tree/main/python) manual.
+The `gdx` module contains functions that will be used in the VPython examples. This is the same module that has functions for data collection and discussed in the [Getting Started with Vernier Go Direct® Sensors and Python](https://github.com/VernierST/godirect-examples/tree/main/python) manual.
 
-Of special note for the VPython examples is that the /gdx/ folder is located one directory up from these examples. This means that Python will not be able to find the /gdx/ folder without some help. Therefore, in these examples, there is code to add a 'Path' to Python that is one directory up.  
+Note that a copy of the /gdx/ folder is located in the directory with these examples. This copy is included in order to make it easy for Python to find the `gdx` module. If you ever run an example that imports the `gdx` module and you receive the error `ModuleNotFoundError: No module named 'gdx'`, remember to either:
+
+1. Keep the /gdx/ folder in the same directory as the example that you are running.
+2. Manually move the /gdx/ folder into your Python /site-packages/ directory. This is the same directory that all Python libraries are placed, and it is a "path" that Python looks for modules.
+3. Add code to your program to create a system 'path' to the directory where the /gdx/ folder is located. For example, here is code to add a system 'path' one directory up.  
 
 ```python
 import os
@@ -31,10 +35,6 @@ gdx_module_path = os.getcwd()
 if gdx_module_path not in sys.path:
     sys.path.append(gdx_module_path)
 ```
-
-Adding the code snippet above is a good option when the /gdx/ folder is up one directory. Two other options are:
-  - Keep the /gdx/ folder in the same directory as the example that you are running.
-  - Manually move the /gdx/ folder into your Python /site-packages/ directory. This is the same directory that all Python libraries are placed, and it is a "Path" that Python looks for modules.
 
 ## The gdx Functions for VPython
 
@@ -112,7 +112,7 @@ gdx.stop() is called.
  
 ## Troubleshooting
 - If you are familiar with github, you could search the issues or post a question at: https://github.com/VernierST/godirect-examples/issues
-- Try a different browser. In most cases using Chrome is suggested.
+- Try a different browser for the VPython scene. In most cases using Chrome is suggested.
 - Place the `gdx.vp_canvas()` function before `gdx.start()` in your code. This is because there is code in the `gdx.start()` function that checks to see if the data collection rate might be coming from the VPython slider that is configured in `gdx.vp_canvas()`. 
 - Write a simple VPython starter program that does not use GO Direct sensors and does not use the functions described above. This can be a good troubleshooting step if you are not sure why VPython is not launching. Here is an easy example to try:
 
@@ -122,6 +122,7 @@ sphere()
 ```
 
 - After running a program using VPython, the terminal may become unresponsive. If so, delete the terminal and open a new terminal before running the program a second time.
+- If you receive the error `ModuleNotFoundError: No module named 'gdx'`, remember to place a copy of the /gdx/ folder in the same directory as your file, or in the site-packages directory, or create code to add a system path to the location of the /gdx/ folder.
 - To check your version of VPython run the following command in your terminal:
 
 `pip show vpython`

@@ -9,43 +9,23 @@ The resulting freebody diagram is "Y" shaped. As you run the program, move the G
 The freebody diagram will update itself to reflect the GDX-FOR's current orientation and the force 
 exerted by its load cell.
 
-This program is written to connect to GDX-FOR via Bluetooth. 
-! You must modify the 'device_to_open' argument to match the serial number of your GDX-FOR
-  gdx.open(connection='ble', device_to_open='PUT YOUR DEVICE SERIAL NUMBER HERE')
-You can run the program connected to GDX-FOR via USB; just modify gdx.open(connection='usb').
+This program is written to connect to GDX-FOR via Bluetooth. You can run the program connected 
+via USB; just modify gdx.open(connection='usb').
 
-This program requires the godirect, vpython, and math packages are installed.
+REQUIRED!
+  You must modify the 'device_to_open' argument to match the serial number of your GDX-FOR:
+  gdx.open(connection='ble', device_to_open='PUT YOUR DEVICE SERIAL NUMBER HERE')
 '''
 
-# Code to tell Python to look for the gdx module up one directory
-import os
-import sys
-# get the path (note that sys.argv[0] gives the name of this file)
-file_path = os.path.abspath(os.path.dirname(sys.argv[0]))
-# make 'file_path' the current working directory (cwd)
-os.chdir(file_path)
-# move the cwd path up one directory
-os.chdir("..")
-gdx_module_path = os.getcwd()
-# add the cwd path to the system path, so Python will look there for the gdx folder
-if gdx_module_path not in sys.path:
-    sys.path.append(gdx_module_path)
-# Here are the paths where Python is looking for the gdx module. If the gdx module is 
-# not found, move the /gdx/ folder into one of the paths.
-print('\n', "System Paths:")
-for path in sys.path:
-    print(path)
-
-
-from gdx import gdx
 from vpython import *
+from gdx import gdx
 gdx = gdx.gdx()
 
 import math
 
 hanging_mass=float(input("Enter the mass (in kg) of the hanging mass:"))    # prompts user for mass of hanging mass
 
-# Configure Go Direct
+# REQUIRED! Configure gdx.open() using your GDX-FOR serial number
 gdx.open(connection='ble', device_to_open='GDX-FOR 071000U9')   # change GDX-FOR ID to match your device
 gdx.select_sensors([1,2,3,4])   # GDX-FOR sensors: 1 - force sensor, 2 - x axis accel, 3 - y axis accel, 4 - z axis accel
 gdx.vp_vernier_canvas(meters=False, slider=False)

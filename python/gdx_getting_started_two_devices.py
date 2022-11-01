@@ -24,7 +24,6 @@ and sensors are configured, here are some examples:
     Configure 3 devices. Device 1 with sensors 1,5,6. Device 2 with sensor 5. 
     Device 3 with sensors 1 and 2:
     gdx.select_sensors([[1,5,6], [5], [1,2]]) 
-
 '''
 
 from gdx import gdx

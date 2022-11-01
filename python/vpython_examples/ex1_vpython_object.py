@@ -4,7 +4,7 @@ Create a VPython sphere. Add attributes using the available parameters.
 - Zoom in or out of the 3D object using two fingers
 on a touchpad or the scroll wheel on a mouse. 
 - To rotate the object, hold
-down the right button (or CTRL) and move the cursor.
+down the right button (or CTRL + left button) and move the cursor.
 
 """
 

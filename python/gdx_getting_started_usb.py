@@ -26,12 +26,11 @@ gdx.start(1000)
 Example 2, collect data from sensors 1, 2 and 3 at a period of 100ms using:
 gdx.select_sensors([1,2,3])
 gdx.start(100)
-
 '''
 
 from gdx import gdx
 gdx = gdx.gdx()
- 
+
 
 gdx.open(connection='usb')
 gdx.select_sensors()

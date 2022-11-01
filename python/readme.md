@@ -156,8 +156,8 @@ Here are some key points to keep in mind:
 - The gdx module is not installed when you run `pip install godirect`. Instead, it is part of the download of the godirect-examples repository. Look for it in the download, in the same directory as the getting started examples.
 - In order to  `import gdx` in your program, Python must be able to find the /gdx/ folder. Here are two ways that make it easy for Python to find the /gdx/ folder:
   - Keep the /gdx/ folder in the same directory as the example that you are running.
-  - Manually move the /gdx/ folder into your Python /site-packages/ directory. This is the same directory that all Python libraries are placed, and it is a "Path" that Python looks for modules.
-- If /gdx/ is not in the same directory as the example, and is not in /site-packages/, you must add code to add it to the Python 'Path'. A common example is having /gdx/ one directory up. Here is the code used to add a 'Path' one directory up:
+  - Manually move the /gdx/ folder into your Python /site-packages/ directory. This is the same directory that all Python libraries are placed, and it is a "path" that Python looks for modules.
+- If /gdx/ is not in the same directory as the example, and is not in /site-packages/, you must add code to add it to the system 'path'. For example, if /gdx/ is one directory up. Here is code used to add a system 'path' one directory up:
 
 ```python
 import os
@@ -257,6 +257,7 @@ As stated earlier, these gdx functions are available in the gdx.py file, in the 
 - Contact us at:  support@vernier.com
 - If you are familiar with github, you could search the issues or post a question at: https://github.com/VernierST/godirect-examples/issues
 - We have created a [FAQ for Python Troubleshooting](https://www.vernier.com/). 
+- If you receive the error `ModuleNotFoundError: No module named 'gdx'`, remember to place a copy of the /gdx/ folder in the same directory as your file, or in the site-packages directory, or create code to add a system path to the location of the /gdx/ folder.
  
 ### Python
 - If you are new to Python, here are some generally helpful links for getting started with Python.

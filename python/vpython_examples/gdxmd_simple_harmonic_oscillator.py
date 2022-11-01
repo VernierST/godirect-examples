@@ -7,28 +7,7 @@ This example assumes the Go Direct Motion Sensor is connected via USB, change to
 as needed in the code below.
 
 Look closely at the Experimental Setup Variables section below to modify variables, as needed.
-
 '''
-
-# Code to tell Python to look for the gdx module up one directory
-import os
-import sys
-# get the path (note that sys.argv[0] gives the name of this file)
-file_path = os.path.abspath(os.path.dirname(sys.argv[0]))
-# make 'file_path' the current working directory (cwd)
-os.chdir(file_path)
-# move the cwd path up one directory
-os.chdir("..")
-gdx_module_path = os.getcwd()
-# add the cwd path to the system path, so Python will look there for the gdx folder
-if gdx_module_path not in sys.path:
-    sys.path.append(gdx_module_path)
-# Here are the paths where Python is looking for the gdx module. If the gdx module is 
-# not found, move the /gdx/ folder into one of the paths.
-print('\n', "System Paths:")
-for path in sys.path:
-    print(path)
-    
 
 from vpython import * 
 from gdx import gdx
@@ -111,7 +90,7 @@ a_arrow.visible = True
 model.p = 0
 model.pos.y = ymax
 
-gdx.start(50) # 50 ms, or 20 samples/sec. Note it can be changed by the slider
+gdx.start(50) # 50 ms period = 20 samples/sec. Note it can be changed by the slider
 while gdx.vp_close_is_pressed() == False:  
     i = 0
     while gdx.vp_collect_is_pressed() == True: 
@@ -128,7 +107,6 @@ while gdx.vp_close_is_pressed() == False:
             model_spring.visible = False
             k_label.visible = False     
         dt = gdx.vp_get_slider_period()/1000  # get the period(ms) and convert to seconds
-        print("dt = ", dt)
         measurements = gdx.read()    # 'measurements' is a list - one data point per sensor
         if measurements == None:
             break 
