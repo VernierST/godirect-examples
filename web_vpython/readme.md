@@ -42,7 +42,7 @@ The functions for Web VPython that make it easy to collect and display Go Direct
 
 A simple example that uses these functions is shown below. In this example, the length of a VPython box object is controlled by sensor data. 
 
-<img src="../images/vpython_box.png" alt="VPython box" width="600" height="240"/>
+<img src="./images/vpython_box.png" alt="VPython box" width="600" height="240"/>
 
 ```python
 get_library("")
@@ -98,7 +98,7 @@ Here is some more information about the functions, including how you might add a
 - Use this function to add VPython objects that are useful for data collection to the VPython canvas.
 - If this function’s argument is left blank, the following objects will be placed onto the VPython canvas:
 
-<img src="../images/vpython_buttons_slider_meter.png" alt="VPython canvas" width="600" height="100"/>
+<img src="./images/vpython_buttons_slider_meter.png" alt="VPython canvas" width="600" height="100"/>
 
 - COLLECT/STOP button
   - Click this button to start and stop data collection
@@ -115,7 +115,7 @@ Here is some more information about the functions, including how you might add a
 - The buttons, slider, live meter, and channel_setup were discussed above. You can disable these VPython objects by setting `buttons=False`, `slider=False`, `meters=False`, or `channel_setup=False`
 - If the chart parameter is set to `chart=True`, a VPython chart object will be added to the scene as shown below.
 
-<img src="../images/vpython_graph.png" alt="VPython with graph" width="600" height="350"/>
+<img src="./images/vpython_graph.png" alt="VPython with graph" width="600" height="350"/>
 
 - The chart will automatically update during the data collection loop. The active sensor measurements will be plotted against time.
 
