@@ -256,7 +256,7 @@ As stated earlier, these gdx functions are available in the gdx.py file, in the 
 ### Support
 - Contact us at:  support@vernier.com
 - If you are familiar with github, you could search the issues or post a question at: https://github.com/VernierST/godirect-examples/issues
-- We have created a [FAQ for Python Troubleshooting](https://www.vernier.com/). 
+- We have created a [FAQ for Python Troubleshooting](https://www.vernier.com/til/16133). 
 - If you receive the error `ModuleNotFoundError: No module named 'gdx'`, remember to place a copy of the /gdx/ folder in the same directory as your file, or in the site-packages directory, or create code to add a system path to the location of the /gdx/ folder.
  
 ### Python

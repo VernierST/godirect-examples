@@ -50,8 +50,6 @@ A simple example that uses these functions is shown below. In this example, the 
 <img src="../images/vpython_box.png" alt="VPython box" width="600" height="240"/>
 
 ```python
-# Code to add a 'Path' one directory up would go here
-
 from gdx import gdx
 from vpython import *
 gdx = gdx.gdx()
@@ -132,7 +130,7 @@ sphere()
 
 `pip install vpython`
 
-- We have created a [FAQ for Python Troubleshooting](https://www.vernier.com/)
+- We have created a [FAQ for Python Troubleshooting](https://www.vernier.com/til/16133)
 
 ## License
 
