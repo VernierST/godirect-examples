@@ -1,6 +1,6 @@
 # Getting Started with Vernier Go Direct® Sensors and Web VPython
 
-This guide shows you how to get started writing Web VPython programs to communicate with the sensors on-board most Vernier Go Direct<sup>1</sup> devices. Web VPython is an easily accessible online coding platform that bundles Python and the VvPython library together.
+This guide shows how to get started writing Web VPython programs to communicate with the sensors on-board most Vernier Go Direct<sup>1</sup> devices. Web VPython is an easily accessible online coding platform that bundles Python and the VPython library.
 
 Web VPython runs in the browser and makes it possible, and easy, to generate navigable real-time 3D animations. In addition, it allows the user to write and run a VPython program without actually installing Python itself - a big timesaver in the classroom! Another advantage is that Web VPython can communicate with Go Direct sensors on Chromebooks as well as Mac, Windows, and Linux computers.
 
@@ -16,11 +16,11 @@ We have developed a library called `godirect` that allows you to develop Web VPy
 
 - A Vernier Go Direct Device
 - A Chromebook, Windows® 10, macOS®, or Linux (including Raspberry Pi) computer
-- Access to glowscript.org. It is recommended to use the Chrome browser, though other browsers will work too.
+- Access to glowscript.org. It is recommended to use the Chrome browser, though other browsers may work.
 
 ## About the godirect Web VPython library
 
-The `godirect` library for Web VPython is a JavaScript library that provides a series of functions that can be used in Web VPython. These functions provide communication with Go Direct devices. Additionaly, the functions provide buttons, sliders, meters, and a chart for controlling data collection within Web VPython.
+The `godirect` library for Web VPython is a JavaScript library that provides a series of functions that can be used to write Python code in Web VPython. These functions provide communication with Go Direct devices. Additionaly, the functions provide buttons, sliders, meters, and a chart for controlling data collection within Web VPython.
 
 Start your Web VPython program using the following command to get the library
 ```python
@@ -40,7 +40,7 @@ The functions for Web VPython that make it easy to collect and display Go Direct
 - `gdx.read()`
 - `gdx.vp_get_slider_period()`
 
-A simple example that uses these functions is shown below. In this example, the length of the VPython box object is controlled by the sensor data. 
+A simple example that uses these functions is shown below. In this example, the length of a VPython box object is controlled by sensor data. 
 
 <img src="../images/vpython_box.png" alt="VPython box" width="600" height="240"/>
 
@@ -131,24 +131,35 @@ gdx.stop() is called.
 ### `gdx.vp_get_slider_period()`
 - The slider is used to modify the data collection sampling rate. This function returns the value of the slider. The value is returned as the period (dt) in milliseconds.
 
-## Running a Web VPython Program with Go Direct
+## How to Run a Web VPython Program with Go Direct Devices
 
-Download your program to run it.
+When creating a new Web VPython program, or editing an existing program, you will see the option to "Run this program" in the editor. That option will work for VPython code that does not include Go Direct devices. But if your program does include Go Direct devices you must download your program to run it. In order to run a program that includes a Go Direct device, you will need to: 
 
-In order to run a program that includes a Go Direct device, you’ll need to take an extra step. Rather than choose “Run this program”, choose “Share or export this program” and then “Download as HTML”. Once the program has downloaded to your computer, click on the .html file to open in your browser.
+- choose `Share or export this program`
+- and then `Download as HTML`
+  - Note: Before clicking `Download as HTML` look to make sure the area at the bottom of the page is not blank. If it is, there is a bug in the code. Go back to the editor to fix the code.
+- Once the .html file has downloaded to your computer, click on the .html file. This will open and run the program in your browser.
+
+## Example Programs
+
+Web VPython's landing page at https://glowscript.org/ allows users to create accounts for saving and sharing example programs. Find examples for Go Direct devices at:
+
+https://www.glowscript.org/#/user/vernier-web-vpython/folder/MyPrograms/
 
 ## Troubleshooting
 
+- To run a program you must click `Share or export this program` and then `Download as HTML`. Before clicking on `Download as HTML`, look at the bottom of the page to make sure there is code in the window. If not, there is an error. To locate the error, go back to the editor and click `Run this program`. You may or may not receive some helpful error messages. Otherwise, comment out code to simplify your starter program. 
 - If you are familiar with github, you could search the issues or post a question at: https://github.com/VernierST/godirect-examples/issues
 - Try a different browser for the VPython scene. In most cases using Chrome is suggested.
 - Place the `gdx.vp_canvas()` function before `gdx.start()` in your code. This is because there is code in the `gdx.start()` function that checks to see if the data collection rate might be coming from the VPython slider that is configured in `gdx.vp_canvas()`. 
-- Write a simple VPython starter program that does not use GO Direct sensors and does not use the functions described above. This can be a good troubleshooting step if you are not sure why VPython is not launching. Here is an easy example to try:
+- Write a simple VPython starter program that does not use GO Direct sensors and does not use the functions described above. This can be a good troubleshooting step if you are not sure why VPython is not launching. Go to https://glowscript.org/ and sign in. Go to your programs and create a new program. Here is an easy example to try:
 
 ```python
-from vpython import *
+Web VPython 3.2
 sphere()
 ```
 
+- Ask a question on the glowscript forum at:  https://groups.google.com/g/glowscript-users
 - We have created a [FAQ for Python Troubleshooting](https://www.vernier.com/til/16133)
 
 ## License
