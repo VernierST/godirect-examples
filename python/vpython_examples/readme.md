@@ -94,7 +94,13 @@ The code snippet above uses functions available in the gdx module that provide s
 
 - The chart will automatically update during the data collection loop. The active sensor measurements will be plotted against time.
 - The argument `cvs=True` creates a blank canvas for any VPython objects (such as an arrow, box, sphere, etc..) you would like to include in your program. 
-  - If this blank canvas is not needed or causes issues, simply change this to `cvs=False`.
+  - If you do not like the size of the default canvas, simply create your own canvas after calling `gdx.vp_vernier_canvas()`, and then create the object to go on the canvas:
+
+```python
+gdx.vp_vernier_canvas()    
+my_canvas = canvas(height=500, width=400)
+my_sphere = sphere(radius=25, color=color.red)
+```
 
 ### `while gdx.vp_close_is_pressed() == False`
 - The function `gdx.vp_close_is_pressed()` monitors the state of the vpython canvas CLOSE button. 
