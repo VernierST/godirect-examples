@@ -1,8 +1,9 @@
 ''' 
-This example lists information about the Go Direct device and all of the sensor channels.
+This example lists information about a single Go Direct device and all 
+of its sensors.
 
-"Incompatible sensors" refers to sensor channels that cannot operate at the
-same time. Most devices allow all sensor channels to collect data at 
+"Incompatible sensors" refers to sensors that cannot operate at the
+same time. Most devices allow all sensors to collect data at 
 the same time. However, devices like Sound and EKG have some sensors that do not work
 when the other on-board sensors are collecting data.
 
@@ -10,23 +11,21 @@ Also note that not all devices have sensor numbers that start with 1, and not al
 numbers are used. For example, Light and Color sensor numbers are [1,2,5,6,7]. 
 Motion Detector sensor numbers are [5,6,7].
 
-This example highlights the use of the following gdx functions:
-
-gdx.device_info()
-gdx.sensor_info()
-gdx.enabled_sensor_info()
-
 Note: This example assumes one Go Direct device
 '''
 
 from gdx import gdx
 gdx = gdx.gdx()
 
-#gdx.open_usb() #uncomment this function and comment out the ble function if you wish to connect via USB
-gdx.open_ble() 
+
+gdx.open(connection='usb')   # change to 'ble' for Bluetooth connection
 
 # Return the device_info list [name, description, battery %, charger state, rssi]
-input('press enter to get device info')
+print('\n')
+input("Device information (it's especialy important to know the 'device name' \n \
+as it is used in other examples as an argument in the gdx.open() function. Be \n \
+sure to take note of the 'device name') \n \
+   - Press 'enter' \n ")
 device_info = gdx.device_info() 
 device_name = device_info[0]
 device_description = device_info[1]  
@@ -38,10 +37,13 @@ print("device description = ", device_description)
 print("battery charge % = ", battery)
 print("charging state of the battery = ", charger_state)
 print("rssi (bluetooth signal) = ", rssi)
-print()
+print('\n')
 
 # Return the sensor_info list [sensor number, description, units, incompatible sensors[]]
-input('press enter to get sensor info')
+input("Sensor information (it's especialy important to know the 'sensor number' \n \
+as you will use that in python code to specify which sensor to read. Be \n \
+sure to take note of the sensor number or numbers) \n \
+   - Press 'enter' \n ")
 sensor_info = gdx.sensor_info() 
 for info in sensor_info:
     sensor_number = info[0]
@@ -54,14 +56,5 @@ for info in sensor_info:
     print("incompatible sensors = ", incompatible_sensors)
     print()
 
-
-# The gdx.enabled_sensor_info() function returns each enabled (selected) sensors' description and units. 
-# This might be useful as a column header. Note that you need to select sensors using the select_sensors()
-# function before calling gdx.enabled_sensor_info() function. 
-input('press enter to choose sensor(s) and get column headers')
-gdx.select_sensors()  
-column_headers= gdx.enabled_sensor_info()
-print("column headers = ", column_headers)
-
-gdx.stop()
+# Disconnect the Go Direct connection
 gdx.close()

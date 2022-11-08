@@ -1,18 +1,19 @@
 '''
 In this example we are saving the data to a csv file to be opened with Excel.
-
 '''
-
-from gdx import gdx 
-gdx = gdx.gdx()
 
 import csv
 import os
 
-#gdx.open_usb() 
-gdx.open_ble()  # Comment this out if you decide to use the gdx.open_usb() function instead.
+from gdx import gdx 
+gdx = gdx.gdx()
 
-gdx.select_sensors()
+
+gdx.open(connection='usb')   # Use connection='ble' for a Bluetooth connection
+#gdx.open(connection='usb', device_to_open='GDX-FOR 071000U9')  # You can also use an argument to specify the device
+
+gdx.select_sensors() # You will be asked to select the sensors to be used. You can select up to three.
+#gdx.select_sensors([1]) # You can also use an argument to select sensors. Separate multiple sensors with a comma, ([1,3])
 
 with open('csvexample.csv', 'w', newline='') as my_data_file:
 # The commented-out code below would be used if you want to hard-code in an absolute file path for the location of the csv file...

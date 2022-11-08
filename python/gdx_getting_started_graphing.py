@@ -9,11 +9,13 @@ This program uses Pyplot, which is part of MatPlotLib. Pyplot allows hundreds of
 See https://matplotlib.org/users/index.html and https://matplotlib.org/api/_as_gen/matplotlib.pyplot.html?highlight=pyplot 
 for information.
 '''
+
 import time
 import matplotlib.pyplot as plt
-from gdx import gdx #The gdx function calls are from a gdx.py file inside the gdx folder, which must be with this program.
 
+from gdx import gdx #The gdx function calls are from a gdx.py file inside the gdx folder, which must be with this program.
 gdx = gdx.gdx()
+
 
 fig, ax = plt.subplots()
 
@@ -22,9 +24,8 @@ time_between_readings_in_seconds = 0.5
 number_of_readings = 20
 digits_of_precision = 2
 
-
-#gdx.open_usb() # Comment out if you are not using a USB connection.
-gdx.open_ble() # Uncomment if you wish to connect via Bluetooth.
+gdx.open(connection='usb')   # Use connection='ble' for a Bluetooth connection
+#gdx.open(connection='usb', device_to_open='GDX-FOR 071000U9')  # You can also use an argument to specify the device
 
 gdx.select_sensors() # You will be asked to select the sensors to be used. You can select up to three.
 #gdx.select_sensors([1]) # You can also use an argument to select sensors. Separate multiple sensors with a comma, ([1,3])
@@ -63,7 +64,6 @@ period_in_ms = time_between_readings_in_seconds*1000
 #Start data collection at the specified rate. The period argument is in milliseconds
 gdx.start(period_in_ms) 
 
- 
 # This graphing function will be used to set up the graph and may be used during data collection to give you 
 # a "live" graph. Note that plotting to the graph during data collection may slow the data collection loop.
 def plot_graph():
@@ -83,7 +83,6 @@ def plot_graph():
     plt.pause (0.05) # display the graph briefly, as the readings are taken
 
 
-
 def print_table():
     print ("Data Table:")
     print ('Time (s) ',column_headers_string) #label the data table that will be printed on the Python Shell
@@ -92,11 +91,8 @@ def print_table():
     # This variable is created in the Data Collection loop.
     for string in print_table_string:
         print(string)
-        
-
-         
+           
 # Data Collection:
-
 collection_complete=False
 while not collection_complete:
     try:

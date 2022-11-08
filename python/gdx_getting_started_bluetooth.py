@@ -1,37 +1,46 @@
 ''' 
-When using gdx.open_ble(), note that there are a few options:
+Simple starter program that uses the gdx functions to collect data from a Go Direct device 
+connected via Bluetooth. 
 
-gdx.open_ble() - When there are no arguments, the function finds all available Go Direct 
-                ble devices, prints the list to the terminal, and prompts the user
-                to select the device to connect.
+When using gdx.open(), note it has two arguments that can be set. They are 'connection' 
+and 'device_to_open'. Here are some ways to configure gdx.open() for a bluetooth connection:
 
-gdx.open_ble("GDX-FOR 071000U9") - Use your device's name as the argument. The function will
-                search for a ble device with this name. If found it will connect it. If connecting
-                to multiple devices simply separate the names with a comma, such as 
-                gdx.open_ble("GDX-FOR 071000U9, GDX-HD 151000C1")
+gdx.open(connection='ble')
+            When the 'device_to_open' argument is left blank, the function 
+            finds all available Go Direct ble devices. If only one device is found it will
+            automatically connect to that device. If more than one device is found it prints 
+            the list to the terminal, and prompts the user to select the device to connect.
 
-gdx.open_ble("proximity_pairing") - Use "proximity_pairing" as the argument and the function will
-                find the ble device with the strongest rssi (signal strength) and connect that
-                device.
+gdx.open(connection='ble', device_to_open='GDX-FOR 071000U9')
+            Use your device's name as the argument. The function will search for a ble device 
+            with this name. If found it will connect it. If connecting to multiple devices 
+            separate the names with a comma, such as device_to_open='GDX-FOR 071000U9, GDX-HD 151000C1'
 
-Below is a simple starter program that uses the gdx functions to collect data from a Go Direct device 
-connected via Bluetooth. The gdx.open_ble(), gdx.selct_sensors(), and gdx.start() functions do not have 
-arguments and will therefore provide you with a prompt to select your device, sensors, and period.
+gdx.open(connection='ble', device_to_open='proximity_pairing')
+            Use "proximity_pairing" as the argument and the function will find the ble device 
+            with the strongest rssi (signal strength) and connect that device.
 
-Tip: You can skip the prompts to select the device, the sensors, and the period by entering arguments
-in the functions. For example, if you have a Go Direct Motion with serial number 0B1010H3 and you want 
-to sample from sensor 5 at a period of 50ms, you would configure the functions like this:
-gdx.open_ble("GDX-MD 0B1010H3"), gdx.select_sensors([5]), gdx.start(50)
+Tip: Skip the prompts to select the sensors and period by entering arguments in the functions.
 
+Example 1, collect data from sensor 1 at a period of 1000ms using:
+gdx.select_sensors([1])
+gdx.start(1000)
+
+Example 2, collect data from sensors 1, 2 and 3 at a period of 100ms using:
+gdx.select_sensors([1,2,3])
+gdx.start(100)
 '''
 
 from gdx import gdx
 gdx = gdx.gdx()
   
-gdx.open_ble()
-
+  
+gdx.open(connection='ble')
 gdx.select_sensors()
 gdx.start() 
+column_headers= gdx.enabled_sensor_info()   # returns a string with sensor description and units
+print('\n')
+print(column_headers)
 
 for i in range(0,20):
     measurements = gdx.read()

@@ -1,6 +1,6 @@
-# Advanced Examples
+# Turtle Graphics Examples
 
-The examples in this folder demonstrate some more advanced uses of Go Direct devices and Python. Most of these examples use the local module named `gdx` that can be found in the [../gdx/](../gdx) folder. Many of these examples may also require that you install other dependencies to get them to work. You should be able to use `pip` to install these, as needed.
+The examples in this folder demonstrate use of Go Direct devices with Turtle Graphics. These examples use the local module named `gdx` that can be found in the [../gdx/](../gdx) folder. These examples may also require that you install other dependencies to get them to work. You should be able to use `pip` to install these, as needed.
 
 ## License
 
