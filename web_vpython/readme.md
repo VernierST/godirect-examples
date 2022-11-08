@@ -35,7 +35,7 @@ The `godirect` library for Web VPython is a JavaScript library that provides a s
 
 Start your Web VPython program using the following command to get the library
 ```python
-get_library("https://need.to.update.with.latest.url.js")
+get_library("https://unpkg.com/@vernier/godirect/dist/webVPython.js")
 ```
 
 ## The Web VPython Functions
