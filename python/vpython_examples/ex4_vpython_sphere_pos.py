@@ -20,8 +20,8 @@ gdx.start(250)
 while gdx.vp_close_is_pressed() == False:  
     while gdx.vp_collect_is_pressed() == True:       
         measurements = gdx.read()    # 'measurements' is a list - one data point per sensor
-        print(measurements)
         if measurements == None:
             break 
+        print(measurements)
         sensor0_data =  measurements[0]    # index out the first sensor's data point
         my_sphere.pos.y = sensor0_data * 2   

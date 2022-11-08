@@ -4,6 +4,17 @@ This guide shows how to get started writing Web VPython programs to communicate 
 
 Web VPython runs in the browser and makes it possible, and easy, to generate navigable real-time 3D animations. In addition, it allows the user to write and run a VPython program without actually installing Python itself - a big timesaver in the classroom! Another advantage is that Web VPython can communicate with Go Direct sensors on Chromebooks as well as Mac, Windows, and Linux computers.
 
+This guide contains the following topics:
+
+- [Go Direct support in Python](#go-direct-support-in-python)
+- [Getting Started Requirements](#getting-started-requirements)
+- [About the godirect Web VPython library](#about-the-godirect-web-vpython-library)
+- [The Web VPython Functions](#the-web-vpython-functions)
+- [Notes Regarding the Web VPython Functions](#notes-regarding-the-web-vpython-functions)
+- [How to Run a Web VPython Program with Go Direct Devices](#how-to-run-a-web-vpython-program-with-go-direct-devices)
+- [Example Programs](#example-programs)
+- [Troubleshooting and Notes](#troubleshooting)
+
 <sup>1</sup> Go Direct spectrometers, Mini GC, Polarimeter, Go Wireless Heart Rate, and Cyclic Voltammetry System do not work with the godirect library. Go Direct sensors that are not supported, or that may require advanced programming, calibration, or analysis, include Blood Pressure, Sound, Ion-Selective Electrode, Optical Dissolved Oxygen, Conductivity, and timing/event devices like Photogates, Drop Counters, Projectile Launcher, Radiation, and Rotary Motion.
 
 ## Go Direct support in Python
@@ -20,7 +31,7 @@ We have developed a library called `godirect` that allows you to develop Web VPy
 
 ## About the godirect Web VPython library
 
-The `godirect` library for Web VPython is a JavaScript library that provides a series of functions that can be used to write Python code in Web VPython. These functions provide communication with Go Direct devices. Additionaly, the functions provide buttons, sliders, meters, and a chart for controlling data collection within Web VPython.
+The `godirect` library for Web VPython is a JavaScript library that provides a series of functions that can be used to write Python code in Web VPython. These functions provide communication with Go Direct devices. Additionally, the functions provide buttons, sliders, meters, and a chart for controlling data collection within Web VPython.
 
 Start your Web VPython program using the following command to get the library
 ```python
@@ -45,7 +56,8 @@ A simple example that uses these functions is shown below. In this example, the 
 <img src="./images/vpython_box.png" alt="VPython box" width="600" height="240"/>
 
 ```python
-get_library("")
+Web VPython 3.2
+get_library("https://unpkg.com/@vernier/godirect/dist/webVPython.js")
 
 gdx.open(connection='usb')
 gdx.select_sensors()
@@ -54,7 +66,9 @@ b = box(size=0.1*vec(1,1,1), color=color.red)
 gdx.start()
  
 while gdx.vp_close_is_pressed() == False:
-    while gdx.vp_collect_is_pressed() == True:       
+    rate(50)
+    while gdx.vp_collect_is_pressed() == True: 
+        rate(50)      
         measurements = gdx.read()     
         sensor0_data =  measurements[0]  
         b.length = 0.1 * sensor0_data 

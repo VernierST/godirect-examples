@@ -8,10 +8,11 @@ from gdx import gdx
 gdx=gdx.gdx()
 
 
-# setup a Vernier vpython canvas with buttons to control data collection  
-gdx.vp_vernier_canvas(slider=False)
 gdx.open(connection='usb')   # Use connection='ble' for a Bluetooth connection
 gdx.select_sensors([1,5,6,7])   # GDX-LC sensors: 1: light; 2: UV; 5: red; 6:green; 7: blue
+# setup a Vernier vpython canvas with buttons to control data collection  
+gdx.vp_vernier_canvas(slider=False)
+
 gdx.start(250)   # data collection period in ms.
 
 # setup another  vpython canvas, c2
