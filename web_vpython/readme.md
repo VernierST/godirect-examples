@@ -2,7 +2,7 @@
 
 This document provides an overview of how to get started writing Web VPython programs to communicate with the sensors on-board most Vernier Go Direct<sup>1</sup> devices. Web VPython is an easily accessible online coding platform that bundles Python and the VPython library.
 
-Note that we also have a longer, more in-depth [Web VPython Guide](./Web%20VPython%20Guide%2011_13_22.pdf) that can be helpful for getting started using Web VPython with our Go Direct devices.
+Note that we also have a longer, more in-depth [Web VPython Guide](./Web%20VPython%20Guide%203_8_23%20.pdf) that can be helpful for getting started using Web VPython with our Go Direct devices.
 
 Web VPython runs in the browser and makes it possible, and easy, to generate navigable real-time 3D animations. In addition, it allows the user to write and run a VPython program without actually installing Python itself - a big timesaver in the classroom! Another advantage is that Web VPython can communicate with Go Direct sensors on Chromebooks as well as Mac, and Windows computers.
 
