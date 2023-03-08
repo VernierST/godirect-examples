@@ -1,10 +1,10 @@
 # Getting Started with Vernier Go Direct® Sensors and Web VPython
 
-This guide shows how to get started writing Web VPython programs to communicate with the sensors on-board most Vernier Go Direct<sup>1</sup> devices. Web VPython is an easily accessible online coding platform that bundles Python and the VPython library.
+This document provides an overview of how to get started writing Web VPython programs to communicate with the sensors on-board most Vernier Go Direct<sup>1</sup> devices. Web VPython is an easily accessible online coding platform that bundles Python and the VPython library.
 
-Note that we also have a [Web VPython Guide](./Web%20VPython%20Guide%2011_13_22.pdf) guide that can be helpful for starting your first Web VPython program with a Go Direct device.
+Note that we also have a longer, more in-depth [Web VPython Guide](./Web%20VPython%20Guide%2011_13_22.pdf) that can be helpful for getting started using Web VPython with our Go Direct devices.
 
-Web VPython runs in the browser and makes it possible, and easy, to generate navigable real-time 3D animations. In addition, it allows the user to write and run a VPython program without actually installing Python itself - a big timesaver in the classroom! Another advantage is that Web VPython can communicate with Go Direct sensors on Chromebooks as well as Mac, Windows, and Linux computers.
+Web VPython runs in the browser and makes it possible, and easy, to generate navigable real-time 3D animations. In addition, it allows the user to write and run a VPython program without actually installing Python itself - a big timesaver in the classroom! Another advantage is that Web VPython can communicate with Go Direct sensors on Chromebooks as well as Mac, and Windows computers.
 
 This guide contains the following topics:
 
@@ -28,7 +28,7 @@ Note that this guide is for using VPython with Web VPython. There is a separate 
 We have developed a library called `godirect` that allows you to develop Web VPython programs that can communicate with the sensors of a Vernier Go Direct device via USB or Bluetooth Low Energy (BLE). This requires the following: 
 
 - A Vernier Go Direct Device
-- A Chromebook, Windows® 10, macOS®, or Linux (including Raspberry Pi) computer
+- A Chromebook, Windows® 10, or macOS® computer
 - Access to glowscript.org. It is recommended to use the Chrome browser, though other browsers may work.
 
 ## About the godirect Web VPython library
@@ -99,6 +99,7 @@ Here is some more information about the functions, including how you might add a
     - Set the argument as a 1D list to enable sensors for a single device, such as [1] to enable sensor 1 or [1,2] to enable sensors 1 and 2.
   - `gdx.select_sensors([[1,2,3],[1]])`
     - Set the argument as a 2D list of lists of the sensors you wish to enable for multiple Go Direct devices. For example, set the argument as [[1,2,3],[1]] to enable sensors 1,2 and 3 for the first device and sensor 1 for the second device.
+- If you know what sensor or sensors your program will be using, and you hardcode the sensor numbers in the argument, then you will not need the channel setup dialog on the canvas. This can be hidden with `gdx.vp_vernier_canvas(channel_setup=False)`.
 - How do you know what sensors are on your device and what the sensor numbers are? Simply run an example leaving the `gdx.select_sensors()` argument blank and you will see the list in the Web VPython canvas.
 
 ### `gdx.start()`
@@ -108,6 +109,7 @@ Here is some more information about the functions, including how you might add a
 
 ### `measurements = gdx.read()`
 - The `gdx.read()` function will take single point readings from the selected sensors at the desired period and return the readings as a 1D list.
+- The first sensor's reading will be the first item in the list as measurements[0], if there is a second sensor, its reading will be measurements[1], etc.
 - Place the function in the data collection loop and make sure the loop can iterate fast enough to keep up with the sampling period (do not have other code in the loop that might slow the loop).
 
 ### `gdx.vp_vernier_canvas()` 
