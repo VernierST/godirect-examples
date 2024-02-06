@@ -1,12 +1,12 @@
 # Go Direct® Sensor Readout
 
-Simple example of using the [godirect-py module](https://pypi.org/project/godirect/) to connect to a Vernier Go Direct Sensor and log some default sensor value.
+Simple example of using the [godirect-py module](https://pypi.org/project/godirect/) to connect to a Vernier Go Direct device and log sensor values.
 
 [go-direct-sensor-readout](./godirect-sensor-readout.py)
 
 ## API of godirect-py
 
-Connect to the first available USB device or closest BLE device within the default threshold and collect 10 samples from the default sensor.
+Connect to the first available USB device, or closest BLE device within the default threshold, and collect 10 samples from the default sensor.
 ```python
 from godirect import GoDirect
 godirect = GoDirect()
@@ -18,7 +18,8 @@ if device != None and device.open(auto_start=True):
 	for i in range(0,10):
 		if device.read():
 			for sensor in sensors:
-				print(sensor.sensor_description+": "+str(sensor.value))
+				print(sensor.sensor_description+": "+str(sensor.values))
+				sensor.clear()
 	device.stop()
 	device.close()
 godirect.quit()
@@ -44,57 +45,56 @@ mydevice = godirect.get_device()
 mydevice = godirect.get_device(threshold=-200)
 ```
 
-Once a device is found or selected it must be opened. By default only information will be 
-gathered on Open. To automatically enable the default sensors and start measurements send 
-auto_start=True and skip to getting a list of enabled sensors. 
+Once a device is found or selected it must be opened. By default only information will be gathered on Open. To automatically enable the default sensors and start measurements send auto_start=True and skip to getting a list of enabled sensors. Set auto_start=False and then call code to manually enable the sensors, call start, and then get a list of enabled sensors.
 ```python
 # returns True on success or False on failure
-mydevice.open()
+mydevice.open(auto_start=False)
 ```
 
-Once a device is opened you can obtain a list of sensor objects available on
-the device.
+Once a device is opened you can obtain a list of sensor objects available on the device.
 ```python
 # returns a list of Sensor objects
 sensors = mydevice.list_sensors()
 ```
 
-Optionally you can select the sensors you want to collect from, otherwise the
-default sensor(s) will be used.
+Select the sensors you want to collect from, otherwise the default sensor(s) will be enabled when start is called.
 ```python
 # pass a list of sensor numbers to enable
 mydevice.enable_sensors([2,3,4])
 ```
 
+Start data collection at the typical rate. If sensors were not enabled, the default sensors will be enabled when start is called.
 ```python
-# start measurements at the typical rate for the enabled sensors
+# start measurements at the typical data rate
 mydevice.start() # returns True on success
 
 # start measurements at 1000ms per sample
 mydevice.start(period=1000)
 
+After `start()` has been called, the enabled sensor objects are available
+```python
 # get a list of the GoDirectSensor objects that are enabled
 mysensors = mydevice.get_enabled_sensors()
 ```
 
-The `read()` method will block until data is returned so it is acceptable to read
-in a tight loop.
+The `read()` method will block until data is returned so it is acceptable to read in a tight loop.
 
 ```python
 for i in range(0,10):
-  # read() will append the measurement received to the values list in the Sensor object
+  # read() will append the new measurement(s) received to the values list in the Sensor object
   if mydevice.read():
     for sensor in mysensors:
-			print(sensor.value)
+			print(sensor.values)
+			sensor.clear()
 ```
 
-The `stop()` method will stop data collection on the device. The `close()` method
-will disconnect the USB or BLE device. The `quit()` method will stop the USB or BLE backends gracefully.
+The `stop()` method will stop data collection on the device. 
+The `close()` method will disconnect the USB or BLE device. 
+The `quit()` method will stop the USB or BLE backends gracefully.
 
 ## Debugging
 
-godirect uses the standard python logging module. You can set the logging verbosity
-to INFO or DEBUG to see more communication detail.
+godirect uses the standard python logging module. You can set the logging verbosity to INFO or DEBUG to see more communication detail.
 
 ```python
 import logging
