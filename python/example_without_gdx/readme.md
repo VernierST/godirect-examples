@@ -82,15 +82,17 @@ The `read()` method will block until data is returned so it is acceptable to rea
 
 ```python
 for i in range(0,10):
-	# read() will append the new measurement(s) received to the values list in the Sensor object
+	# read() will append new measurement(s) received to the values list in the Sensor object
 	if mydevice.read():
-    	for sensor in mysensors:
+		for sensor in mysensors:
 			print(sensor.values)
 			sensor.clear()
 ```
 
 The `stop()` method will stop data collection on the device. 
+
 The `close()` method will disconnect the USB or BLE device. 
+
 The `quit()` method will stop the USB or BLE backends gracefully.
 
 ## Debugging
