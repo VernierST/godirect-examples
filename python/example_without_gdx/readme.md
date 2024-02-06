@@ -45,7 +45,7 @@ mydevice = godirect.get_device()
 mydevice = godirect.get_device(threshold=-200)
 ```
 
-Once a device is found or selected it must be opened. By default only information will be gathered on Open. To automatically enable the default sensors and start measurements send auto_start=True and skip to getting a list of enabled sensors. Set auto_start=False and then call code to manually enable the sensors, call start, and then get a list of enabled sensors.
+Once a device is found or selected it must be opened. By default, only information will be gathered on Open. To automatically enable the default sensors and start measurements, set the `open()` parameter to `auto_start=True`. With this parameter set to True there is no need to call the `enable_sensors()` and `start()` functions. Otherwise, if the parameter is set to `auto_start=False`, then you will call the `enable_sensors()` and `start()` functions.
 ```python
 # returns True on success or False on failure
 mydevice.open(auto_start=False)
@@ -57,7 +57,7 @@ Once a device is opened you can obtain a list of sensor objects available on the
 sensors = mydevice.list_sensors()
 ```
 
-Select the sensors you want to collect from, otherwise the default sensor(s) will be enabled when start is called.
+Select the sensors you want to enable for data collection. If you do not call this function, then the default sensor(s) will be automatically enabled when `start()` is called.
 ```python
 # pass a list of sensor numbers to enable
 mydevice.enable_sensors([2,3,4])
@@ -70,6 +70,7 @@ mydevice.start() # returns True on success
 
 # start measurements at 1000ms per sample
 mydevice.start(period=1000)
+```
 
 After `start()` has been called, the enabled sensor objects are available
 ```python
@@ -81,9 +82,9 @@ The `read()` method will block until data is returned so it is acceptable to rea
 
 ```python
 for i in range(0,10):
-  # read() will append the new measurement(s) received to the values list in the Sensor object
-  if mydevice.read():
-    for sensor in mysensors:
+	# read() will append the new measurement(s) received to the values list in the Sensor object
+	if mydevice.read():
+    	for sensor in mysensors:
 			print(sensor.values)
 			sensor.clear()
 ```
